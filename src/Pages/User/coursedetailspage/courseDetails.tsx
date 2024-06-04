@@ -2,15 +2,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 
-import { FC, useEffect, useState } from "react";
+import { FC,  useState } from "react";
 import { IoCheckmarkDoneOutline, IoCloseOutline } from "react-icons/io5"
 import ReactPlayer from "react-player"
 import { Elements } from "@stripe/react-stripe-js"
 import CheckOutForm from "./CheckOutForm";
 import StarRating from "@/Components/user/StarRating";
-import CourseContentList from "./CourseContentList";
+
 import { Link } from "react-router-dom";
-import { userInfo } from "os";
+
 
 
 type Props = {
@@ -24,7 +24,7 @@ type Props = {
 
 const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,user }) => {
     const [open, setopen] = useState(false)
-    const handleOrder = (e: any) => {
+    const handleOrder = () => {
         setopen(true)
 
     }

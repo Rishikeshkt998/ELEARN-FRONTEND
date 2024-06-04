@@ -11,7 +11,7 @@ type Props = {
     setopen: any,
     CourseDetails: any
 }
-const CheckOutForm: FC<Props> = ({ setopen, CourseDetails }) => {
+const CheckOutForm: FC<Props> = ({  CourseDetails }) => {
     const navigate=useNavigate()
     const [message, setaMessage] = useState<any>("")
     const [isLoading, setIsLoading] = useState(false)

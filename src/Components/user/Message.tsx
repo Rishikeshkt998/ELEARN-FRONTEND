@@ -1,6 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { FC } from 'react';
 import { format } from 'timeago.js';
-
-const Message = ({ message, own }) => {
+type Props={
+    message:any 
+    own:any
+}
+const Message:FC<Props> = ({ message, own }) => {
     return (
         <div className={own ? "message own" : "message"}>
             <div className={own ? "max-w-[40%] bg-blue-500 rounded-b-xl rounded-tr-xl p-4 text-white mb-6 ml-auto" : "max-w-[40%] bg-blue-50 rounded-b-xl rounded-tr-xl p-4"}>

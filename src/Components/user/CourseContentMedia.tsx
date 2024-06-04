@@ -4,7 +4,6 @@
 import { FC, useEffect, useState } from "react"
 import { AiFillStar, AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlineStar } from "react-icons/ai"
 import ReactPlayer from "react-player"
-import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import ConfettiExplosion from "react-confetti-explosion";
 import StarRating from "./StarRating"
@@ -229,7 +228,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                         if (allLessonsCompleted) {
                             const completedChapterResponse = await GetChapterView(id, usersId)
                             if (completedChapterResponse) {
-                                const chapterId = chapters[activeVideo]._id;
+                                // const chapterId = chapters[activeVideo]._id;
                                 const completedChapters = completedChapterResponse.data.chaptercompletionView;
                                 const completedChapterIds = [];
                                 for (const chapterId of completedChapters) {

@@ -2,7 +2,6 @@
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
-import { MdDelete } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import AddQuestion from "./AddQuestion";
 import { GetQuestions } from "@/Api/trainer";

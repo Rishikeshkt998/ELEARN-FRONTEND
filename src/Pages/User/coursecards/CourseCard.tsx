@@ -31,10 +31,9 @@ interface Course {
 
 interface Props {
     searchTerm: string;
-    selectedCategory: any;
 }
 
-const CourseCard: FC<Props> = ({ searchTerm, selectedCategory }) => {
+const CourseCard: FC<Props> = ({ searchTerm }) => {
     const [courses, setCourses] = useState<Course[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [coursesPerPage] = useState<number>(6); 
@@ -63,9 +62,8 @@ const CourseCard: FC<Props> = ({ searchTerm, selectedCategory }) => {
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     const filteredCourses = currentCourses.filter(course =>
-        course.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (selectedCategory === "" || course.category === selectedCategory)
-    );
+        course.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
 
     return (
         <div className="max-w-screen-xl h-full mx-auto p-5 sm:p-10 md:p-16 ">

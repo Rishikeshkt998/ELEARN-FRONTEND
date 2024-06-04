@@ -7,7 +7,7 @@ type Props = {
     setActive: (active: number) => void;
 };
 
-const EditCourseOption: FC<Props> = ({ active, setActive }) => {
+const EditCourseOption: FC<Props> = ({ active }) => {
     const options = [
         "Course Information",
         "Course Options",

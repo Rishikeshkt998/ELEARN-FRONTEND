@@ -19,7 +19,7 @@ interface Category {
     description?: string;
 }
 
-const Courseinformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setActive, loading,setLoading}) => {
+const Courseinformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setActive, setLoading}) => {
     const [categories, setCategories] = useState<Category[]>([]);
     const [dragging, setDragging] = useState(false)
     const [errors, setErrors] = useState<any>({});
@@ -73,7 +73,7 @@ const Courseinformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setAc
         const file = e.target.files?.[0]
         if (file) {
             const reader = new FileReader()
-            reader.onload = (e: any) => {
+            reader.onload = () => {
                 if (reader.readyState === 2) {
                     setCourseInfo({ ...courseInfo, thumbnail: reader.result })
                 }

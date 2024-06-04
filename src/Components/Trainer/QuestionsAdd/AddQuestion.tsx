@@ -84,7 +84,7 @@ const AddQuestion: React.FC<Props> = ({ courseId, setQuestion }) => {
                             {errors.question && <div className="text-red-600 text-sm">{errors.question}</div>}
                         </div>
                         <div className="grid gap-4 mb-4 grid-cols-2">
-                            {values.options.map((option, index) => (
+                            {values.options.map((index:any) => (
                                 <div key={index} className="col-span-2 sm:col-span-1">
                                     <label htmlFor={`options[${index}]`} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Option-{index + 1}</label>
                                     <input type="text" name={`options[${index}]`} id={`option${index + 1}`} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="" value={values.options[index]} onChange={handleChange} onBlur={handleBlur} />

@@ -28,10 +28,10 @@ const EditCourseContent: React.FC<Props> = ({
     courseContentData,
     setCourseContentData,
     handleSubmit: handleCourseSubmit,
-    olderData, 
-    setOlderData, 
-    newData, 
-    setnewData
+    // olderData, 
+    // setOlderData, 
+    // newData, 
+    // setnewData
 }) => {
     const [isCollapsed, setIsCollapsed] = useState<boolean[]>(
         Array(courseContentData.length).fill(false)
@@ -41,9 +41,9 @@ const EditCourseContent: React.FC<Props> = ({
 
     const [error, setError] = useState("");
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-    };
+    // const handleSubmit = (e: any) => {
+    //     e.preventDefault();
+    // };
 
     const handleCollapseToggle = (index: number) => {
         const updatedCollapsed = [...isCollapsed];
@@ -265,7 +265,7 @@ const EditCourseContent: React.FC<Props> = ({
                                         />
                                         <br />
                                     </div>
-                                    {item?.lessons.map((lesson: any, lessonIndex: number) => (
+                                    {item?.lessons.map((lessonIndex: number) => (
                                         <div key={lessonIndex} className="mb-3 block">
                                             <div className="w-full flex items-center justify-between mb-2">
                                                 <label htmlFor="" className="text-gray-400 font-bold">
@@ -345,7 +345,7 @@ const EditCourseContent: React.FC<Props> = ({
                                 <div>
                                     <p
                                         className="flex items-center text-[18px] dark:text-white text-gray-400 cursor-pointer"
-                                        onClick={(e: any) => newContentHandler(item)}
+                                        onClick={() => newContentHandler(item)}
                                     >
                                         <AiOutlinePlusCircle className="mr-2 text-gray-400" /> Add New Content
                                     </p>

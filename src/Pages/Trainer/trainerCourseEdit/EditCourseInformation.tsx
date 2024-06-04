@@ -16,7 +16,7 @@ type Props = {
  
 }
 
-const EditCourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setActive ,loading, setLoading }) => {
+const EditCourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setActive ,setLoading }) => {
     const [dragging, setDragging] = useState(false)
     const [errors, setErrors] = useState<any>({});
     const validationSchema = Yup.object({
@@ -58,7 +58,7 @@ const EditCourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, s
         if (file) {
             const reader = new FileReader()
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            reader.onload = (e: any) => {
+            reader.onload = () => {
                 if (reader.readyState === 2) {
                     setCourseInfo({ ...courseInfo, thumbnail: reader.result })
                 }

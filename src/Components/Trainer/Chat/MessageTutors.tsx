@@ -2,9 +2,13 @@
 
 
 
+import { FC } from 'react';
 import { format } from 'timeago.js';
-
-const MessageTutors = ({ message, own }: { message: any, own: boolean }) => {
+type Props={
+    message:any 
+    own:any
+}
+const MessageTutors:FC<Props> = ({ message, own }) => {
     const messageContainerClass = own ? "justify-end" : "justify-start";
     const messageBubbleClass = own ? "bg-indigo-500 text-white" : "bg-white text-gray-700";
     const avatarPositionClass = own ? "ml-2" : "mr-2";

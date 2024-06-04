@@ -3,8 +3,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 
-function Chapter({ chapter, chapterLoad, setChapterLoad }: any) {
-    let { title, order, _id, } = chapter;
+function Chapter({ chapter, }: any) {
+    let {  _id } = chapter;
 
     return (
         <>

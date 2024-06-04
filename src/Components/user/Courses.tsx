@@ -1,72 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import CourseCard from "../../Pages/User/coursecards/CourseCard";
-import axios from 'axios';
-import { GetCategory } from '@/Api/user';
-interface Category {
-    _id?: string;
-    name: string;
-    description: string;
-    isHidden?: boolean;
-    nooOfcourses?: number;
-    status: "active" | "frozen";
 
-}
-interface Course {
-    _id?: string;
-    category: string;
-    price: number;
-    estimatedPrice: number;
-    name: string;
-    description: string;
-    level: number;
-    tags?: string;
-    demoUrl?: string;
-    thumbnail?: string;
-    chapters?: string[];
-    approved?: boolean;
-    listed?: boolean;
-    image?: string;
-    adminVerified?: boolean;
-    publish?: boolean;
-    rating?: number;
-    noOfPurchase?: number;
-}
 
 
 const Courses: FC = () => {
-    const [courses, setCourses] = useState<Course[]>([]);
+
     const [searchTerm, setSearchTerm] = useState<string>("");
-    const [categories, setCategories] = useState<Category[]>([]);
-    const [selectedCategory, setSelectedCategory] = useState<string>("");
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`http://localhost:5000/api/user/search?searchTerm=${searchTerm}`);
-                setCourses(response.data);
-            } catch (error) {
-                console.error('Error fetching search results:', error);
-            }
-        };
 
-        fetchData();
-    }, [searchTerm]);
-
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await GetCategory()
-                console.log(response?.data)
-                setCategories(response?.data);
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-            }
-        };
-
-        fetchCategories();
-    }, []);
     
     return (
         <div className='w-full bg-[#E9F8F3B2] py-32'>
@@ -108,7 +51,7 @@ const Courses: FC = () => {
                 
                 <div className='flex flex-col'>
                         
-                    <CourseCard searchTerm={searchTerm} selectedCategory={selectedCategory} />
+                    <CourseCard searchTerm={searchTerm}  />
                 </div>
             </div>
 

@@ -77,7 +77,7 @@ const CourseContentList: FC<Props> = ({ chapters, setVideoUrl,setLessonId,lesson
               <h5 className="text-black ms-9 text-[14px]">{chapter.lessons.length} lessons</h5>
               <div className="m-3">
                 <ul className="m-2">
-                  {chapter.lessons.map((lesson: Lesson, index: any) => (
+                  {chapter.lessons.map((lesson: Lesson) => (
                     <li className="flex items-center justify-between bg-slate-500 rounded-md mb-2 p-3 " key={lesson._id} onClick={() => handleLessonClick(lesson.url, lesson._id)}>
                       <span>{lesson.title}</span>
                       {lessonCompleted.includes(lesson._id) && <FaCheck />}

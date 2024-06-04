@@ -10,7 +10,7 @@ import { UploadS3Bucket } from "../../../Services/S3bucket";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { TrainerCourseAdd } from "@/Api/trainer";
-import axios from "axios";
+
 
 // import { Skeleton } from "@/components/ui/skeleton"
 // import Skeleton from "@/Components/common/skeleton";
