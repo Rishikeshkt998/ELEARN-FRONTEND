@@ -29,9 +29,6 @@ const AdminRoute = () => {
                 <Route path="tutorview" element={<Tutorcontainer/>} />
                 <Route path="courseview" element={<CoursePage/>} />
                 <Route path="courseanalytics" element={<AdminDasboard />} />
-
-
-
             </Route>
         </Routes>
     )
