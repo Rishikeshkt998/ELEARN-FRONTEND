@@ -47,7 +47,7 @@ const TrainerRoute = () => {
     return (
         <Routes>
             <Route path="" element={<TrainerLoggedOut />}>
-                <Route path="login" element={<TrainerLogin />} />
+                <Route path="" element={<TrainerLogin />} />
                 <Route path='forgottutorpassword' element={<Forgotpasswordtutor />} />
                 <Route path='forgottutorpasswordotp' element={<ForgotpasswordOtptutor />} />
                 <Route path='changepasswordtutor' element={<ChangePasswordTutor />} />

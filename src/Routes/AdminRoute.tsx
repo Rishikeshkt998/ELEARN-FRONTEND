@@ -18,7 +18,7 @@ const AdminRoute = () => {
 
         <Routes>
             <Route path='' element={<AdminLoggedOut />}>
-                <Route path='login' element={<AdminLogin />} />
+                <Route path="" element={<AdminLogin />} />
             </Route>
             <Route path='' element={<AdminLoggedIn />}>
                 <Route path='dashboard' element={<AdminHome />} />
