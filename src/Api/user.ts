@@ -9,10 +9,12 @@ import Cookies from "js-cookie";
 
 Api.interceptors.request.use(
     (config:any) => {
+        if (config && config.url && config?.url.startsWith("/user")) {
         const refreshToken = localStorage.getItem("refreshToken")
         if (refreshToken) {
             config.headers.Authorization = `Bearer ${refreshToken}`;
-        }    
+        }  
+       }  
         return config;
     },
     (error) => {

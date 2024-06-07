@@ -6,18 +6,18 @@ import 'react-toastify/dist/ReactToastify.css';
 
 Api.interceptors.request.use(
     (config: any) => {
-        // if (config && config.url && config?.url.startsWith("/tutor")) {
-        //     const trainerToken = localStorage.getItem("trainerToken")
+        if (config && config.url && config?.url.startsWith("/trainer")) {
+            const trainerToken = localStorage.getItem("trainerToken")
 
 
-        //     if (trainerToken) {
-        //         config.headers.Authorization = `Bearer ${trainerToken}`;
-        //     }
-        // }
-        const trainerToken = localStorage.getItem("trainerToken")
-        if (trainerToken) {
-            config.headers.Authorization = `Bearer ${trainerToken}`;
+            if (trainerToken) {
+                config.headers.Authorization = `Bearer ${trainerToken}`;
+            }
         }
+        // const trainerToken = localStorage.getItem("trainerToken")
+        // if (trainerToken) {
+        //     config.headers.Authorization = `Bearer ${trainerToken}`;
+        // }
         
         console.log("config data", config)
         return config;
