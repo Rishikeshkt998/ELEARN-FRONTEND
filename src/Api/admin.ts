@@ -18,8 +18,6 @@ Api.interceptors.request.use(
         // if (adminToken) {
         //     config.headers.Authorization = `Bearer ${adminToken}`;
         // }
-
-        console.log("config data", config)
         return config;
     },
     (error) => {

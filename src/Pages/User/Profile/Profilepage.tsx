@@ -29,7 +29,6 @@ const Profilepage = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        // const userId = localStorage.getItem('userId')
         console.log(userId)
         if (userId !== null) {
           const response = await profile(userId)

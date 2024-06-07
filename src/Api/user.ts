@@ -10,9 +10,9 @@ import Cookies from "js-cookie";
 Api.interceptors.request.use(
     (config:any) => {
         if (config && config.url && config?.url.startsWith("/user")) {
-        const refreshToken = localStorage.getItem("refreshToken")
-        if (refreshToken) {
-            config.headers.Authorization = `Bearer ${refreshToken}`;
+        const userToken = localStorage.getItem("userToken")
+        if (userToken) {
+            config.headers.Authorization = `Bearer ${userToken}`;
         }  
        }  
         return config;
@@ -23,6 +23,10 @@ Api.interceptors.request.use(
 );
 Api.interceptors.response.use(
     function (response) {
+        if (response.data.newAccessToken) {
+            console.log("new access",response.data.newAccessToken)
+            localStorage.setItem("userToken", response.data.newAccessToken);
+        }
         const id = localStorage.getItem('userData')
         if (response.data.userId === id && response.data.blocked) {
             Cookies.remove("userToken");
@@ -120,7 +124,9 @@ export const otpResend = async (email: string) => {
 export const userLogin = async (email: string, password: string) => {
     try {
         const res = await Api.post(userRoutes.userLogin, { email, password })
-        localStorage.setItem("refreshToken", res?.data.Refreshtoken)
+        // localStorage.setItem("refreshToken", res?.data.Refreshtoken)
+        localStorage.setItem("userToken", res?.data.token)
+
         return res
     } catch (error) {
         console.log(error)

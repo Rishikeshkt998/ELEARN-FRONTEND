@@ -18,8 +18,7 @@ Api.interceptors.request.use(
         // if (trainerToken) {
         //     config.headers.Authorization = `Bearer ${trainerToken}`;
         // }
-        
-        console.log("config data", config)
+
         return config;
     },
     (error) => {
