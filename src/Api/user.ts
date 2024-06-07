@@ -24,7 +24,6 @@ Api.interceptors.request.use(
 Api.interceptors.response.use(
     function (response) {
         if (response.data.newAccessToken) {
-            console.log("new access",response.data.newAccessToken)
             localStorage.setItem("userToken", response.data.newAccessToken);
         }
         const id = localStorage.getItem('userData')

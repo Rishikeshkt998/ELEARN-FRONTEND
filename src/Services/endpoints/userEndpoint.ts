@@ -18,7 +18,7 @@ const userRoutes = {
     GetCourseAcess: '/user/courseAccess',
     GetUsers: '/user/userbyid',
     GetPayment:'/user/getpayment',
-    GetVideoCall:'user/getvideocallkey',
+    GetVideoCall:'/user/getvideocallkey',
     Payment:'/user/payment',
     OrderPost:'/user/orderpost',
     getCourse:'/user/CourseAccess',
