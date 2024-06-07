@@ -38,7 +38,9 @@ const userRoutes = {
     TutorsChat:'/user/tutorschat',
     newConverSationWithTutor:'/user/newConversation',
     GetMessagesUser:'/user/getMessages',
-    NewMessageForUser:'/user/newMessage'
+    NewMessageForUser:'/user/newMessage',
+    userLogout:'/user/logout',
+    googleAuth:'/user/google'
 
     
 

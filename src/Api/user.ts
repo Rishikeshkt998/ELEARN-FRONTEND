@@ -5,6 +5,21 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import Cookies from "js-cookie";
 
+
+
+Api.interceptors.request.use(
+    (config:any) => {
+        const refreshToken = localStorage.getItem("refreshToken")
+        if (refreshToken) {
+            config.headers.Authorization = `Bearer ${refreshToken}`;
+        }    
+        console.log("config data",config)
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 Api.interceptors.response.use(
     function (response) {
         const id = localStorage.getItem('userData')
@@ -104,7 +119,7 @@ export const otpResend = async (email: string) => {
 export const userLogin = async (email: string, password: string) => {
     try {
         const res = await Api.post(userRoutes.userLogin, { email, password })
-        // localStorage.setItem("userData",res?.data.userData._id)
+        localStorage.setItem("refreshToken", res?.data.Refreshtoken)
         return res
     } catch (error) {
         console.log(error)
@@ -385,6 +400,24 @@ export const MessagePostUser = async (message: any) => {
     try {
 
         const res = await Api.post(userRoutes.NewMessageForUser, message)
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const UserLogout = async () => {
+    try {
+
+        const res = await Api.post(userRoutes.userLogout)
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const GoogleAuth = async (name: any, email: any, googlePhotoUrl: any, headers: any) => {
+    try {
+
+        const res = await Api.post(userRoutes.googleAuth, {name, email, googlePhotoUrl},{headers})
         return res
     } catch (error) {
         console.log(error)

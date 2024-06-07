@@ -1,13 +1,29 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import Api from "../Services/axios";
 import adminRoutes from "../Services/endpoints/adminEndpoint";
 
+Api.interceptors.request.use(
+    (config: any) => {
+        const adminToken = localStorage.getItem("adminToken")
+        if (adminToken) {
+            config.headers.Authorization = `Bearer ${adminToken}`;
+        }
+
+        console.log("config data", config)
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
 
 export const adminLogin = async (email: string, password: string) => {
     try {
         console.log('In admin api')
         const res = await Api.post(adminRoutes.adminLogin, { email, password });
+        localStorage.setItem("adminToken", res?.data.token)
         console.log(res)
         return res;
     } catch (err) {

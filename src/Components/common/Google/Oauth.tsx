@@ -3,11 +3,11 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import { Button } from "flowbite-react";
 import { app } from "../../../firebase";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../../store/slice/authSlice";
+import { GoogleAuth } from "@/Api/user";
 
 
 
@@ -25,18 +25,21 @@ const Oauth = () => {
             const resultFromGoogle = await signInWithPopup(auth, provider);
             console.log(resultFromGoogle)
 
-            const response = await axios.post("http://localhost:5000/api/user/google", {
-                name: resultFromGoogle.user.displayName,
-                email: resultFromGoogle.user.email,
-                googlePhotoUrl: resultFromGoogle.user.photoURL
-            }, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+            const response = await GoogleAuth(resultFromGoogle.user.displayName, resultFromGoogle.user.email, resultFromGoogle.user.photoURL, {
+                'Content-Type': 'application/json',
+            })
+            // axios.post("http://localhost:5000/api/user/google", {
+            //     name: resultFromGoogle.user.displayName,
+            //     email: resultFromGoogle.user.email,
+            //     googlePhotoUrl: resultFromGoogle.user.photoURL
+            // }, {
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     }
+            // });
             
-            console.log(response.data);
-            if (response.data.success) {
+            console.log(response?.data);
+            if (response?.data.success) {
                 dispatch(setCredentials(response.data.token));
                 localStorage.setItem('userId', response.data.userData._id);
                 toast.success('user signed in successfully')

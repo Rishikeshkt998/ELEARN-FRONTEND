@@ -3,11 +3,11 @@ import React from 'react';
 import { initFlowbite } from 'flowbite'
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../../store/slice/authSlice';
 import { toast } from 'react-toastify';
 import { resetUser } from '@/store/slice/valueSlice';
+import { UserLogout } from '@/Api/user';
 interface RootState {
   auth: {
     userInfo: string;
@@ -24,7 +24,8 @@ const NavBar: React.FC = () => {
   const handleLogout = async () => {
     try {
       
-      await axios.post('http://localhost:5000/api/user/logout');
+      const logoutuser= await UserLogout()
+      console.log(logoutuser)
       dispatch(logout())
       dispatch(resetUser())
       toast.success('Logged out successfully..')

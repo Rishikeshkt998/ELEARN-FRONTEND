@@ -4,8 +4,20 @@ import trainerRoutes from "../Services/endpoints/trainerEndpoint";
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
-
-
+Api.interceptors.request.use(
+    (config: any) => {
+        const trainerToken = localStorage.getItem("trainerToken")
+        if (trainerToken) {
+            config.headers.Authorization = `Bearer ${trainerToken}`;
+        }
+        
+        console.log("config data", config)
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 export const trainerSignup = async (name: string, email: string, phone: string, password: string, confirmpassword: string,dateOfBirth:string) => {
     try {
         if (password !== confirmpassword) {
@@ -34,6 +46,7 @@ export const trainerSignup = async (name: string, email: string, phone: string, 
 export const trainerLogin = async (email: string, password: string) => {
     try {
         const res = await Api.post(trainerRoutes.trainerLogin, { email, password })
+        localStorage.setItem("trainerToken", res?.data.token)
         return res
     } catch (error) {
         console.log(error)
