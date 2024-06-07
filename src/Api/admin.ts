@@ -5,6 +5,15 @@ import adminRoutes from "../Services/endpoints/adminEndpoint";
 
 Api.interceptors.request.use(
     (config: any) => {
+        // if (config && config.url && config?.url.startsWith("/admin")) {
+        //     const adminToken = localStorage.getItem("adminToken");
+
+
+        //     if (adminToken) {
+        //         config.headers.Authorization = `Bearer ${adminToken}`;
+        //     }
+        // }
+
         const adminToken = localStorage.getItem("adminToken")
         if (adminToken) {
             config.headers.Authorization = `Bearer ${adminToken}`;

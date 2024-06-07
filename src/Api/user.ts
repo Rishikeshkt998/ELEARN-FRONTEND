@@ -13,7 +13,6 @@ Api.interceptors.request.use(
         if (refreshToken) {
             config.headers.Authorization = `Bearer ${refreshToken}`;
         }    
-        console.log("config data",config)
         return config;
     },
     (error) => {
