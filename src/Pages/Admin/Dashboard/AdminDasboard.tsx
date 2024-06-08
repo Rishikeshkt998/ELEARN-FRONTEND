@@ -1,10 +1,32 @@
+import { TotalCount } from "@/Api/admin"
 import CourseAnalytics from "@/Components/admin/CourseAnalytics/CourseAnalytics"
 import OrderAnalytics from "@/Components/admin/OrderAnalysis/OrderAnalysis"
 import UserAnalytics from "@/Components/admin/UserAnalytics/UserAnalytics"
 import AdminNavbar from "@/Components/common/AdminCommon/AdminNavbar"
 import Sidebar from "@/Components/common/AdminCommon/Sidebar"
+import { useEffect, useState } from "react"
+interface TotalCountResponse {
+    totalCourses: number;
+    totalUsers: number;
+    totalTutors: number;
+    totalSales: number;
+}
 
 const AdminDasboard = () => {
+    const [totalValue, setTotalCount] = useState<TotalCountResponse | null>(null)
+    useEffect(() => {
+        async function fetchCount() {
+            try {
+                const response = await TotalCount()
+                console.log("value",response)
+                setTotalCount(response?.data.count)
+                
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+            }
+        }
+        fetchCount();
+    }, []);
   return (
 
     <>
@@ -26,12 +48,12 @@ const AdminDasboard = () => {
                                       </svg>
                                   </div>
                                   <div className="p-4 text-right">
-                                      <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Today's Money</p>
-                                      <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">$53k</h4>
+                                      <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Course Added</p>
+                                      <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">{totalValue&&totalValue?.totalCourses}</h4>
                                   </div>
                                   <div className="border-t border-blue-gray-50 p-4">
                                       <p className="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-                                          <strong className="text-green-500">+55%</strong>&nbsp;than last week
+                                          {/* <strong className="text-green-500">+55%</strong>&nbsp;than last week */}
                                       </p>
                                   </div>
                               </div>
@@ -42,12 +64,12 @@ const AdminDasboard = () => {
                                       </svg>
                                   </div>
                                   <div className="p-4 text-right">
-                                      <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Today's Users</p>
-                                      <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">2,300</h4>
+                                      <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Users</p>
+                                      <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">{totalValue?.totalUsers}</h4>
                                   </div>
                                   <div className="border-t border-blue-gray-50 p-4">
                                       <p className="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-                                          <strong className="text-green-500">+3%</strong>&nbsp;than last month
+                                          {/* <strong className="text-green-500">+3%</strong>&nbsp;than last month */}
                                       </p>
                                   </div>
                               </div>
@@ -58,12 +80,12 @@ const AdminDasboard = () => {
                                       </svg>
                                   </div>
                                   <div className="p-4 text-right">
-                                      <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">New Clients</p>
-                                      <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">3,462</h4>
+                                      <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Tutors</p>
+                                      <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">{totalValue?.totalTutors}</h4>
                                   </div>
                                   <div className="border-t border-blue-gray-50 p-4">
                                       <p className="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-                                          <strong className="text-red-500">-2%</strong>&nbsp;than yesterday
+                                          {/* <strong className="text-red-500">-2%</strong>&nbsp;than yesterday */}
                                       </p>
                                   </div>
                               </div>
@@ -74,12 +96,12 @@ const AdminDasboard = () => {
                                       </svg>
                                   </div>
                                   <div className="p-4 text-right">
-                                      <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Sales</p>
-                                      <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">$103,430</h4>
+                                      <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Orders</p>
+                                      <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">{totalValue?.totalSales}</h4>
                                   </div>
                                   <div className="border-t border-blue-gray-50 p-4">
                                       <p className="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">
-                                          <strong className="text-green-500">+5%</strong>&nbsp;than yesterday
+                                          {/* <strong className="text-green-500">+5%</strong>&nbsp;than yesterday */}
                                       </p>
                                   </div>
                               </div>

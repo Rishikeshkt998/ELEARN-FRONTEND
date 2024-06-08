@@ -182,4 +182,22 @@ export const UserAnalysis = async () => {
         console.log(err)
     }
 }
+export const OrderAnalysis = async () => {
+    try {
+        const res = await Api.get(adminRoutes.OrderAnalysis);
+        console.log(res)
+        return res;
+    } catch (err) {
+        console.log(err)
+    }
+}
+export const TotalCount= async () => {
+    try {
+        const res = await Api.get(adminRoutes.totalcount);
+        console.log(res)
+        return res;
+    } catch (err) {
+        console.log(err)
+    }
+}
 

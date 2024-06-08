@@ -12,7 +12,7 @@ const TrainerVideocall: React.FC = () => {
     useEffect(() => {
         if (roomID) {
             const initializeZego = async () => {
-                const appID =import.meta.env.VITE_VIDEOCALL_APPID
+                const appID =Number(import.meta.env.VITE_VIDEOCALL_APPID)
                 const serverSecret =import.meta.env.VITE_VIDEOCALL_SECRET
                 const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
                     appID,

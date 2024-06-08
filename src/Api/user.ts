@@ -35,7 +35,13 @@ Api.interceptors.response.use(
         return response;
     },
     function (error) {
-        if (error.response && error.response.status === 404) {
+        if (error.response && error.response.status === 401 && error.response?.data.message === 'User is not enrolled in this course'){
+            // window.location.href = "/login";
+            toast.error("you are not enrolled this course");
+            window.history.back();
+            return Promise.reject(error);
+
+        }else if (error.response && error.response.status === 404) {
             window.location.href = "/error404";
             return Promise.reject(error);
             

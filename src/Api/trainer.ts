@@ -14,10 +14,7 @@ Api.interceptors.request.use(
                 config.headers.Authorization = `Bearer ${trainerToken}`;
             }
         }
-        // const trainerToken = localStorage.getItem("trainerToken")
-        // if (trainerToken) {
-        //     config.headers.Authorization = `Bearer ${trainerToken}`;
-        // }
+
 
         return config;
     },
@@ -350,6 +347,16 @@ export const PublishCourse= async (id: any) => {
         console.log(error)
     }
 }
+export const TotalCountTutor = async (id:any) => {
+    try {
+        const res = await Api.get(`${trainerRoutes.TotalCountTutor}/${id}`);
+        console.log(res)
+        return res;
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 
 
 

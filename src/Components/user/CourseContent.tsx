@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import CourseContentMedia from "./CourseContentMedia"
 import NavBar from "../common/UserCommon/Navbar"
 import Footer from "../common/UserCommon/Footer"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState} from "react"
 import CourseContentList from "@/Pages/User/coursedetailspage/CourseContentList"
 import { GetChapters, GetCourse } from "@/Api/user"
 
@@ -60,7 +61,8 @@ interface Course {
   noOfPurchase?: number
 
 }
-const CourseContent = ({id}:Props) => {
+
+const CourseContent: FC<Props> = ({ id }) => {
   const [courseDetails, setCourseDetails] = useState<Course | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [activeVideo,setActiveVideo]=useState(0)

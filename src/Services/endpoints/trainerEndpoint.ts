@@ -33,7 +33,8 @@ const trainerRoutes = {
     GetCourses:'/trainer/course',
     GetTutorCourses:'/trainer/coursetutor',
     DeleteCourse:'/trainer/deletecourse',
-    PublishCourse:'/trainer/publish'
+    PublishCourse:'/trainer/publish',
+    TotalCountTutor:'/trainer/totalcountTutor'
 
 
 

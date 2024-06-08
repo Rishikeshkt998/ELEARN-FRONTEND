@@ -1,7 +1,7 @@
 
 import AdminNavbar from "../../../Components/common/AdminCommon/AdminNavbar"
 import Sidebar from "../../../Components/common/AdminCommon/Sidebar"
-import AdminMainage from "../../../Components/common/AdminCommon/AdminMainage"
+import AdminDasboard from "../Dashboard/AdminDasboard"
 
 
 const AdminHome:React.FC=()=> {
@@ -13,7 +13,7 @@ const AdminHome:React.FC=()=> {
           <Sidebar/>
           <div className="bg-white opacity-50 hidden fixed inset-0 z-10" id="sidebarBackdrop"></div>
           <div id="main-content" className="h-full w-full bg-white  overflow-y-auto lg:ml-64">
-          <AdminMainage/>
+            <AdminDasboard />
           </div>
         </div>
 

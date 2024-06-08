@@ -1,3 +1,4 @@
+
 import CourseContent from "@/Components/user/CourseContent"
 import { useParams } from "react-router-dom";
 
@@ -5,9 +6,10 @@ import { useParams } from "react-router-dom";
 const CourseAccessContainer = () => {
 const { id } = useParams();
 console.log(id)
+  
   return (
     <div>
-        <CourseContent id={id}/>
+      <CourseContent id={id} />
       
     </div>
   )

@@ -133,11 +133,11 @@ const UserAnalytics: React.FC<Props> = ({ isDashboard }) => {
                     }`}
             >
                 <div>
-                    <h1 className="font-bold text-[1.5rem] text-gray-500 px-4">
+                    <h1 className="font-bold text-[1.5rem] text-gray-500 ps-16 px-4">
                         Users Analytics
                     </h1>
-                    <p className="font-bold text-[1rem] text-gray-500 px-5 mb-8">
-                        Last 12 months analytics data
+                    <p className="font-bold text-[0.9rem] text-gray-500 px-5 ps-16 mb-8">
+                        Last 12 months total users created in each month
                     </p>
                 </div>
                 <div

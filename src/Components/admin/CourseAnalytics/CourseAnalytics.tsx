@@ -10,16 +10,7 @@ const CourseAnalytics: React.FC = () => {
 
     const [data, setData] = useState([])
 
-    // const analyticsData = [
-    //   { name: "Jun 2023", uv: 3 },
-    //   { name: "July 2023", uv: 2 },
-    //   { name: "August 2023", uv: 5 },
-    //   { name: "Sept 2023", uv: 7 },
-    //   { name: "October 2023", uv: 2 },
-    //   { name: "Nov 2023", uv: 5 },
-    //   { name: "December 2023", uv: 7 },
-    // ];
-
+    
     const courseAanalytics = async () => {
         try {
             const response = await CourseAnalysis()
@@ -46,17 +37,15 @@ const CourseAnalytics: React.FC = () => {
 
     const minValue = 0
 
-    //  console.log(analyticsData);
-
     return (
         <div className='height-[50px] pt-5'>
             <div className="h-[80vh] ">
                 <div>
-                    <h1 className="font-bold text-[1.5rem] text-gray-500 px-4">
+                    <h1 className="font-bold text-[1.5rem] text-gray-500 ps-24 px-4">
                         Courses Analytics
                     </h1>
-                    <p className="font-bold text-[1rem] text-gray-500 px-5 ">
-                        Last 12 months analytics data
+                    <p className="font-bold text-[1rem] text-gray-500 ps-24 px-5 ">
+                        Last 12 months data of  courses created in each month
                     </p>
                 </div>
                 <div className="w-full h-[90%] flex items-center justify-center">

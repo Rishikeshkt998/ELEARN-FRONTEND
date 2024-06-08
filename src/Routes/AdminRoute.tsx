@@ -2,7 +2,7 @@ import AdminLogin from "../Pages/Admin/Login/AdminLogin"
 import { Route, Routes } from 'react-router-dom'
 import AdminLoggedIn from "../Components/admin/AdminCommon/AdminLoggedIn"
 import AdminLoggedOut from "../Components/admin/AdminCommon/AdminLoggedOut"
-import AdminHome from "../Pages/Admin/Home/AdminHome"
+// import AdminHome from "../Pages/Admin/Home/AdminHome"
 import CategoryPage from "../Pages/Admin/category/CategoryPage"
 import CategoryAddPage from "../Pages/Admin/category/CategoryAddPage"
 import CategoryEditPage from "../Pages/Admin/category/CategoryEdiPage"
@@ -21,14 +21,14 @@ const AdminRoute = () => {
                 <Route path="" element={<AdminLogin />} />
             </Route>
             <Route path='' element={<AdminLoggedIn />}>
-                <Route path='dashboard' element={<AdminHome />} />
+                <Route path='dashboard' element={<AdminDasboard />} />
                 <Route path='user' element={<UserContainer />} />
                 <Route path="categoryview" element={<CategoryPage/>} />
                 <Route path="addcategory" element={<CategoryAddPage />} />
                 <Route path="editcategory/:id" element={<CategoryEditPage/>} />
                 <Route path="tutorview" element={<Tutorcontainer/>} />
                 <Route path="courseview" element={<CoursePage/>} />
-                <Route path="courseanalytics" element={<AdminDasboard />} />
+                {/* <Route path="courseanalytics" element={<AdminDasboard />} /> */}
             </Route>
         </Routes>
     )

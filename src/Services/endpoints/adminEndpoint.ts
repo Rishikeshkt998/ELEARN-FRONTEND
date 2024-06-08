@@ -18,7 +18,8 @@ const adminRoutes = {
     adminlogout:'/admin/adminlogout',
     courseAnalysis: '/admin/courseanalysis',
     UserAnalysis: '/admin/useranalysis',
-    OrderAnalysis: '/admin/orderanalysis'
+    OrderAnalysis: '/admin/orderanalysis',
+    totalcount:'/admin/totalcount'
 
 
 

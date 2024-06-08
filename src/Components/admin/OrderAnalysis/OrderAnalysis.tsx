@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import axios from "axios";
+import { OrderAnalysis } from "@/Api/admin";
 import React, { useEffect, useState } from "react";
 import { ResponsiveContainer, XAxis,  YAxis, LineChart, CartesianGrid, Tooltip, Legend, Line } from 'recharts'
 
@@ -12,19 +12,11 @@ type Props = {
 const OrderAnalytics: React.FC<Props> = ({ isDashboard }) => {
     const [data, setData] = useState([]);
 
-    // const analyticsData = [
-    //   { name: "Jun 2023", uv: 3 },
-    //   { name: "July 2023", uv: 2 },
-    //   { name: "August 2023", uv: 5 },
-    //   { name: "Sept 2023", uv: 7 },
-    //   { name: "October 2023", uv: 2 },
-    //   { name: "Nov 2023", uv: 5 },
-    //   { name: "December 2023", uv: 7 },
-    // ];
 
     const orderAanalytics = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/admin/orderanalysis`)
+            const response = await OrderAnalysis()
+
             console.log("order",response)
             if (response?.data.success) {
                 setData(response.data.order);
@@ -45,19 +37,17 @@ const OrderAnalytics: React.FC<Props> = ({ isDashboard }) => {
             analyticsData.push({ name: item.month, count: item.count });
         });
 
-    // const minValue = 0;
 
-    // console.log(orderAanalytics);
 
     return (
         <div className="height-[50px]">
             <div className="h-[33vh]">
                 <div>
-                    <h1 className="font-bold text-[1.5rem] text-gray-500 px-4">
+                    <h1 className="font-bold text-[1.5rem] text-gray-500 ps-16 px-4">
                         Orders Analytics
                     </h1>
-                    <p className="font-bold text-[1rem] text-gray-500 px-5 mb-8">
-                        Last 12 months analytics data
+                    <p className="font-bold text-[1rem] text-gray-500 px-5 ps-16 mb-8">
+                        Last 12 months analytics data of total orders
                     </p>
                 </div>
                 <div className="w-full h-[90%] flex items-center justify-center">
