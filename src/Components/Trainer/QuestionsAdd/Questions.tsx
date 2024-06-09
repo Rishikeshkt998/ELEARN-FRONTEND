@@ -4,10 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AddQuestion from "./AddQuestion";
-import { GetQuestions } from "@/Api/trainer";
-// import { useParams } from "react-router-dom";
-// import { useEffect, useState } from "react";
-// import { MdDelete } from "react-icons/md";
+import { DeleteQuestions, GetQuestions } from "@/Api/trainer";
+import { MdDelete } from "react-icons/md";
 
 interface Question {
     _id?: string
@@ -27,10 +25,8 @@ const Questions: React.FC = () => {
         const fetchComments = async () => {
             try {
                 const res =await GetQuestions(id)
-                // await axios.get(`http://localhost:5000/api/course/getquestion/${id}`)
                 console.log(res?.data.questions)
                 setQuestions(res?.data.questions)
-                // setReview(res.data.fetchreviews.reviews)
 
 
             } catch (err) {
@@ -41,14 +37,10 @@ const Questions: React.FC = () => {
         fetchComments()
 
     }, [id]);
-
-    // const delete_question = (questionId: string) => {
-    //     instructorAPI.deleteQuestion(courseId as string, questionId).then((res) => {
-    //         setQuestions((prevState) =>
-    //             prevState.filter(question => question._id !== questionId)
-    //         );
-    //     });
-    // }
+    const delete_question = async (questionId: string) => {
+        const response=await DeleteQuestions(questionId,id)
+        console.log(response)
+    }
 
     return (
         <div className="w-full p-4 ">
@@ -65,7 +57,7 @@ const Questions: React.FC = () => {
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:text-gray-400">
                             <tr>
                                 <th scope="col" className="px-6 py-3">Question</th>
-                                {/* <th scope="col" className="px-6 py-3">Action</th> */}
+                                <th scope="col" className="px-6 py-3">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -75,9 +67,9 @@ const Questions: React.FC = () => {
                                         {ques.question}
                                     </th>
                                     <td className="px-6 py-4">
-                                        {/* <button className="btn btn-primary">
+                                        <button onClick={() => delete_question(ques._id as string)} className="btn btn-primary">
                                             <MdDelete size={20} />
-                                        </button> */}
+                                        </button>
                                     </td> *
                                 </tr>
                             ))} 

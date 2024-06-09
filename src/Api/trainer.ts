@@ -25,26 +25,26 @@ Api.interceptors.request.use(
 
 
 
-Api.interceptors.response.use(
-    function (response) {
-        return response;
-    },
-    function (error) {
-        if (error.response && error.response.status === 401 ) {
-            toast.error("trainer is not authenticated");
-            window.history.back();
-            return Promise.reject(error);
+// Api.interceptors.response.use(
+//     function (response) {
+//         return response;
+//     },
+//     function (error) {
+//         if (error.response && error.response.status === 401 ) {
+//             toast.error("trainer is not authenticated");
+//             window.history.back();
+//             return Promise.reject(error);
 
-        } else if (error.response && error.response.status === 404) {
-            window.location.href = "/error404";
-            return Promise.reject(error);
+//         } else if (error.response && error.response.status === 404) {
+//             window.location.href = "/error404";
+//             return Promise.reject(error);
 
-        } else if (error.response && error.response.status === 500) {
-            window.location.href = "/error500";
-        }
-        return Promise.reject(error);
-    }
-);
+//         } else if (error.response && error.response.status === 500) {
+//             window.location.href = "/error500";
+//         }
+//         return Promise.reject(error);
+//     }
+// );
 export const trainerSignup = async (name: string, email: string, phone: string, password: string, confirmpassword: string,dateOfBirth:string) => {
     try {
         if (password !== confirmpassword) {
@@ -244,6 +244,15 @@ export const GetQuestions = async (id: string | undefined) => {
     try {
 
         const res = await Api.get(`${trainerRoutes.GetQuestions}/${id}`);
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const DeleteQuestions = async (id: string | undefined,courseId:string|undefined) => {
+    try {
+
+        const res = await Api.get(`${trainerRoutes.DeleteQuestions}/${id}/${courseId}`);
         return res
     } catch (error) {
         console.log(error)

@@ -18,6 +18,7 @@ const trainerRoutes = {
     CommentReply:'/trainer/commentreply',
     AddQuestions:'/trainer/question',
     GetQuestions:'/trainer/getquestion',
+    DeleteQuestions:'/trainer/deleteQuestions',
     TrainerChat:'/trainer/usersforchat',
     NewMessage:'/trainer/newConversation',
     GetMessages:'/trainer/getMessages',

@@ -7,7 +7,6 @@ import React, { useEffect, useRef } from "react";
 import { useFormik } from "formik";
 import { initFlowbite } from "flowbite";
 import * as Yup from 'yup'
-// import axios from "axios";
 import { AddQuestions } from "@/Api/trainer";
 
 interface Props {
@@ -50,7 +49,6 @@ const AddQuestion: React.FC<Props> = ({ courseId, setQuestion }) => {
         onSubmit: async (values: Question) => {
             try {
                 const res = await AddQuestions(values)
-                // axios.post(`http://localhost:5000/api/course/question`, values);
                 console.log(res?.data.questions);
                 if (res?.status === 200) {
                     setQuestion((prev: any) => [...prev, res.data.questions]);
@@ -61,6 +59,7 @@ const AddQuestion: React.FC<Props> = ({ courseId, setQuestion }) => {
             }
         },
     });
+    
 
     const { errors, values, handleChange, handleSubmit, handleBlur } = formik;
 
