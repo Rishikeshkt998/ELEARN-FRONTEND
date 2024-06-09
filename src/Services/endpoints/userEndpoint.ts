@@ -39,6 +39,7 @@ const userRoutes = {
     newConverSationWithTutor:'/user/newConversation',
     GetMessagesUser:'/user/getMessages',
     NewMessageForUser:'/user/newMessage',
+    getConversationTutor:'/user/getConversation',
     userLogout:'/user/logout',
     googleAuth:'/user/google',
     searchCourse:'/user/search'

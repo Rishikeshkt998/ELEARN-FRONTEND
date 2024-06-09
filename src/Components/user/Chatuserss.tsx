@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from "axios"
+
 import { FC, } from "react"
 import images from "../../assets/images (1).png";
+import { getConversationtrainer } from "@/Api/user";
 
 
 interface Conversation {
@@ -36,10 +37,11 @@ const Chatuserss: FC<Props> = ({  user, currentUser, setCurrentChat ,setConversa
    
         const handleTrainerClick =async (tutorid:string) => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/user/getConversation/${currentUser}/${tutorid}`)
-                console.log("conversations", response.data.data)
-                setConversations(response.data.data)
-                setCurrentChat(response.data.data);
+                const response = await getConversationtrainer(currentUser,tutorid)
+                // axios.get(`http://localhost:5000/api/user/getConversation/${currentUser}/${tutorid}`)
+                console.log("conversations", response?.data.data)
+                setConversations(response?.data.data)
+                setCurrentChat(response?.data.data);
             } catch (error) {
                 console.log(error)
             }

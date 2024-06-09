@@ -433,6 +433,15 @@ export const MessagePostUser = async (message: any) => {
         console.log(error)
     }
 }
+export const getConversationtrainer = async (currentUser: any, tutorid: any) => {
+    try {
+
+        const res = await Api.get(`${userRoutes.getConversationTutor}/${currentUser}/${tutorid}`);
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
 export const UserLogout = async () => {
     try {
 

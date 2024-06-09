@@ -64,7 +64,7 @@ const Chatpage: React.FC = () => {
             try {
 
                 const response = await ChatWithTutor()
-                // axios.get(`http://localhost:5000/api/chat/tutorschat`)
+
                 if (response && response.data.findedtrainer) {
                     console.log("data", response.data.findedtrainer)
                     setUser(response.data.findedtrainer);
@@ -74,10 +74,7 @@ const Chatpage: React.FC = () => {
                         const tutorid = trainer.id;
                         console.log("id", tutorid);
                         const newConversationResponse = await NewConversationWithTutor(userId, tutorid)
-                        // axios.post("http://localhost:5000/api/chat/newConversation", {
-                        //     senderId: userId,
-                        //     receiverId: tutorid,
-                        // });
+
                         console.log("new", newConversationResponse);
 
                     }));
@@ -100,8 +97,7 @@ const Chatpage: React.FC = () => {
             try {
                 if (currentChat) {
                     const res = await GetMessagesForUser(currentChat[0]?._id)
-                    // axios.get(`http://localhost:5000/api/chat/getMessages/${currentChat[0]?._id}`)
-                    // console.log("message", res.data.data)
+
                     setMessages(res?.data.data)
 
                 }
@@ -138,7 +134,6 @@ const Chatpage: React.FC = () => {
 
         try {
             const res = await MessagePostUser(message)
-            // axios.post("http://localhost:5000/api/chat/newMessage", message)
             console.log(res)
             setMessages([...messages, res?.data?.data])
             setNewMessage("");
