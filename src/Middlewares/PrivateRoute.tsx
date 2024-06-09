@@ -57,7 +57,7 @@ import { toast } from "react-toastify";
 const PrivateRoute: React.FC<any> = ({ children }) => {
     const [userCourseIds, setUserCourseIds] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
-    const courseData = useSelector((state: any) => state.value.courseData);
+    // const courseData = useSelector((state: any) => state.value.courseData);
     const userData = useSelector((state: any) => state.value.userData);
     const userId = userData?._id;
     const navigate = useNavigate();
@@ -81,13 +81,14 @@ const PrivateRoute: React.FC<any> = ({ children }) => {
 
     useEffect(() => {
         if (!loading) {
-            const isLoggedIn = userCourseIds.some(courseId => Array.isArray(courseData) && courseData.includes(courseId));
+            const isLoggedIn = userCourseIds.some(courseId => Array.isArray(userData.courseIds) && userData.courseIds.includes(courseId));
+            console.log("courseIds",isLoggedIn)
             if (!isLoggedIn) {
                 toast("User is not enrolled in this course");
                 navigate(-1); 
             }
         }
-    }, [loading, userCourseIds, courseData, navigate]);
+    }, [loading, userCourseIds, userData, navigate]);
 
     if (loading) {
         return null; 
