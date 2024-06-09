@@ -38,6 +38,7 @@ const TutorChatPage: React.FC = () => {
     useEffect(() => {
 
         socket.current = io(import.meta.env.VITE_SOCKETIO_URL)
+        
         // io("ws://localhost:5000"); 
         socket.current?.on("getMessage", data => {
             console.log("userdata", data)
