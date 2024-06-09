@@ -42,7 +42,6 @@ const CourseCard: FC<Props> = ({ searchTerm }) => {
         async function fetchCourses() {
             try {
                 const response = await GetCourses()
-                // axios.get('http://localhost:5000/api/user/course');
                 if (response?.data) {
                     setCourses(response?.data);
                 }
@@ -52,13 +51,9 @@ const CourseCard: FC<Props> = ({ searchTerm }) => {
         }
         fetchCourses();
     }, []);
-
-    // Get current courses
     const indexOfLastCourse = currentPage * coursesPerPage;
     const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
     const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse);
-
-    // Change page
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     const filteredCourses = currentCourses.filter(course =>

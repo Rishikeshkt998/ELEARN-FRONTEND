@@ -57,7 +57,6 @@ import { toast } from "react-toastify";
 const PrivateRoute: React.FC<any> = ({ children }) => {
     const [userCourseIds, setUserCourseIds] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
-    // const courseData = useSelector((state: any) => state.value.courseData);
     const userData = useSelector((state: any) => state.value.userData);
     const userId = userData?._id;
     const navigate = useNavigate();

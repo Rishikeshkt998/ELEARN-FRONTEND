@@ -183,10 +183,10 @@ export const GetCourse = async (courseId: string|undefined) => {
         console.log(error)
     }
 }
-export const GetCourses = async () => {
+export const GetCourses = async (id:string|null) => {
     try {
 
-        const res = await Api.get(trainerRoutes.GetCourses);
+        const res = await Api.get(`${trainerRoutes.GetTutorCourses}/${id}`)
         return res
     } catch (error) {
         console.log(error)

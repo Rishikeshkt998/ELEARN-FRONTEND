@@ -50,7 +50,10 @@ const Courseview = () => {
     useEffect(() => {
         async function fetchCourses() {
             try {
-                const response = await GetCourses()
+                const id = localStorage.getItem('trainerId');
+                console.log(id)
+                const response = await GetCourses(id)
+                console.log("response tutor course",response?.data)
                 // axios.get('http://localhost:5000/api/course/course');
                 if (response?.data) {
                     setCourses(response.data);

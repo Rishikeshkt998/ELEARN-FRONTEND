@@ -31,7 +31,7 @@ const trainerRoutes = {
     GetCourse:'/trainer/getcourse',
     GetChapters: '/trainer/getchapters',
     EnrolledStudents:'/trainer/enrolledstudents',
-    GetCourses:'/trainer/course',
+    // GetCourses:'/trainer/coursetutor',
     GetTutorCourses:'/trainer/coursetutor',
     DeleteCourse:'/trainer/deletecourse',
     PublishCourse:'/trainer/publish',
