@@ -3,6 +3,7 @@ const trainerRoutes = {
     trainerLogin: '/trainer/trainerlogin',
     trainerresendOtp: '/trainer/resendotptrainer',
     trainerprofile:'/trainer/trainerprofile',
+    traineruploadprofilepic:'/trainer/traineruploadprofilepic',
     trainerprofileedit:'/trainer/trainerprofileedit',
     trainerupdateprofile:'/trainer/trainerupdateprofile',
     trainerupdatepassword:'/trainer/trainerupdatepassword',
@@ -35,7 +36,8 @@ const trainerRoutes = {
     GetTutorCourses:'/trainer/coursetutor',
     DeleteCourse:'/trainer/deletecourse',
     PublishCourse:'/trainer/publish',
-    TotalCountTutor:'/trainer/totalcountTutor'
+    TotalCountTutor:'/trainer/totalcountTutor',
+    trainerLogout:'/trainer/trainerlogout'
 
 
 

@@ -74,12 +74,12 @@ const TrainerProfilechangepassword: FC = () => {
     return (
         <>
             <TrainerProfilenavbar />
-            <div className="w-full h-screen md:w-9/12 mx-2 ">
+            <div className="w-full h-screen ms-28 md:w-9/12 mx-2 ">
                 <div className="flex items-center justify-center p-12">
                     <div className="mx-auto w-full max-w-[550px]">
                         <form onSubmit={handleSubmit} method="POST">
                             <div className="mb-5">
-                                <label htmlFor="oldpassword" className="mb-3 block text-base font-medium text-[#07074D]">
+                                <label htmlFor="oldpassword" className="mb-3 block text-base font-medium text-gray-300">
                                     Old password
                                 </label>
                                 <input
@@ -94,7 +94,7 @@ const TrainerProfilechangepassword: FC = () => {
                                 {errors.oldPassword && <p className="text-red-500">{errors.oldPassword}</p>}
                             </div>
                             <div className="mb-5">
-                                <label htmlFor="newpassword" className="mb-3 block text-base font-medium text-[#07074D]">
+                                <label htmlFor="newpassword" className="mb-3 block text-base font-medium text-gray-300">
                                     New password
                                 </label>
                                 <input
@@ -109,7 +109,7 @@ const TrainerProfilechangepassword: FC = () => {
                                 {errors.newPassword && <p className="text-red-500">{errors.newPassword}</p>}
                             </div>
                             <div className="mb-5">
-                                <label htmlFor="confirmpassword" className="mb-3 block text-base font-medium text-[#07074D]">
+                                <label htmlFor="confirmpassword" className="mb-3 block text-base font-medium text-gray-300">
                                     Confirm New password
                                 </label>
                                 <input

@@ -114,10 +114,9 @@
 
 // export default ProfileEditpage
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { profile } from '@/Api/user';
+import { profile, profileEdit } from '@/Api/user';
 const ProfileEditpage = () => {
     const user = useSelector((state:any) => state.value.userData);
     const userId=user?._id
@@ -194,8 +193,9 @@ const ProfileEditpage = () => {
             try {
                 // const userId = localStorage.getItem('userId');
                 console.log('user', userId)
-                const response = await axios.put(`http://localhost:5000/api/user/updateprofile/${userId}`, userData);
-                console.log('User data updated:', response.data);
+                const response = await profileEdit(userId,userData)
+                // axios.put(`http://localhost:5000/api/user/updateprofile/${userId}`, userData);
+                console.log('User data updated:', response?.data);
                 if (response) {
                     navigate('/profile');
                 }

@@ -135,6 +135,15 @@ export const tutorprofile = async (trainerId: string) => {
         console.log(error)
     }
 }
+export const tutorprofileImages = async (id:any,formData:any,headers:any) => {
+    try {
+
+        const res = await Api.put(`${trainerRoutes.traineruploadprofilepic}/${id}`,formData,headers);
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
 export const updatetutorProfilePassword = async (trainerId: string, oldpassword: string, newpassword: string, confirmpassword: string) => {
     try {
 
@@ -148,6 +157,24 @@ export const updateTrainerProfilePassword = async (trainerId: string, oldpasswor
     try {
 
         const res = await Api.put(`${trainerRoutes.trainerupdatepassword}/${trainerId}`, { oldpassword, newpassword, confirmpassword });
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const TrainerProfileEdit = async (trainerId:any, trainerData:any) => {
+    try {
+
+        const res = await Api.put(`${trainerRoutes.trainerupdateprofile}/${trainerId}`,trainerData);
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const TrainerProfileEditGet = async (id:any) => {
+    try {
+
+        const res = await Api.get(`${trainerRoutes.trainerprofileedit}/${id}`);
         return res
     } catch (error) {
         console.log(error)
@@ -389,6 +416,15 @@ export const TotalCountTutor = async (id:any) => {
     }
 }
 
+export const TrainerLoggedOut = async () => {
+    try {
+        const res = await Api.post(trainerRoutes.trainerLogout);
+        console.log(res)
+        return res;
+    } catch (err) {
+        console.log(err)
+    }
+}
 
 
 

@@ -1,10 +1,10 @@
 
 
 import React, { ChangeEvent, useState } from 'react';
-import axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { profileImages } from '@/Api/user';
 
 
 
@@ -45,13 +45,16 @@ const Profilepicture: React.FC = () => {
                     console.error('User ID not found in localStorage.');
                     return;
                 }
-                const response = await axios.put(`http://localhost:5000/api/user/uploadprofilepic/${id}`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
-                console.log('Response:', response.data);
-                console.log('Image uploaded successfully:', response.data);
+                const response = await profileImages(id, formData, {
+                    'Content-Type': 'multipart/form-data',
+                })
+                // axios.put(`http://localhost:5000/api/user/uploadprofilepic/${id}`, formData, {
+                //     headers: {
+                //         'Content-Type': 'multipart/form-data'
+                //     }
+                // });
+                console.log('Response:', response?.data);
+                console.log('Image uploaded successfully:', response?.data);
                 if (response) {
                     setLoading(false)
                     navigate('/profile')

@@ -10,7 +10,7 @@ interface RootState {
 const TrainerLoggedIn = () => {
     const tutorInfo = useSelector((state: RootState) => state.auth);
     return (
-        tutorInfo.tutorInfo ?<Outlet /> : <Navigate to='/tutor/login' />
+        tutorInfo.tutorInfo ?<Outlet /> : <Navigate to='/tutor' />
     )
 }
 

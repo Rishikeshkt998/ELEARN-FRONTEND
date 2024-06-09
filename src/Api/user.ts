@@ -156,6 +156,24 @@ export const profile = async (userId: string) => {
         console.log(error)
     }
 }
+export const profileEdit = async (userId: string,userData:any) => {
+    try {
+
+        const res = await Api.put(`${userRoutes.updateProfile}/${userId}`,userData);
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const profileImages = async (id: any, formData: any, headers:any) => {
+    try {
+
+        const res = await Api.put(`${userRoutes.uploadProfilePic}/${id}`, formData,{headers});
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
 export const updateProfilePassword = async (userId: string, oldpassword: string, newpassword: string, confirmpassword: string) => {
     try {
 

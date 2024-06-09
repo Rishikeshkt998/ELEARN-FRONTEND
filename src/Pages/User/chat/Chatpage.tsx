@@ -5,6 +5,7 @@ import Chatuserss from "@/Components/user/Chatuserss";
 import Messages from "@/Components/user/Messages";
 import ScrollbleFeed from "react-scrollable-feed"
 import { ChatWithTutor, GetMessagesForUser, MessagePostUser, NewConversationWithTutor } from "@/Api/user";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 interface MessageData {
     senderId: string;
@@ -169,8 +170,9 @@ const Chatpage: React.FC = () => {
                 <header className="p-4 border-b border-gray-300 flex justify-between items-center bg-indigo-600 text-white">
                     <h1 className="text-2xl font-semibold">ELEARN</h1>
                     <div className="relative">
-                        <button id="menuButton" className="focus:outline-none">
-
+                        <button id="menuButton" className="focus:outline-none flex items-center rounded-full text-black bg-white p-3 space-x-2">
+                            <AiOutlineArrowLeft className="w-5 h-5" />
+                            <span>Back</span>
                         </button>
 
                     </div>
@@ -185,10 +187,8 @@ const Chatpage: React.FC = () => {
             <div className="flex-1">
                 {
                     currentChat ? (<>
-
-                        <header className="bg-white p-4 text-gray-700">
-                            <h1 className="text-2xl font-semibold">Alice</h1>
-                        </header>
+                        <div className="bg-white p-10 text-gray-700 ">
+                        </div>
                         <div className="h-full overflow-y-auto  bg-gray-100  pb-36">
                             <ScrollbleFeed>
                                 {messages && messages.length === 0 ? (

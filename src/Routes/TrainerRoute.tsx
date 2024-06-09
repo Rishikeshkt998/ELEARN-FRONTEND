@@ -10,7 +10,6 @@ import CourseEditPage from "../Pages/Trainer/trainerCourseEdit/CourseEditPage"
 import TrainerProfile from "../Pages/Trainer/TrainerProfile/TrainerProfilepage"
 import TrainerProfilechangepassword from "../Pages/Trainer/TrainerProfile/TrainerProfilechangepassword"
 import TrainerProfilePicture from "../Pages/Trainer/TrainerProfile/TrainerProfilepicture"
-import Trainerdashboard from "../Components/common/TutorCommon/Trainerdashboard"
 import EnrolledStudentsView from "../Pages/Trainer/trainerEnrolledstudents/EnrolledStudentsView"
 import Forgotpasswordtutor from "@/Pages/Trainer/ForgotPasswordTutor/Forgotpasswordtutor"
 import ForgotpasswordOtptutor from "@/Pages/Trainer/ForgotPasswordTutor/ForgotpasswordOtptutor"
@@ -42,7 +41,7 @@ const TrainerRoute = () => {
                 <Route path="/error404" element={<Error404 />} />
                 <Route path="/error500" element={<Error500 />} />
                 <Route path="" element={<Trainerprofilecontainer />}>
-                    <Route path="home" element={<Trainerdashboard />} />
+                    <Route path="home" element={<TrainerDashboard />} />
                     <Route path="edit" element={<TrainerProfileedit/>} />
                     <Route path="courseview" element={<Courseview />} />
                     <Route path='coursepage' element={<CoursePage />} />
@@ -56,7 +55,6 @@ const TrainerRoute = () => {
                     <Route path="sheduleclassview" element={<SheduledclassView />} />
                     <Route path="reviewreply/:id" element={<CommentReplyContainer />} />
                     <Route path="questions/:id" element={<QuestionContainer/>} />
-                    <Route path="trainerdashboard" element={<TrainerDashboard />} />
                 </Route>     
             </Route>
             <Route path='*' element={<Error404 />} />

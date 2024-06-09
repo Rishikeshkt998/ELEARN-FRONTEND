@@ -36,7 +36,7 @@ interface Props {
 const CourseCard: FC<Props> = ({ searchTerm }) => {
     const [courses, setCourses] = useState<Course[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [coursesPerPage] = useState<number>(6); 
+    const [coursesPerPage] = useState<number>(3); 
 
     useEffect(() => {
         async function fetchCourses() {
@@ -64,19 +64,18 @@ const CourseCard: FC<Props> = ({ searchTerm }) => {
         <div className="max-w-screen-xl h-full mx-auto p-5 sm:p-10 md:p-16 ">
             <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-10 rounded-lg">
                 {filteredCourses.map(course => (
-                    <Link to={`/coursedetails/${course._id}`} key={course._id} >
-                        <div key={course._id} className="rounded bg-white overflow-hidden  shadow-lg">
-                            <div className="relative">
-                                <img className="w-full" src={course.thumbnail} alt="Course thumbnail" />
-                                <div className="hover:bg-transparent transition duration-300 flex absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25">
-                                </div>
+                    <Link to={`/coursedetails/${course._id}`} key={course._id}>
+                        <div className="rounded bg-white overflow-hidden shadow-lg w-80 h-96 flex flex-col">
+                            <div className="relative h-48">
+                                <img className="w-full h-full object-cover" src={course.thumbnail} alt="Course thumbnail" />
+                                <div className="hover:bg-transparent transition duration-300 flex absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-0"></div>
                             </div>
-                            <div className="px-6 py-4">
+                            <div className="px-6 py-4 flex-1">
                                 <a href="#" className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">{course.name}</a>
                                 <p className="text-gray-500 text-sm">{course.category}</p>
                             </div>
                             <div className="px-6 py-4 flex justify-between items-center">
-                                <a href="#" className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">{course.estimatedPrice}</a>
+                                <span className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">{course.estimatedPrice}</span>
                             </div>
                         </div>
                     </Link>

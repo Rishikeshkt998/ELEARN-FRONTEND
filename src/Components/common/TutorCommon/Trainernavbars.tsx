@@ -1,10 +1,11 @@
 
-import axios from 'axios';
+// import axios from 'axios';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { tutorLogout } from '../../../store/slice/authSlice';
 import { toast } from 'react-toastify';
+import { TrainerLoggedOut } from '@/Api/trainer';
 interface RootState {
     auth: {
         tutorInfo: string;
@@ -17,10 +18,12 @@ const Trainernavbars: React.FC = () => {
     const handleLogout = async () => {
         try {
 
-            await axios.post('http://localhost:5000/api/trainer/trainerlogout');
+            const response=await TrainerLoggedOut()
+            console.log(response)
             dispatch(tutorLogout())
+            localStorage.removeItem("trainerToken");
             toast.success('Logged out successfully..')
-            navigate('/tutor/login');
+            navigate('/tutor');
         } catch (error) {
             console.error('Error logging out:', error);
         }

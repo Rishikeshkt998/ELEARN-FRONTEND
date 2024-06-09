@@ -50,9 +50,9 @@ const TrainerProfile: React.FC = () => {
         <>
             <TrainerProfilenavbar />
 
-            <div className="relative flex h-auto flex-col justify-center overflow-hidden bg-gray-400 ">
+            <div className="relative flex h-auto flex-col justify-center overflow-hidden bg-gray-900 ">
                 {trainerDetails && (
-                <div className="bg-gray-100  h-screen shadow-sm p-16  rounded-sm">
+                <div className="bg-gray-900  h-screen shadow-sm p-16  rounded-sm">
                         <div className="flex p-12 justify-center">
                             <img src={trainerDetails.image} alt="Profile" className="rounded-full w-36 h-36 object-cover" />
                         </div>
@@ -66,7 +66,7 @@ const TrainerProfile: React.FC = () => {
                         <span className="tracking-wide">About</span>
                     </div>
                     
-                        <div className="text-gray-700">
+                        <div className="text-gray-300">
                             <div className="grid md:grid-cols-2 text-sm">
                                 
                                 <div className="grid grid-cols-2">
@@ -85,7 +85,7 @@ const TrainerProfile: React.FC = () => {
                                 <div className="grid grid-cols-2">
                                     <div className="px-4 py-2 font-semibold">Email.</div>
                                     <div className="px-4 py-2">
-                                        <a className="text-black" href="mailto:jane@example.com">{trainerDetails.email}</a>
+                                        <a className="text-gray-300" href="mailto:jane@example.com">{trainerDetails.email}</a>
                                     </div>
                                 </div>
 

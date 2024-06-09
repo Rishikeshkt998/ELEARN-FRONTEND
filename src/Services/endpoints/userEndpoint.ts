@@ -10,6 +10,7 @@ const userRoutes = {
     profilepage:'/user/profile',
     profileEdit:'/user/profileedit',
     updateProfile:'/user/updateprofile',
+    uploadProfilePic:'/user/uploadprofilepic',
     updateprofilePassword:'/user/updatepassword',
     emailchange:'/user/emailchange',
     verifyEmail:'/user/verifyEmail',
