@@ -38,8 +38,6 @@ const TutorChatPage: React.FC = () => {
     useEffect(() => {
 
         socket.current = io(import.meta.env.VITE_SOCKETIO_URL)
-        
-        // io("ws://localhost:5000"); 
         socket.current?.on("getMessage", data => {
             console.log("userdata", data)
             setArrivalMessage({
@@ -101,33 +99,7 @@ const TutorChatPage: React.FC = () => {
                 console.log("message", res?.data.data)
                 const messagesdata = res?.data.data;
                 console.log("message for sorting", messagesdata)
-                const senderIds = Array.from(new Set(messagesdata.map((message:any) => message.senderId)));
-                console.log("sender id",senderIds)
-                if (user!==null) {
-                    
-                    const filteredUsers = user.filter(u => senderIds.includes(u.id));
-                    const usersWithoutMessages = user.filter(u => !senderIds.includes(u.id));
-                    console.log("updated user", filteredUsers);
-                    const sortedUsersWithMessages = filteredUsers.sort((a, b) => {
-                        const latestMessageTimeA = messagesdata.find((message: any) => message.senderId === a.id)?.creationTime;
-                        const latestMessageTimeB = messagesdata.find((message: any) => message.senderId === b.id)?.creationTime;
-                        const dateA = new Date(latestMessageTimeA);
-                        const dateB = new Date(latestMessageTimeB);
-                        if (dateA && dateB) {
-                            return dateB.getTime() - dateA.getTime();
-                        } else if (!dateA && !dateB) {
-                            return 0; 
-                        } else {
-                            return dateB ? 1 : -1; 
-                        }
-                    });
-                    const sortedUsers = [...sortedUsersWithMessages, ...usersWithoutMessages];
-                    console.log("sorted users", sortedUsers);
-                    setUser(sortedUsers);
-                    
-                } else {
-                   console.log("failed to fetch user data")
-                }             
+                
                 setMessages(res?.data.data)
 
             } catch (err) {
@@ -138,6 +110,19 @@ const TutorChatPage: React.FC = () => {
         getMessages()
 
     }, [currentChat])
+    
+    useEffect(() => {
+        if (arrivalMessage) {
+            const updatedUsers = user?.filter(u => u.id !== arrivalMessage.senderId) ?? [];
+            console.log("updated uservalues", updatedUsers);
+            const involvedUser = user?.find(u => u.id === arrivalMessage.senderId);
+            console.log("involved user values", involvedUser);
+
+            if (involvedUser) {
+                setUser([involvedUser, ...updatedUsers]);
+            }
+        }
+    }, [arrivalMessage]);
     console.log("messages", messages)
     console.log("userId", userId)
     const handleSubmit = async (e: any) => {

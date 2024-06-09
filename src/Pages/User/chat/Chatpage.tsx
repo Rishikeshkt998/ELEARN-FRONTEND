@@ -35,8 +35,6 @@ const Chatpage: React.FC = () => {
     useEffect(() => {
         console.log("vite", import.meta.env.VITE_SOCKETIO_URL)
         socket.current = io(import.meta.env.VITE_SOCKETIO_URL)
-        
-        // io("ws://localhost:5000");
         socket.current?.on("getMessage", (data: any) => {
             console.log("userdata", data)
             setArrivalMessage({
@@ -114,6 +112,18 @@ const Chatpage: React.FC = () => {
         getMessages()
 
     }, [currentChat])
+    useEffect(() => {
+        if (arrivalMessage) {
+            const updatedUsers = user?.filter(u => u.id !== arrivalMessage.senderId) ?? [];
+            console.log("updated uservalues", updatedUsers);
+            const involvedUser = user?.find(u => u.id === arrivalMessage.senderId);
+            console.log("involved user values", involvedUser);
+
+            if (involvedUser) {
+                setUser([involvedUser, ...updatedUsers]);
+            }
+        }
+    }, [arrivalMessage]);
     console.log("messages", messages)
     console.log("userId", userId)
     const handleSubmit = async (e: any) => {
@@ -139,6 +149,16 @@ const Chatpage: React.FC = () => {
             setMessages([...messages, res?.data?.data])
             setNewMessage("");
 
+            if (res && res.data && recieverId) {
+                const updatedUsers = user?.filter(u => u.id !== recieverId) ?? [];
+                console.log("updated user", updatedUsers);
+                const involvedUser = user?.find(u => u.id === recieverId);
+                console.log("involved user", involvedUser);
+
+                if (involvedUser) {
+                    setUser([involvedUser, ...updatedUsers]);
+                }
+            }
         } catch (err) {
             console.log(err)
         }
