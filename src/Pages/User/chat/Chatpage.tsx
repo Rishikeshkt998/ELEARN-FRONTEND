@@ -33,8 +33,9 @@ const Chatpage: React.FC = () => {
     const [user, setUser] = useState<Trainer[] | null>([])
     const socket: MutableRefObject<Socket | undefined> = useRef()
     useEffect(() => {
-
+        console.log("vite", import.meta.env.VITE_SOCKETIO_URL)
         socket.current = io(import.meta.env.VITE_SOCKETIO_URL)
+        
         // io("ws://localhost:5000");
         socket.current?.on("getMessage", (data: any) => {
             console.log("userdata", data)
