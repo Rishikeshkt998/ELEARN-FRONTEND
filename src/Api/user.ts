@@ -286,6 +286,22 @@ export const GetChapters = async (id: string | undefined) => {
         console.log(error)
     }
 }
+
+export const GetSearchCourse = async ( searchTerm?: string, category?: string, price?: number) => {
+    try {
+        const res = await Api.get(`${userRoutes.searchCourse}`, {
+            params: {
+                searchTerm,
+                category,
+                price
+            }
+        });
+
+        return res;
+    } catch (error) {
+        console.error(error);
+    }
+};
 export const EnrolledCoursesView = async (id: string | null) => {
     try {
         const res = await Api.get(`${userRoutes.EnrolledCourses}/${id}`);

@@ -134,14 +134,12 @@ const ProfileEditpage = () => {
         phone: ''
     });
     const navigate = useNavigate();
-    // const userId = localStorage.getItem('userId');
    
 
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
                 const response = await profile(userId)
-                // axios.get(`http://localhost:5000/api/user/profileedit/${userId}`);
                 setUserData(response?.data.profile);
             } catch (error) {
                 console.error('Error fetching user details:', error);
@@ -158,7 +156,6 @@ const ProfileEditpage = () => {
             [name]: value
         }));
 
-        // Clear error message when input field changes
         setErrors(prevErrors => ({
             ...prevErrors,
             [name]: ''

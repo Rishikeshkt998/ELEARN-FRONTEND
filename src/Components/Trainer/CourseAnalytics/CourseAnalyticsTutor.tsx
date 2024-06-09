@@ -40,8 +40,6 @@ const CourseAnalyticsTutor: React.FC = () => {
 
     const minValue = 0;
 
-    //  console.log(analyticsData);
-
     return (
         <div className="height-[50px] bg-gray-900">
             <div className="h-[80vh] w-full bg-gray-900">

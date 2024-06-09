@@ -10,7 +10,7 @@ const Error404: React.FC = () => {
     const data = location.split("/")[1];
 
     const url =
-        data === "admin" ? "/admin" : data === "instructor" ? "/instructor" : "/";
+        data === "admin" ? "/admin" : data === "tutor" ? "/tutor" : "/";
 
     return (
         <div

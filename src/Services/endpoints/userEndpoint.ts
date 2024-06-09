@@ -40,7 +40,8 @@ const userRoutes = {
     GetMessagesUser:'/user/getMessages',
     NewMessageForUser:'/user/newMessage',
     userLogout:'/user/logout',
-    googleAuth:'/user/google'
+    googleAuth:'/user/google',
+    searchCourse:'/user/search'
 
     
 

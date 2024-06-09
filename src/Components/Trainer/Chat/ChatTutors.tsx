@@ -1,18 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, } from "react"
 import images from "../../../assets/images (1).png";
-// import axios from "axios";
 import { GetConversations } from "@/Api/trainer";
-// type User = {
-//     name: string;
-//     image?: string; // Assuming image is optional
-// }
+
 interface Conversation {
     _id: string;
-    // Add other properties if available 
 }
 type Props = {
-    // conversation: any,
     currentUser: string | null,
     user: User[] | null,
     setUser: (user: User[] | null) => void
@@ -40,7 +35,6 @@ const ChatTutors: FC<Props> = ({ user, currentUser, setCurrentChat, setConversat
     const handleTrainerClick = async (tutorid:any) => {
         try {
             const response = await GetConversations(currentUser,tutorid)
-            // axios.get(`http://localhost:5000/api/chat/getConversation/${currentUser}/${tutorid}`)
             console.log("conversations", response?.data.data)
             setConversations(response?.data.data)
             setCurrentChat(response?.data.data);
@@ -75,3 +69,5 @@ const ChatTutors: FC<Props> = ({ user, currentUser, setCurrentChat, setConversat
 }
 
 export default ChatTutors
+
+

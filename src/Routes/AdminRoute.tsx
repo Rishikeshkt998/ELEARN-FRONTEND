@@ -10,6 +10,8 @@ import UserContainer from "../Pages/Admin/User/UserContainer"
 import Tutorcontainer from "../Pages/Admin/Tutor/Tutorcontainer"
 import CoursePage from "@/Pages/Admin/Courses/CoursePage"
 import AdminDasboard from "@/Pages/Admin/Dashboard/AdminDasboard"
+import Error404 from "@/Components/common/ErrorPage/Error404"
+import Error500 from "@/Components/common/ErrorPage/Error500"
 
 
 
@@ -21,6 +23,8 @@ const AdminRoute = () => {
                 <Route path="" element={<AdminLogin />} />
             </Route>
             <Route path='' element={<AdminLoggedIn />}>
+                <Route path="/error404" element={<Error404 />} />
+                <Route path="/error500" element={<Error500 />} />
                 <Route path='dashboard' element={<AdminDasboard />} />
                 <Route path='user' element={<UserContainer />} />
                 <Route path="categoryview" element={<CategoryPage/>} />
@@ -30,6 +34,7 @@ const AdminRoute = () => {
                 <Route path="courseview" element={<CoursePage/>} />
                 {/* <Route path="courseanalytics" element={<AdminDasboard />} /> */}
             </Route>
+            <Route path='*' element={<Error404 />} />
         </Routes>
     )
 }

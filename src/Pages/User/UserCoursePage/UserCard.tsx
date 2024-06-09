@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { GetCategory, courseView } from "@/Api/user";
-import axios from "axios";
+import { GetCategory, GetCourses, GetSearchCourse} from "@/Api/user";
 import { debounce } from "lodash";
 import {  useCallback, useEffect, useState } from "react";
 // import {  useNavigate } from "react-router-dom";
@@ -58,9 +57,9 @@ const UserCard = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [coursesPerPage] = useState<number>(6);
     useEffect(() => {
-        async function fetchCourses() {
+        async function fetchCoursesvalue() {
             try {
-                const response = await courseView()
+                const response = await GetCourses()
                 console.log("courses", response?.data)
                 if (response?.data) {
                     setCourses(response.data);
@@ -69,7 +68,7 @@ const UserCard = () => {
                 console.error('Error fetching courses:', error);
             }
         }
-        fetchCourses();
+        fetchCoursesvalue();
     }, []);
 
 
@@ -91,9 +90,7 @@ const UserCard = () => {
 
 
     const fetchCourses = async (query:any, category:any, price:any) => {
-        const response = await axios.get('http://localhost:5000/api/user/search', {
-            params: { searchTerm: query, category, price }
-        });
+        const response = await GetSearchCourse(query, category, price)
         return response;
     };
 
@@ -101,7 +98,7 @@ const UserCard = () => {
         debounce(async (query:any, category:any, price:any) => {
             try {
                 const response = await fetchCourses(query, category, price);
-                setCourses(response.data.data);
+                setCourses(response?.data.data);
             } catch (error) {
                 console.error('Error fetching courses:', error);
             }

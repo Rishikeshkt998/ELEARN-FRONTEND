@@ -28,10 +28,7 @@ const EditCourseContent: React.FC<Props> = ({
     courseContentData,
     setCourseContentData,
     handleSubmit: handleCourseSubmit,
-    // olderData, 
-    // setOlderData, 
-    // newData, 
-    // setnewData
+
 }) => {
     const [isCollapsed, setIsCollapsed] = useState<boolean[]>(
         Array(courseContentData.length).fill(false)
@@ -40,11 +37,6 @@ const EditCourseContent: React.FC<Props> = ({
     const [activeSection, setActiveSection] = useState(1);
 
     const [error, setError] = useState("");
-
-    // const handleSubmit = (e: any) => {
-    //     e.preventDefault();
-    // };
-
     const handleCollapseToggle = (index: number) => {
         const updatedCollapsed = [...isCollapsed];
         updatedCollapsed[index] = !updatedCollapsed[index];
@@ -68,7 +60,6 @@ const EditCourseContent: React.FC<Props> = ({
         if (
             !item.title ||
             !item.description ||
-            // !item.videoUrl ||
             !item.lessons[0].title ||
             !item.lessons[0].url
         ) {
@@ -81,13 +72,11 @@ const EditCourseContent: React.FC<Props> = ({
                 const lastVideoSection =
                     courseContentData[courseContentData.length - 1].videoSection;
 
-                // Use the last videoSection if available, else use user input
                 if (lastVideoSection) {
                     newVideoSection = lastVideoSection;
                 }
             }
             const newContent = {
-                // videoUrl: "",
                 title: "",
                 description: "",
                 videoSection: newVideoSection,
@@ -105,7 +94,6 @@ const EditCourseContent: React.FC<Props> = ({
         if (
             !title ||
             !description ||
-            // !videoUrl ||
             !lessons[0].title ||
             !lessons[0].url
         ) {
@@ -114,7 +102,6 @@ const EditCourseContent: React.FC<Props> = ({
         } else {
             setActiveSection(activeSection + 1);
             const newContent = {
-                // videoUrl: "",
                 title: "",
                 description: "",
                 videoSection: `Untitled Section ${activeSection}`,
@@ -134,7 +121,6 @@ const EditCourseContent: React.FC<Props> = ({
         if (
             courseContentData[courseContentData.length - 1].title === "" ||
             courseContentData[courseContentData.length - 1].description === "" ||
-            // courseContentData[courseContentData.length - 1].videoUrl === "" ||
             courseContentData[courseContentData.length - 1].lessons[0].title === "" ||
             courseContentData[courseContentData.length - 1].lessons[0].url === ""
         ) {
@@ -148,16 +134,13 @@ const EditCourseContent: React.FC<Props> = ({
     };
     const handleChangeFile = async (file: File, index: number, lessonIndex: number) => {
         try {
-            // Upload the file to S3 bucket
-            const uploadedUrl = await UploadS3Bucket(file);
 
-            // Update the courseContentData with the uploaded file URL
+            const uploadedUrl = await UploadS3Bucket(file);
             const updatedData = [...courseContentData];
+            console.log(updatedData)
             updatedData[index].lessons[lessonIndex].url = uploadedUrl.url;
             setCourseContentData(updatedData);
-            // setnewData(updatedData[index].lessons[lessonIndex].url)
-            // console.log("hi", updatedData[index].lessons[lessonIndex].url)
-            // console.log(newData)
+
         } catch (error) {
             console.error("Error uploading file to S3:", error);
         }
@@ -265,8 +248,9 @@ const EditCourseContent: React.FC<Props> = ({
                                         />
                                         <br />
                                     </div>
-                                    {item?.lessons.map((lessonIndex: number) => (
+                                    {item?.lessons.map((lessons:any,lessonIndex: number) => (
                                         <div key={lessonIndex} className="mb-3 block">
+                                            <h1 className="hidden">{lessons.title}</h1>
                                             <div className="w-full flex items-center justify-between mb-2">
                                                 <label htmlFor="" className="text-gray-400 font-bold">
                                                     Lessons {lessonIndex + 1}
@@ -288,7 +272,7 @@ const EditCourseContent: React.FC<Props> = ({
                                                     type="text"
                                                     className="border border-gray-400 rounded-md bg-transparent p-2"
                                                     placeholder="Lesson title"
-                                                    value={courseContentData[index].lessons[lessonIndex].title}
+                                                    value={courseContentData[index]?.lessons[lessonIndex]?.title}
                                                     onChange={(e) => {
                                                         const updatedData = [...courseContentData];
                                                         updatedData[index].lessons[lessonIndex].title =
@@ -315,16 +299,7 @@ const EditCourseContent: React.FC<Props> = ({
                                                     }}
                                                 />
                                                 
-                                                 {/* <input
-                                                    type="file"
-                                                    accept="video/*"
-                                                    className="border border-gray-400 rounded-md bg-transparent p-2"
-                                                    onChange={(e) => {
-                                                        const updatedData = [...courseContentData];
-                                                        updatedData[index].links[lessonIndex].url =e.target.value;
-                                                        setCourseContentData(updatedData);
-                                                    }}
-                                                /> */} 
+                                        
                                                 
                                             </div>
                                         </div>

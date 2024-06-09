@@ -15,12 +15,8 @@ interface User {
     createdAt?: Date
 
 }
-interface Admin {
-    _id?: string;
-    email: string;
-    password: string;
 
-}
+
 interface Trainer {
     _id?: string,
     name: string,
@@ -36,8 +32,13 @@ interface Trainer {
 
 }
 
+interface State {
+    userData: User | null;
+    courseData: string[] | null; 
+    tutorData: Trainer | null;
+}
 
-const initialState = {
+const initialState:State = {
     userData: localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData') as string) : null,
     courseData: localStorage.getItem('courseData') ? JSON.parse(localStorage.getItem('courseData') as string) : null,
     tutorData: localStorage.getItem('tutorData') ? JSON.parse(localStorage.getItem('tutorData') as string) : null,
@@ -53,9 +54,12 @@ const valueSlice = createSlice({
             state.userData= action.payload
             localStorage.setItem('userData', JSON.stringify(action.payload))
         },
-        saveCourse: (state, action: PayloadAction<Admin>) => {
-            state.courseData = action.payload
-            localStorage.setItem('courseData', JSON.stringify(action.payload))
+        saveCourse: (state, action: PayloadAction<string>) => {
+            if (state.courseData === null) {
+                state.courseData = [];
+            }
+            state.courseData.push(action.payload);
+            localStorage.setItem('courseData', JSON.stringify(state.courseData));
         },
         saveTutor: (state, action: PayloadAction<Trainer>) => {
             state.tutorData = action.payload

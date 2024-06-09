@@ -1,17 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MutableRefObject, useEffect, useRef, useState } from "react";
-// import axios from "axios";
-// import Message from "@/Components/user/Message";
+
 import io, { Socket } from 'socket.io-client'
 import ChatTutors from "@/Components/Trainer/Chat/ChatTutors";
 import MessageTutors from "@/Components/Trainer/Chat/MessageTutors";
 import ScrollbleFeed from "react-scrollable-feed"
 import { GetMessagesForTutor, MessagePost, NewMessageForTutor, fetchUsersForChat } from "@/Api/trainer";
-// interface Conversation {
-//     members: any;
-//     _id: string;
-//     // Add other properties if available 
-// }
+
 
 interface MessageData {
     senderId: string;
@@ -19,7 +15,7 @@ interface MessageData {
     creationTime:any
 }
 interface User {
-    _id?: string;
+    id?: string;
     name: string;
     email: string;
     password: string,
@@ -39,10 +35,10 @@ const TutorChatPage: React.FC = () => {
     const [arrivalMessage, setArrivalMessage] = useState<MessageData | null>(null)
     const [user, setUser] = useState<User[] | null>([])
     const socket: MutableRefObject<Socket | undefined> = useRef()
-    // const scrollRef = useRef<HTMLDivElement>()
     useEffect(() => {
 
-        socket.current = io("ws://localhost:5000");
+        socket.current = io(import.meta.env.VITE_SOCKETIO_URL)
+        // io("ws://localhost:5000"); 
         socket.current?.on("getMessage", data => {
             console.log("userdata", data)
             setArrivalMessage({
@@ -69,38 +65,18 @@ const TutorChatPage: React.FC = () => {
     }, [arrivalMessage, currentChat])
 
     useEffect(() => {
-        // const userId = conversation.members.find((m: any) => m !== currentUser)
-        // console.log(userId)
+        
         const getUser = async () => {
             try {
-                // const response = await axios.get(`http://localhost:5000/api/chat/findTutorById/${userId}`)
-                // if (response !== null) {
-                //     console.log(response.data)
-                //     setUser(response.data.data)
-
-                // }
+                
                 const response = await fetchUsersForChat()
-                // await axios.get(`http://localhost:5000/api/chat/usersforchat`)
                 if (response && response.data.findeduser) {
                     console.log("data", response.data.findeduser)
                     setUser(response.data.findeduser);
-                    // for (const trainer of response.data.findedtrainer) {
-                    //     const id = trainer.id;
-                    //     console.log("id", id)
-                    //     const newConversationResponse = await axios.post("http://localhost:5000/api/chat/newConversation", {
-                    //         senderId: userId,
-                    //         recieverId: id,
-                    //     });
-                    //     console.log("new", newConversationResponse)
-                    // }
                     await Promise.all(response.data.findeduser.map(async (trainer: any) => {
                         const tutorid = trainer.id;
                         console.log("id", tutorid);
                         const newConversationResponse = await NewMessageForTutor(userId,tutorid)
-                        // await axios.post("http://localhost:5000/api/chat/newConversation", {
-                        //     senderId: userId,
-                        //     receiverId: tutorid,
-                        // });
                         console.log("new", newConversationResponse);
 
                     }));
@@ -121,8 +97,36 @@ const TutorChatPage: React.FC = () => {
         const getMessages = async () => {
             try {
                 const res = await GetMessagesForTutor(currentChat[0]?._id)
-                // axios.get(`http://localhost:5000/api/chat/getMessages/${currentChat[0]._id}`)
                 console.log("message", res?.data.data)
+                const messagesdata = res?.data.data;
+                console.log("message for sorting", messagesdata)
+                const senderIds = Array.from(new Set(messagesdata.map((message:any) => message.senderId)));
+                console.log("sender id",senderIds)
+                if (user!==null) {
+                    
+                    const filteredUsers = user.filter(u => senderIds.includes(u.id));
+                    const usersWithoutMessages = user.filter(u => !senderIds.includes(u.id));
+                    console.log("updated user", filteredUsers);
+                    const sortedUsersWithMessages = filteredUsers.sort((a, b) => {
+                        const latestMessageTimeA = messagesdata.find((message: any) => message.senderId === a.id)?.creationTime;
+                        const latestMessageTimeB = messagesdata.find((message: any) => message.senderId === b.id)?.creationTime;
+                        const dateA = new Date(latestMessageTimeA);
+                        const dateB = new Date(latestMessageTimeB);
+                        if (dateA && dateB) {
+                            return dateB.getTime() - dateA.getTime();
+                        } else if (!dateA && !dateB) {
+                            return 0; 
+                        } else {
+                            return dateB ? 1 : -1; 
+                        }
+                    });
+                    const sortedUsers = [...sortedUsersWithMessages, ...usersWithoutMessages];
+                    console.log("sorted users", sortedUsers);
+                    setUser(sortedUsers);
+                    
+                } else {
+                   console.log("failed to fetch user data")
+                }             
                 setMessages(res?.data.data)
 
             } catch (err) {
@@ -152,11 +156,19 @@ const TutorChatPage: React.FC = () => {
 
         try {
             const res = await  MessagePost(message)
-            // axios.post("http://localhost:5000/api/chat/newMessage", message)
             console.log("message",res)
             setMessages([...messages, res?.data?.data])
             setNewMessage("");
+            if (res && res.data && recieverId) {
+                const updatedUsers = user?.filter(u => u.id !== recieverId) ?? [];
+                console.log("updated user", updatedUsers);
+                const involvedUser = user?.find(u => u.id === recieverId);
+                console.log("involved user", involvedUser);
 
+                if (involvedUser) {
+                    setUser([involvedUser, ...updatedUsers]);
+                }
+            }
         } catch (err) {
             console.log(err)
         }
@@ -165,9 +177,7 @@ const TutorChatPage: React.FC = () => {
 
     return (
         <div className="flex h-screen overflow-hidden">
-            {/* Sidebar */}
             <div className="w-1/4 bg-white border-r border-gray-300">
-                {/* Sidebar Header */}
                 <header className="p-4 border-b border-gray-300 flex justify-between items-center bg-indigo-600 text-white">
                     <h1 className="text-2xl font-semibold">ELEARN</h1>
                     <div className="relative">
@@ -194,15 +204,7 @@ const TutorChatPage: React.FC = () => {
                         <header className="bg-white p-4 text-gray-700">
                             <h1 className="text-2xl font-semibold">Alice</h1>
                         </header>
-
-                        {/* Chat Messages */}
-
                         <div className="h-full overflow-y-auto  bg-gray-100  pb-36">
-
-                            {/* {messages.map((m, index) => (
-                                <Messages message={m} own={m.senderId === userId} />
-                            
-                            ))} */}
                             <ScrollbleFeed>
                             {messages && messages.length === 0 ? (
                                 <div className="text-center">Start a conversation</div>
@@ -214,9 +216,6 @@ const TutorChatPage: React.FC = () => {
                             </ScrollbleFeed>
 
                         </div>
-
-
-                        {/* Chat Input */}
                         <footer className="bg-white border-t border-gray-300 p-4 absolute bottom-0 w-3/4">
                             <div className="flex items-center">
                                 <input
@@ -238,4 +237,5 @@ const TutorChatPage: React.FC = () => {
 };
 
 export default TutorChatPage;
+
 

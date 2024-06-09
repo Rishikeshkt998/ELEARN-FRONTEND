@@ -56,7 +56,7 @@ const EditCourse: React.FC = () => {
     useEffect(() => {
         const fetchCourseDetails = async () => {
             try {
-                console.log(courseId)
+                console.log("courseId",courseId)
                 const response = await GetCourse(courseId)
                 // axios.get(`http://localhost:5000/api/course/getcourse/${courseId}`);
                 const courseDetails = response?.data.Response;
@@ -88,13 +88,16 @@ const EditCourse: React.FC = () => {
         const fetchChapterDetails = async () => {
             try {
                 console.log(courseId)
+                console.log("courseId for chapters",courseId)
                 const response = await GetChapters(courseId)
                 // axios.get(`http://localhost:5000/api/course/getchapters/${courseId}`);
+                console.log(response?.data.Response)
                 const chapterDetails = response?.data.Response;
-                console.log(chapterDetails.chapters)
-                for(const chapters of chapterDetails){
-                    console.log(chapters)
+                console.log("chapter",chapterDetails?.chapters)
+                for (const chapters of response&&response.data.Response){
+                    console.log("chapter value",chapters)
                     setCourseContentData(chapters.chapters);
+                    console.log("courseContentData",courseContentData)
                     for (const lesson of chapters.chapters) {
                          for (const url of lesson.lessons) {
                              setOlderData(url.url)

@@ -22,6 +22,29 @@ Api.interceptors.request.use(
         return Promise.reject(error);
     }
 );
+
+
+
+Api.interceptors.response.use(
+    function (response) {
+        return response;
+    },
+    function (error) {
+        if (error.response && error.response.status === 401 ) {
+            toast.error("trainer is not authenticated");
+            window.history.back();
+            return Promise.reject(error);
+
+        } else if (error.response && error.response.status === 404) {
+            window.location.href = "/error404";
+            return Promise.reject(error);
+
+        } else if (error.response && error.response.status === 500) {
+            window.location.href = "/error500";
+        }
+        return Promise.reject(error);
+    }
+);
 export const trainerSignup = async (name: string, email: string, phone: string, password: string, confirmpassword: string,dateOfBirth:string) => {
     try {
         if (password !== confirmpassword) {

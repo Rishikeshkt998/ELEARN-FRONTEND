@@ -31,6 +31,7 @@ import UserCoursepageContainer from "@/Pages/User/UserCoursePage/UserCoursepageC
 import UserLanding from "@/Components/common/UserCommon/UserLanding"
 import Error404 from "@/Components/common/ErrorPage/Error404"
 import Error500 from "@/Components/common/ErrorPage/Error500"
+import PrivateRoute from "@/Middlewares/PrivateRoute"
 
 
 const UserRoute = () => {
@@ -59,7 +60,7 @@ const UserRoute = () => {
                 <Route path='trainerotp' element={<TrainerOtpContainer />} />
                 <Route path="profleotp" element={<ProfileOtpcontainer />} />
                 <Route path="coursedetails/:id" element={<DetailsPage />} />
-                <Route path="coursecontentpage/:id" element={<CourseAccessContainer />} />
+                <Route path="coursecontentpage/:id" element={<PrivateRoute><CourseAccessContainer /></PrivateRoute>} />
                 <Route path="paymentsucess" element={<PaymentSuccessPage />} />
                 <Route path="profile" element={<Profilecontainer />}>
                     <Route path="" element={<Profilepage />} />
@@ -70,6 +71,7 @@ const UserRoute = () => {
                     <Route path="enrolledCourses" element={<EnrolledCourses />} />
                 </Route>
             </Route>
+            <Route path='*' element={<Error404 />} />
         </Routes>
     )
 }
