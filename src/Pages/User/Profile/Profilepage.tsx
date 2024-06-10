@@ -3,7 +3,7 @@
 
 import { useState, useEffect} from 'react';
 import { profile } from '../../../Api/user';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 // import { ProfileStateContext } from './Profilecontainer';
 
 
@@ -22,9 +22,10 @@ interface User {
 }
 
 const Profilepage = () => {
-  const user = useSelector((state: any) => state.value.userData);
-  const userId = user?._id
+  // const user = useSelector((state: any) => state.value.userData);
+  // const userId = user?._id
   const [userDetails, setUserDetails] = useState<User | null>(null);
+  const userId = localStorage.getItem('userId');
 
   useEffect(() => {
     const fetchUserDetails = async () => {
