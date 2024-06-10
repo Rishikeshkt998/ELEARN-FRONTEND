@@ -96,6 +96,15 @@ export const TutorotpResend = async (email: string) => {
         console.log(error)
     }
 };
+export const sheduleClasses = async (id:any, meetingDate:any, meetingTime:any, meetingCode:any, description:any) => {
+    try {
+        const res = await Api.post(trainerRoutes.sheduleClass, { id, meetingDate, meetingTime, meetingCode, description });
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const forgotTutorPassword = async (email: string) => {
     try {
         const res = await Api.post(trainerRoutes.forgotTutorPassword, { email });

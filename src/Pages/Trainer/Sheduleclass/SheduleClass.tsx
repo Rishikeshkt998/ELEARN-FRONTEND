@@ -1,4 +1,5 @@
-import axios from 'axios';
+import { sheduleClasses } from '@/Api/trainer';
+// import axios from 'axios';
 import React, { useState } from 'react';
 import {  useNavigate, useParams } from 'react-router-dom';
 
@@ -21,8 +22,9 @@ const SheduleClass: React.FC = () => {
 
     const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const response = await axios.post(`http://localhost:5000/api/trainer/shedulelive`, {id,meetingDate,meetingTime,meetingCode,description});
-        if (response.data.success) {
+        const response = await sheduleClasses(id, meetingDate, meetingTime, meetingCode, description)
+        // axios.post(`http://localhost:5000/api/trainer/shedulelive`, {id,meetingDate,meetingTime,meetingCode,description});
+        if (response?.data.success) {
             console.log("data",response)
             navigate('/tutor/sheduleclassview');
         }

@@ -37,7 +37,8 @@ const trainerRoutes = {
     DeleteCourse:'/trainer/deletecourse',
     PublishCourse:'/trainer/publish',
     TotalCountTutor:'/trainer/totalcountTutor',
-    trainerLogout:'/trainer/trainerlogout'
+    trainerLogout:'/trainer/trainerlogout',
+    sheduleClass:'/trainer/shedulelive'
 
 
 
