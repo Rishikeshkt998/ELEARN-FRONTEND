@@ -13,8 +13,9 @@ const Sidebar: React.FC = () => {
             const res = await adminLogoutRoute()
             if (res?.data.success) {
                 dispatch(adminLogout())
+                localStorage.removeItem("adminToken");
                 toast.success('Logged out successfully..')
-                navigate('/admin/login')
+                navigate('/admin')
             }
         } catch (error) {
             console.log(error)

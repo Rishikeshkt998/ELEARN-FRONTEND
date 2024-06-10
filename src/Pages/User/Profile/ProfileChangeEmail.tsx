@@ -1,17 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { changeEmail } from '../../../Api/user';
+import { changeEmail, profile } from '../../../Api/user';
 
 const ProfileChangeEmail: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [error, setError] = useState<string>('');
+    const userId = localStorage.getItem('userId');
     const navigate = useNavigate();
 
     const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
-        // Clear the error message when the user starts typing again
         setError('');
     };
 
@@ -46,6 +47,29 @@ const ProfileChangeEmail: React.FC = () => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     };
+    const [userDetails, setUserDetails] = useState<any| null>(null);
+
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
+                console.log(userId)
+                if (userId !== null) {
+                    const response = await profile(userId)
+                    console.log(response?.data.profile)
+                    setUserDetails(response?.data.profile);
+                    setEmail(userDetails?.email)
+
+                }
+
+
+
+            } catch (error) {
+                console.error('Error fetching user details:', error);
+            }
+        };
+
+        fetchUserDetails();
+    }, []);
 
     return (
         <div className="mx-auto w-full pt-12 max-w-[550px]">

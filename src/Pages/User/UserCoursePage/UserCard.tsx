@@ -327,6 +327,7 @@ const UserCard = () => {
     }, []);
 
     const fetchCourses = async (query: any, category: any, price: any) => {
+        console.log("category,price,query",query,category,price)
         const response = await GetSearchCourse(query, category, price);
         console.log("response", response);
         return response;

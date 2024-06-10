@@ -58,7 +58,6 @@ const EditCourse: React.FC = () => {
             try {
                 console.log("courseId",courseId)
                 const response = await GetCourse(courseId)
-                // axios.get(`http://localhost:5000/api/course/getcourse/${courseId}`);
                 const courseDetails = response?.data.Response;
                 console.log(courseDetails)
 
@@ -90,7 +89,6 @@ const EditCourse: React.FC = () => {
                 console.log(courseId)
                 console.log("courseId for chapters",courseId)
                 const response = await GetChapters(courseId)
-                // axios.get(`http://localhost:5000/api/course/getchapters/${courseId}`);
                 console.log(response?.data.Response)
                 const chapterDetails = response?.data.Response;
                 console.log("chapter",chapterDetails?.chapters)
@@ -199,15 +197,7 @@ const EditCourse: React.FC = () => {
             const response = await TrainerCourseEdit(data, courseId, {
                 'Content-Type': 'application/json',
             })
-            // axios.post(
-            //     `http://localhost:5000/api/course/editcourse/${courseId}`,
-            //     data,
-            //     {
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //         },
-            //     }
-            // );
+            
 
             console.log('Success:', response?.data);
             if (response?.data.success) {

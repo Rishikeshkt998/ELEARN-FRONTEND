@@ -94,18 +94,18 @@ const CreateCourse: React.FC = () => {
     const handleCourseCreate = async () => {
         setLoading(true);
         try {
-            let uploadedDemoUrl = '';
-            try {
-                if (courseInfo.demoUrl) {
-                    const uploadedDemo = await UploadS3Bucket(courseInfo.demoUrl);
-                    uploadedDemoUrl = uploadedDemo.url;
-                    console.log("Uploaded demoUrl:", uploadedDemoUrl);
-                } else {
-                    console.error('Error: demoUrl is empty');
-                }
-            } catch (error) {
-                console.error('Error uploading demoUrl to S3:', error);
-            }
+            // let uploadedDemoUrl = '';
+            // try {
+            //     if (courseInfo.demoUrl) {
+            //         const uploadedDemo = await UploadS3Bucket(courseInfo.demoUrl);
+            //         uploadedDemoUrl = uploadedDemo.url;
+            //         console.log("Uploaded demoUrl:", uploadedDemoUrl);
+            //     } else {
+            //         console.error('Error: demoUrl is empty');
+            //     }
+            // } catch (error) {
+            //     console.error('Error uploading demoUrl to S3:', error);
+            // }
             const formattedBenefits = benefits.map((benefit) => ({ title: benefit.title }));
             const formattedPrerequisites = prerequisite.map((prerequisite) => ({ title: prerequisite.title }));
             
@@ -146,7 +146,7 @@ const CreateCourse: React.FC = () => {
                 tags: courseInfo.tags,
                 thumbnail: courseInfo.thumbnail,
                 level: courseInfo.level,
-                demoUrl: uploadedDemoUrl,
+                demoUrl: courseInfo.demoUrl,
                 category: courseInfo.category,
                 benefits: formattedBenefits,
                 prerequisite: formattedPrerequisites,

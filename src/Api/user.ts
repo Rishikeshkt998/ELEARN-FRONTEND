@@ -165,10 +165,10 @@ export const profileEdit = async (userId: string,userData:any) => {
         console.log(error)
     }
 }
-export const profileImages = async (id: any, formData: any, headers:any) => {
+export const profileImages = async (payload:any) => {
     try {
 
-        const res = await Api.put(`${userRoutes.uploadProfilePic}/${id}`, formData,{headers});
+        const res = await Api.post(userRoutes.uploadProfilePic, payload);
         return res
     } catch (error) {
         console.log(error)
@@ -305,7 +305,7 @@ export const GetChapters = async (id: string | undefined) => {
     }
 }
 
-export const GetSearchCourse = async ( searchTerm?: string, category?: string, price?: number) => {
+export const GetSearchCourse = async ( searchTerm?:any, category?: string, price?: number) => {
     try {
         const res = await Api.get(`${userRoutes.searchCourse}`, {
             params: {

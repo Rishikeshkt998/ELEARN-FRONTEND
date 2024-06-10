@@ -108,8 +108,8 @@ const Courseinformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setAc
             try {
                 setLoading(true); 
                 const url = await UploadS3Bucket(file); 
-                console.log(url)
-                setCourseInfo({ ...courseInfo, demoUrl: url.url }); 
+                console.log("url",url.url)
+                setCourseInfo({ ...courseInfo, demoUrl:url.url }); 
                 setLoading(false); 
             } catch (error) {
                 console.error("Error uploading demo URL:", error);

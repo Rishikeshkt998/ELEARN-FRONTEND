@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Api from "../Services/axios";
 import adminRoutes from "../Services/endpoints/adminEndpoint";
 
@@ -22,26 +23,26 @@ Api.interceptors.request.use(
 );
 
 
-// Api.interceptors.response.use(
-//     function (response) {
-//         return response;
-//     },
-//     function (error) {
-//         if (error.response && error.response.status === 401 ) {
-//             toast.error("admin is not authenticated");
-//             window.history.back();
-//             return Promise.reject(error);
+Api.interceptors.response.use(
+    function (response) {
+        return response;
+    },
+    function (error) {
+        if (error.response && error.response.status === 401 && error.response.data.message === "Unauthorized - Invalid token from admin" ) {
+            toast.error("admin is not authenticated");
+            window.history.back();
+            return Promise.reject(error);
 
-//         } else if (error.response && error.response.status === 404) {
-//             window.location.href = "/error404";
-//             return Promise.reject(error);
+        } else if (error.response && error.response.status === 404) {
+            window.location.href = "/error404";
+            return Promise.reject(error);
 
-//         } else if (error.response && error.response.status === 500) {
-//             window.location.href = "/error500";
-//         }
-//         return Promise.reject(error);
-//     }
-// );
+        } else if (error.response && error.response.status === 500) {
+            window.location.href = "/error500";
+        }
+        return Promise.reject(error);
+    }
+);
 
 
 export const adminLogin = async (email: string, password: string) => {

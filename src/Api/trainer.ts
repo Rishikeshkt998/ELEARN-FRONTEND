@@ -25,26 +25,25 @@ Api.interceptors.request.use(
 
 
 
-// Api.interceptors.response.use(
-//     function (response) {
-//         return response;
-//     },
-//     function (error) {
-//         if (error.response && error.response.status === 401 ) {
-//             toast.error("trainer is not authenticated");
-//             window.history.back();
-//             return Promise.reject(error);
+Api.interceptors.response.use(
+    function (response) {
+        return response;
+    },
+    function (error) {
+        if (error.response && error.response.status === 401 &&error.response.data.message=== "Unauthorized - Invalid token from tutor") {
+            toast.error("trainer is not authenticated login to continue");
+            return Promise.reject(error);
 
-//         } else if (error.response && error.response.status === 404) {
-//             window.location.href = "/error404";
-//             return Promise.reject(error);
+        } else if (error.response && error.response.status === 404) {
+            window.location.href = "/error404";
+            return Promise.reject(error);
 
-//         } else if (error.response && error.response.status === 500) {
-//             window.location.href = "/error500";
-//         }
-//         return Promise.reject(error);
-//     }
-// );
+        } else if (error.response && error.response.status === 500) {
+            window.location.href = "/error500";
+        }
+        return Promise.reject(error);
+    }
+);
 export const trainerSignup = async (name: string, email: string, phone: string, password: string, confirmpassword: string,dateOfBirth:string) => {
     try {
         if (password !== confirmpassword) {
@@ -135,10 +134,10 @@ export const tutorprofile = async (trainerId: string) => {
         console.log(error)
     }
 }
-export const tutorprofileImages = async (id:any,formData:any,headers:any) => {
+export const tutorprofileImages = async (payload:any) => {
     try {
 
-        const res = await Api.put(`${trainerRoutes.traineruploadprofilepic}/${id}`,formData,headers);
+        const res = await Api.post(trainerRoutes.traineruploadprofilepic,payload);
         return res
     } catch (error) {
         console.log(error)
