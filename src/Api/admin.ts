@@ -138,6 +138,14 @@ export const viewCategory = async () => {
         console.log(err)
     }
 }
+export const CourseShow = async () => {
+    try {
+        const res = await Api.get(adminRoutes.courseShow);
+        return res;
+    } catch (err) {
+        console.log(err)
+    }
+}
 
 export const addCategory = async (name: string, description: string) => {
     try {

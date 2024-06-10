@@ -2,9 +2,9 @@
 import { useState, useEffect } from 'react';
 // import { blockUser, getUsers, userUnblock } from '../../Api/admin';
 // import Swal from 'sweetalert2';
-import axios from 'axios';
+// import axios from 'axios';
 import Swal from 'sweetalert2';
-import { unverifyCourse, verifyCourse } from '@/Api/admin';
+import { CourseShow, unverifyCourse, verifyCourse } from '@/Api/admin';
 interface prerequisite {
     title: string;
 
@@ -46,9 +46,10 @@ const CourseView = () => {
     useEffect(() => {
         async function fetchCourses() {
             try {
-                const response = await axios.get('http://localhost:5000/api/admin/course');
-                console.log(response.data)
-                if (response.data) {
+                const response = await CourseShow()
+                // axios.get('http://localhost:5000/api/admin/course');
+                console.log(response?.data)
+                if (response?.data) {
                     setData(response?.data);
                 }
             } catch (error) {

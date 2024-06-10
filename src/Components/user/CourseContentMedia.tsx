@@ -63,7 +63,6 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
     const [correct, setCorrect] = useState<boolean>(false);
     const [completedQuestion, setCompletedQuestion] = useState<string[]>();
 
-
     const [expandedReviewIndex, setExpandedReviewIndex] = useState<number | null>(null);
     const handleOpenModal = () => {
         setIsModalOpen(true);
@@ -72,16 +71,16 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
     const handleCloseModal = () => {
         setIsModalOpen(false);
     };
-    const handleEditReviewSubmit =async () => {
+    const handleEditReviewSubmit = async () => {
         try {
             const reviewResponse = await EditReviewSubmit(editReviews, editRating, id, usersId)
-            console.log("response",reviewResponse)
+            console.log("response", reviewResponse)
             toast.success("review edited successfully")
             RefetchCourseDetails();
             setEditReviews("")
             setEditRating(1)
             setIsModalOpen(false)
-            
+
 
         } catch (error) {
             console.log(error)
@@ -100,11 +99,14 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
         e.preventDefault();
         const response = await QuestionAnswer(questionId, answer, id, usersId)
         console.log("questionanswer", response)
-        if (response?.data.status) {
+        if (response?.data.status === true) {
+
             setCorrect(response?.data?.status);
             toast.success("Answer submitted successfully");
+
         } else {
-            toast.error("Failed to submit answer");
+            toast.error("wrong answer");
+            setCorrect(response?.data?.status);
         }
 
     };
@@ -139,7 +141,12 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
 
     }, [id, usersId, completedQuestion]);
     const checkCompletedQuestions = (questionId: string) => {
-        return completedQuestion?.includes(questionId);
+        const completed=completedQuestion?.includes(questionId);
+        if(completed){
+            return true 
+        }else{
+            return false
+        }
     };
 
     const currentChapter = chapters[activeVideo];
@@ -269,7 +276,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
             RefetchCourseDetails();
             setReviews("")
             setRating(1)
-            
+
 
         }
     }
@@ -424,6 +431,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                                         </button>
                                                     )}
                                                     <div>
+                                                        
                                                         {checkCompletedQuestions(question._id as string) ? (
                                                             <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-10 py-3 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
                                                                 Answered <FontAwesomeIcon icon={faSmile} />

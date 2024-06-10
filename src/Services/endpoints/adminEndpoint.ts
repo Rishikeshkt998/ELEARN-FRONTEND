@@ -2,6 +2,7 @@ const adminRoutes = {
     adminSignup: '/admin/adminSignup',
     adminLogin: '/admin/adminlogin',
     categoryView:'/admin/category',
+    courseShow:'/admin/course',
     addCategory: '/admin/addcategory',
     getCategory: '/admin/category',
     editCategory: '/admin/editcategory',
