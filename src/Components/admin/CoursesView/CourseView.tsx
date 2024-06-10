@@ -47,7 +47,7 @@ const CourseView = () => {
         async function fetchCourses() {
             try {
                 const response = await CourseShow()
-                // axios.get('http://localhost:5000/api/admin/course');
+                
                 console.log(response?.data)
                 if (response?.data) {
                     setData(response?.data);
