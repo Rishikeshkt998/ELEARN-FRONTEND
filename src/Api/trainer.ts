@@ -344,6 +344,24 @@ export const MessagePost = async (message:any) => {
         console.log(error)
     }
 }
+export const MessageRead = async (id: any) => {
+    try {
+        console.log("idvalue",id)
+        const res = await Api.put(`${trainerRoutes.messageread}/${id}`)
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const FilePost = async (message: any) => {
+    try {
+
+        const res = await Api.post(trainerRoutes.MessagePost, message)
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 
 export const GetConversations = async (currentUser: any, tutorid:any) => {

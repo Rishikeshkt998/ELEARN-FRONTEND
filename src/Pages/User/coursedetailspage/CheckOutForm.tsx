@@ -7,7 +7,7 @@ import { LinkAuthenticationElement, PaymentElement, useElements, useStripe } fro
 import { useNavigate } from "react-router-dom"
 import { OrderPost } from "@/Api/user"
 import { useDispatch } from "react-redux"
-import { saveCourse } from "@/store/slice/valueSlice"
+import { SaveUser, saveCourse } from "@/store/slice/valueSlice"
 
 type Props = {
     setopen: any,
@@ -42,10 +42,9 @@ const CheckOutForm: FC<Props> = ({  CourseDetails }) => {
                     console.log(paymentIntent)
                     dispatch(saveCourse(CourseDetails._id))
                     const response = await OrderPost( id,  CourseDetails._id,  paymentIntent )
-                    // axios.post(`http://localhost:5000/api/user/orderpost`, {id:id,courseId:CourseDetails._id,payment_Info:paymentIntent });
-                    console.log(response)
+                    console.log("order response",response)
                     if (response?.data.orderPost.success) {
-                        // setIsLoading(false)
+                        dispatch(SaveUser(response?.data.orderPost.updateUser))
                         navigate(`/coursecontentpage/${CourseDetails?._id}`)
                         
 

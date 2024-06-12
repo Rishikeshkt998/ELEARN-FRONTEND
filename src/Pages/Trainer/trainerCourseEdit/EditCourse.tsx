@@ -4,8 +4,6 @@ import EditCourseInformation from "./EditCourseInformation";
 import EditCourseData from "./EditCourseData";
 import EditCourseContent from "./EditCourseContent";
 import EditCoursePreview from "./EditCoursePreview";
-// import axios from "axios";
-// import { UploadS3Bucket } from "../../../Services/S3bucket";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import EditCourseOption from "./EditCourseOption";

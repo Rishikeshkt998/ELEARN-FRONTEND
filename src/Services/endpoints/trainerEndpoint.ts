@@ -24,6 +24,7 @@ const trainerRoutes = {
     NewMessage:'/trainer/newConversation',
     GetMessages:'/trainer/getMessages',
     MessagePost:'/trainer/newMessage',
+    messageread:'/trainer/readMessage',
     GetConversation:'/trainer/getConversation',
     SheduledView:'/trainer/coursetutor',
     courseDataAnalysisTutor:'/trainer/coursetutoranalysis',
