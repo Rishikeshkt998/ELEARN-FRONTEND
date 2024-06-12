@@ -173,6 +173,7 @@ const TutorChatPage: React.FC = () => {
     }, [arrivalMessage]);
     console.log("messages", messages)
     console.log("userId", userId)
+    console.log(dummyState)
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         const message = {
@@ -212,6 +213,7 @@ const TutorChatPage: React.FC = () => {
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, contentType: string) => {
         if (e.target.files && e.target.files[0]) {
+            console.log(contentType)
             const file = e.target.files[0];
             setAttachedFile(file);
             if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
@@ -401,6 +403,11 @@ const TutorChatPage: React.FC = () => {
                             Cancel
                         </button>
                     </div>
+                </div>
+            )}
+            {loading && (
+                <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"></div>
                 </div>
             )}
         </div>
