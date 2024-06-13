@@ -489,11 +489,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                 </div>
                             </div>
                         </>
-
-
-
                     )
-
                 }
                 {
                     activeBar === 4 && (
@@ -591,12 +587,6 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                                 <BsPencil
                                                     className="cursor-pointer ms-12 mt-2 text-sm dark:text-white text-gray-700" onClick={handleOpenModal}
                                                 />
-
-
-
-
-
-
                                             </div>
                                             {isModalOpen && (
                                                 <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
@@ -626,23 +616,6 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                                                             </div>
                                                                         </div>
                                                                         <TextArea initialValue={item.comments} editReviews={editReviews} setEditReviews={setEditReviews} />
-
-                                                                        {/* <textarea
-                                                                            name=""
-                                                                            value={item.comments}
-                                                                            onChange={(e) =>
-
-                                                                                setEditReviews(e.target.value)
-                                                                            }
-
-                                                                            
-                                                                                
-                                                                            id=""
-                                                                            cols={40}
-                                                                            rows={5}
-                                                                            placeholder="write your content"
-                                                                            className="outline-none bg-gray-100 800px:ml-3 border border-[#ffffff57]  w-full 800px:w-full p-2 rounded text-[18px] font-Poppins"
-                                                                        /> */}
                                                                     </div>
                                                                     <div className="flex justify-end pt-2">
                                                                         <button className="focus:outline-none px-4 bg-teal-500 p-3 ml-3 rounded-lg text-white hover:bg-teal-400" onClick={handleEditReviewSubmit}>Confirm</button>

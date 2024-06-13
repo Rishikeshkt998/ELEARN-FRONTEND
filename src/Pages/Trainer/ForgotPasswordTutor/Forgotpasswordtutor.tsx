@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { forgotTutorPassword } from '@/Api/trainer';
+import { toast } from 'react-toastify';
 
 
 const Forgotpasswordtutor: React.FC = () => {
@@ -17,10 +18,14 @@ const Forgotpasswordtutor: React.FC = () => {
         try {
             const response = await forgotTutorPassword(email)
             console.log(response);
-            if (response) {
+            if (response?.data.success) {
                 const email = response.data.email;
+                toast("otp send to the tutor")
                 navigate('/tutor/forgottutorpasswordotp', { state: { email } });
+            } else if (!response?.data.success) {
+                toast.error(response?.data.message)
             }
+
         } catch (error) {
             console.error('Error resetting password:', error);
         }

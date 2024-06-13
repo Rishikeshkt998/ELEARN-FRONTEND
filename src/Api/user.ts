@@ -61,19 +61,12 @@ export const signup = async (name: string, email: string, phone: string, passwor
         }
 
         const res = await Api.post(userRoutes.userSignup, { name, email, phone, password, confirmPassword });
-        console.log(res)
-        if (res.data && res.data.success) {
-            console.log(res.data.user.data._id)
-            localStorage.setItem('userOtp', res.data.user.data._id);
-            return res;
-        } else {
-            throw new Error('Success property not found in response data');
-        }
+        return res
+        
     } catch (error) {
         console.error('Error in signup:', error);
 
-        toast.error('An error occurred during signup. Please try again later.');
-        throw error;
+        
     }
 };
 
@@ -110,6 +103,14 @@ export const verifyOtpForgotPassword = async (otp: string, email: string) => {
             }
         });
         localStorage.removeItem('userotpforgotpassword')
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const ChangedPasswordForgot = async (email:any, newpassword:any, confirmpassword:any) => {
+    try {
+        const res = await Api.post(userRoutes.changedPassword, { email,newpassword,confirmpassword});
         return res
     } catch (error) {
         console.log(error)

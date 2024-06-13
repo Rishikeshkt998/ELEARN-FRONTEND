@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { trainerSignup } from '../../../Api/trainer';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 const TrainerRegistration: React.FC = () => {
@@ -78,35 +78,51 @@ const TrainerRegistration: React.FC = () => {
         try {
             const response = await trainerSignup(formData.name, formData.email, formData.phone, formData.password, formData.confirmpassword, formData.dateOfBirth);
             console.log('Response:', response.data);
+            if (response?.data.success) {
+                console.log(response)
+                // console.log(response.data.trainer._id)
+                localStorage.setItem('trainerOtp', response.data.trainer.trainerSave._id);
+                toast.success('Registration successful,otp has been send to your email registered..')
+                const email = formData.email
+                navigate(`/trainerotp`, { state: { email } });
+
+            } else if (!response?.data.success) {
+                toast.error(response?.data.message)
+                // navigate('/');
+            }
        
-            setFormData({
-                name: '',
-                email: '',
-                phone: '',
-                password: '',
-                confirmpassword: '',
-                dateOfBirth: ''
-            });
-            Swal.fire({
-                title: 'Success!',
-                text: 'Registration successful,otp has been send to your email',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const email=formData.email
-                    navigate('/trainerotp',{ state: { email} });
-                }
-            });
-            toast.success('Registration successful');
-        } catch (error) {
-            console.error('Error:', error);
-            Swal.fire(
-                'Error!',
-                'An error occurred. Please try again later.',
-                'error'
-            );
-            toast.error('An error occurred. Please try again later.');
+        //     setFormData({
+        //         name: '',
+        //         email: '',
+        //         phone: '',
+        //         password: '',
+        //         confirmpassword: '',
+        //         dateOfBirth: ''
+        //     });
+        //     Swal.fire({
+        //         title: 'Success!',
+        //         text: 'Registration successful,otp has been send to your email',
+        //         icon: 'success',
+        //         confirmButtonText: 'OK'
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+        //             const email=formData.email
+        //             navigate('/trainerotp',{ state: { email} });
+        //         }
+        //     });
+        //     toast.success('Registration successful');
+        // } catch (error) {
+        //     console.error('Error:', error);
+        //     Swal.fire(
+        //         'Error!',
+        //         'An error occurred. Please try again later.',
+        //         'error'
+        //     );
+        //     toast.error('An error occurred. Please try again later.');
+        // }
+        }catch(error){
+            console.log(error)
+
         }
     };
 

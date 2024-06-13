@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { initFlowbite } from 'flowbite'
 import { useEffect } from 'react'
@@ -28,6 +29,7 @@ const NavBar: React.FC = () => {
       console.log(logoutuser)
       dispatch(logout())
       dispatch(resetUser())
+      localStorage.removeItem("userToken");
       toast.success('Logged out successfully..')
       navigate('/login');
     } catch (error) {
@@ -50,7 +52,6 @@ const NavBar: React.FC = () => {
             <span className="sr-only">Open user menu</span>
             <img className="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo" />
           </button>
-          {/* Dropdown menu */}
           <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
             <div className="px-4 py-3">
               <span className="block text-sm text-gray-900 dark:text-white">Rishikesh kt</span>

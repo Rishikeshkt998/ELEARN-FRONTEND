@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 // import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { verifyOtpForgotPasswordTutor } from "@/Api/trainer";
+import { toast } from "react-toastify";
 
 const ForgotpasswordOtptutor: FC = () => {
     const navigate = useNavigate()
@@ -22,9 +23,11 @@ const ForgotpasswordOtptutor: FC = () => {
 
             console.log("Verification response:", response);
             setOtp("");
-            if (response) {
-
+            if (response?.data.success) {
+                toast("otp verified")
                 navigate('/tutor/changepasswordtutor', { state: { email } });
+            } else if (!response?.data.success){
+                toast(response?.data.message)
             }
         } catch (error) {
             console.error("Error verifying OTP:", error);

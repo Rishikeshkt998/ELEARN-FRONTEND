@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { ChangePasswordTutors } from '@/Api/trainer';
+import { toast } from 'react-toastify';
 
 const ChangePasswordTutor: React.FC = () => {
     const [newpassword, setPassword] = useState<string>('');
@@ -28,8 +29,11 @@ const ChangePasswordTutor: React.FC = () => {
             console.log(response);
             setPassword('');
             setConfirmPassword('');
-            if (response) {
-                navigate('/tutor/login');
+            if (response?.data.success) {
+                toast("password changed")
+                navigate('/tutor');
+            }else if(!response?.data.success){
+                toast(response?.data.message)
             }
         } catch (error) {
             console.error('Error resetting password:', error);

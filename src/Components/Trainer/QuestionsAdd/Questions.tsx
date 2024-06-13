@@ -24,7 +24,7 @@ const Questions: React.FC = () => {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const res =await GetQuestions(id)
+                const res = await GetQuestions(id)
                 console.log(res?.data.questions)
                 setQuestions(res?.data.questions)
 
@@ -38,7 +38,14 @@ const Questions: React.FC = () => {
 
     }, [id]);
     const delete_question = async (questionId: string) => {
-        const response=await DeleteQuestions(questionId,id)
+        const response = await DeleteQuestions(questionId, id)
+        console.log("deleted",response)
+        setQuestions((prevState) =>
+            prevState.filter(question => question._id !== questionId)
+        );
+
+
+
         console.log(response)
     }
 
@@ -72,7 +79,7 @@ const Questions: React.FC = () => {
                                         </button>
                                     </td> *
                                 </tr>
-                            ))} 
+                            ))}
                         </tbody>
                     </table>
                 </div>

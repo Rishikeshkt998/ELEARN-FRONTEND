@@ -22,8 +22,6 @@ const TrainerLogin: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        // Perform form validation
         if (!email.trim()) {
             toast.error('Email is required');
             return;

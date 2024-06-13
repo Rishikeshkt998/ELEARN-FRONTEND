@@ -11,6 +11,7 @@ import { FilePost, GetMessagesForTutor, MessagePost, NewMessageForTutor, fetchUs
 import { FaFile, FaImage, FaPaperclip, FaVideo } from "react-icons/fa";
 import { UploadS3Bucket } from "@/Services/S3bucket";
 import InputEmoji from "react-input-emoji";
+import { useNavigate } from "react-router-dom";
 
 interface MessageData {
     senderId: string;
@@ -299,14 +300,21 @@ const TutorChatPage: React.FC = () => {
         setAttachedFile(null);
         setFilePreview(null);
     };
+    const navigate = useNavigate(); 
 
+    const handleClick = () => {
+        navigate(-1);
+    };
     return (
         <div className="flex h-screen overflow-hidden">
             <div className="w-1/4 bg-white border-r hidden md:block border-gray-300">
                 <header className="p-4 border-b border-gray-300 flex justify-between items-center bg-indigo-600 text-white">
                     <h1 className="text-2xl font-semibold">ELEARN</h1>
-                    <div className="relative">
+                    {/* <div className="relative">
                         <button id="menuButton" className="focus:outline-none"></button>
+                    </div> */}
+                    <div className="relative">
+                        <button id="menuButton" className="focus:outline-none" onClick={handleClick}></button>
                     </div>
                 </header>
                 <div className="overflow-y-auto h-screen p-3 mb-9 pb-20">

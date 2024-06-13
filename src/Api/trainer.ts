@@ -52,14 +52,7 @@ export const trainerSignup = async (name: string, email: string, phone: string, 
 
         const res = await Api.post(trainerRoutes.trainerSignup, { name, email, phone, password, confirmpassword,dateOfBirth });
         console.log(res)
-        if (res.data && res.data.success) {
-            console.log(res.data.trainerSave._id)
-            localStorage.setItem('trainerOtp', res.data.trainerSave._id);
-            toast.success('trainer registered successfully')
-            return res;
-        } else {
-            throw new Error('Success property not found in response data');
-        }
+        return res
     } catch (error) {
         console.error('Error in signup:', error);
 
@@ -284,10 +277,10 @@ export const GetQuestions = async (id: string | undefined) => {
         console.log(error)
     }
 }
-export const DeleteQuestions = async (id: string | undefined,courseId:string|undefined) => {
+export const DeleteQuestions = async (questionId: string | undefined,courseId:string|undefined) => {
     try {
 
-        const res = await Api.get(`${trainerRoutes.DeleteQuestions}/${id}/${courseId}`);
+        const res = await Api.delete(`${trainerRoutes.DeleteQuestions}?courseId=${courseId}&questionId=${questionId}`);
         return res
     } catch (error) {
         console.log(error)

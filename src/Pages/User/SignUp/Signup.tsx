@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Formik, Form, Field, ErrorMessage, FormikHelpers} from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,16 +29,23 @@ const SignUpForm: React.FC = () => {
         try {
             const { name, email, phone, password, confirmPassword } = values;
             const res = await signup(name, email, phone, password, confirmPassword);
-            console.log(res);
+            console.log("userdata", res);
+            if (res?.data.success) {
+                console.log(res)
+                console.log(res.data.user.data._id)
+                localStorage.setItem('userOtp', res.data.user.data._id);
+                toast.success('Successfully registered..')
 
-            if (res) {
                 navigate(`/otp`, { state: { email } });
-            } else {
-                toast.error('User already exists !!');
-                navigate('/');
+
+            } else if (!res?.data.success) {
+                toast.error(res?.data.message)
+                // navigate('/');
             }
         } catch (error) {
             console.error('Error submitting form:', error);
+            toast.error('An error occurred during signup. Please try again later.');
+            throw error;
         } finally {
             setSubmitting(false);
         }

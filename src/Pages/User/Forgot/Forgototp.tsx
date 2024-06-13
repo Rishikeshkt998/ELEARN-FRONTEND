@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 // import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { verifyOtpForgotPassword } from "../../../Api/user";
+import { toast } from "react-toastify";
 
 const Forgototp:FC = () => {
     const navigate = useNavigate()
@@ -22,9 +23,15 @@ const Forgototp:FC = () => {
 
             console.log("Verification response:", response);
             setOtp("");
-            if (response) {
+            // if (response) {
 
+            //     navigate('/changepassword', { state: { email } });
+            // }
+            if (response?.data.success) {
+                toast("otp verified successfully")
                 navigate('/changepassword', { state: { email } });
+            } else if (!response?.data.success) {
+                toast.error(response?.data.message)
             }
         } catch (error) {
             console.error("Error verifying OTP:", error);
