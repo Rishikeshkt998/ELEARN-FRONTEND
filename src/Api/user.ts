@@ -329,6 +329,27 @@ export const EnrolledCoursesView = async (id: string | null) => {
         console.log(error)
     }
 }
+export const  generateCertificate= async (courseId: string, studentId: string|null,responseType:any) => {
+    try {
+        const res = await Api.get(`${userRoutes.download}/${courseId}/${studentId}`,{responseType:responseType}); 
+        
+        const blob = new Blob([res.data], { type: "application/pdf" });
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "certificate.pdf"); 
+
+        
+        document.body.appendChild(link);
+        link.click();
+
+        console.log(res, "ress");
+    } catch (error) {
+        console.error("Error downloading the certificate", error);
+    }
+}
+
 
 export const ReviewSubmit = async (reviews:any, rating:any, id:any, userId: any) => {
     try {
@@ -455,6 +476,14 @@ export const getConversationtrainer = async (currentUser: any, tutorid: any) => 
     try {
 
         const res = await Api.get(`${userRoutes.getConversationTutor}/${currentUser}/${tutorid}`);
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const FilePostTutor = async (message: any) => {
+    try {
+        const res = await Api.post(userRoutes.NewMessageForUser, message)
         return res
     } catch (error) {
         console.log(error)

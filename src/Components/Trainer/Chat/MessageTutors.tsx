@@ -43,13 +43,12 @@
 // export default MessageTutors;
 import { FC,  useState } from 'react';
 import { format } from 'timeago.js';
-// import {  FaPlayCircle } from 'react-icons/fa';
+
 import VideoPlayer from './VideoPlayer';
 import ReactPlayer from 'react-player';
-import {  FaCheckCircle, FaCircle, FaPlayCircle } from 'react-icons/fa';
+import {   FaPlayCircle } from 'react-icons/fa';
 import FileDownload from './FileDownload';
-// import { MessageRead } from '@/Api/trainer';
-// import VideoPlayer from './VideoPlayer'; // Import your video player component here
+
 
 type Props = {
     message: any;
@@ -61,7 +60,7 @@ const MessageTutors: FC<Props> = ({ message, own }) => {
     const messageBubbleClass = own ? "bg-green-300 text-black" : "bg-white text-gray-700";
     const avatarPositionClass = own ? "ml-2" : "mr-2";
     const timeClass = own ? "text-xs text-gray-500" : "text-xs text-gray-500";
-    const messagestatusClass=own?"block":"hidden";
+    // const messagestatusClass=own?"block":"hidden";
 
     const [showVideo, setShowVideo] = useState(false);
 
@@ -135,9 +134,9 @@ const MessageTutors: FC<Props> = ({ message, own }) => {
                    
                     
                 </div>
-                <div className={`flex justify-end ${messagestatusClass}`}>
+                {/* <div className={`flex justify-end ${messagestatusClass}`}>
                     {message?.status === 'read' ? <FaCheckCircle /> : <FaCircle />}
-                </div>
+                </div> */}
                 
                 <span className={`flex-grow ${timeClass}`}>{format(message?.creationTime)}</span>
                 

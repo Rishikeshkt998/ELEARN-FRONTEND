@@ -61,10 +61,7 @@ const Otp: FC = () => {
             console.log("Verification response:", response?.data);
             setOtp("");
             dispatch(setCredentials(response?.data.token))
-            // toast.success('Successfully logged in...')
-            // if (response?.data.success) {
-            //     navigate('/login');
-            // }
+            
             if (response?.data.success) {
                 toast.success('Successfully registered in...')
                 navigate('/login');

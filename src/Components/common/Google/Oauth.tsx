@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../../store/slice/authSlice";
 import { GoogleAuth } from "@/Api/user";
+import { SaveUser } from "@/store/slice/valueSlice";
 
 
 
@@ -41,7 +42,9 @@ const Oauth = () => {
             console.log(response?.data);
             if (response?.data.success) {
                 dispatch(setCredentials(response.data.token));
+                dispatch(SaveUser(response?.data.userData))
                 localStorage.setItem('userId', response.data.userData._id);
+                localStorage.setItem("userToken", response?.data.token)
                 toast.success('user signed in successfully')
                 navigate(`/home`);
             } else {

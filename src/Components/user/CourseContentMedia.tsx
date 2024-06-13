@@ -14,7 +14,6 @@ import { EditReviewSubmit, GetChapterView, GetCourse, GetLessonsView, Postomplet
 import { BsPencil } from "react-icons/bs"
 import StarRatings from "./StarRatings"
 import TextArea from "./TextArea"
-// import 'swiper/swiper-bundle.css';
 
 type Props = {
     CourseDetails: any,
@@ -62,7 +61,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
     const [questionId, setQuestionId] = useState<string>();
     const [correct, setCorrect] = useState<boolean>(false);
     const [completedQuestion, setCompletedQuestion] = useState<string[]>();
-
+    const [wrongcompletedQuestion, setwrongCompletedQuestion] = useState<string[]>();
     const [expandedReviewIndex, setExpandedReviewIndex] = useState<number | null>(null);
     const handleOpenModal = () => {
         setIsModalOpen(true);
@@ -104,9 +103,9 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
             setCorrect(response?.data?.status);
             toast.success("Answer submitted successfully");
 
-        } else {
-            toast.error("wrong answer");
-            setCorrect(response?.data?.status);
+        } else if (response?.data.status === false) {
+            setCorrect(false);
+            toast.error("Wrong answer");
         }
 
     };
@@ -132,6 +131,11 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
             const attendedQuestions = enrolledCourses.map((course: any) => course.attendedQuestions);
             const flattenedAttendedQuestions = attendedQuestions.flat();
             setCompletedQuestion(flattenedAttendedQuestions);
+            const wrongQuestions = enrolledCourses.map((course: any) => course.attendedWrongQuestions);
+            const flattenedAttendedwrongQuestions = wrongQuestions.flat();
+            console.log("wrong answr",wrongQuestions)
+            setwrongCompletedQuestion(flattenedAttendedwrongQuestions);
+
         } catch (error) {
             console.log(error);
         }
@@ -139,14 +143,19 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
     useEffect(() => {
         fetchEnroll()
 
-    }, [id, usersId, completedQuestion]);
+    }, [id, usersId, completedQuestion,wrongcompletedQuestion]);
     const checkCompletedQuestions = (questionId: string) => {
         const completed=completedQuestion?.includes(questionId);
+        console.log("completed",completed)
         if(completed){
             return true 
         }else{
             return false
         }
+    };
+    const checkCompletedWrongQuestions = (questionId: string) => {
+        console.log("questions",questionId)
+        return  wrongcompletedQuestion?.includes(questionId)
     };
 
     const currentChapter = chapters[activeVideo];
@@ -402,7 +411,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                     {question.options.map((option: string, optionIndex: number) => (
                                                         <div key={optionIndex} className="bg-gray-300 flex items-center rounded-md py-2 px-2">
-                                                            {!checkCompletedQuestions(question._id as string) && (
+                                                            {!checkCompletedWrongQuestions(question._id as string) &&!checkCompletedQuestions(question._id as string) && (
                                                                 <input
                                                                     onChange={(e) =>
                                                                         selectAnswer(
@@ -419,6 +428,11 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                                             <p>{option}</p>
                                                         </div>
                                                     ))}
+                                                    {/* {feedback && (
+                                                        <div className={`mt-4 text-lg ${correct ? 'text-green-600' : 'text-red-600'}`}>
+                                                            {feedback}
+                                                        </div>
+                                                    )} */}
                                                 </div>
                                                 <div className="mt-8 flex justify-between">
                                                     {index > 0 && (
@@ -431,12 +445,21 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                                         </button>
                                                     )}
                                                     <div>
-                                                        
-                                                        {checkCompletedQuestions(question._id as string) ? (
+                                                        {/* {checkCompletedWrongQuestions(question._id as string) && (
+                                                            <span className="bg-green-100 text-red-800 text-xs font-medium me-2 px-10 py-3 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
+                                                                Not Answered <FontAwesomeIcon icon={faSmile} />
+                                                            </span>
+                                                        ) }                     
+                                                      {checkCompletedQuestions(question._id as string) ? (
                                                             <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-10 py-3 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
                                                                 Answered <FontAwesomeIcon icon={faSmile} />
                                                             </span>
-                                                        ) : (
+                                                        ) : ( */}
+                                                        {checkCompletedQuestions(question._id as string) || checkCompletedWrongQuestions(question._id as string) ? (
+                                                            <span className={`bg-${checkCompletedQuestions(question._id as string) ? 'green' : 'red'}-100 text-${checkCompletedQuestions(question._id as string) ? 'green' : 'red'}-800 text-xs font-medium me-2 px-10 py-3 rounded dark:bg-gray-700 dark:text-${checkCompletedQuestions(question._id as string) ? 'green' : 'red'}-400 border border-${checkCompletedQuestions(question._id as string) ? 'green' : 'red'}-400`}>
+                                                                {checkCompletedQuestions(question._id as string) ? 'Correct Answer' : 'wrong Answer'} <FontAwesomeIcon icon={faSmile} />
+                                                            </span>
+                                                        ) :(
                                                             <button
                                                                 className={`px-4 py-2 mr-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700 ${checkCompletedQuestions(question._id as string)
                                                                     ? "btn-disabled"

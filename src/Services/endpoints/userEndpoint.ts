@@ -26,6 +26,7 @@ const userRoutes = {
     getChapters:'/user/getchapters',
     GetCategory:'/user/category',
     EnrolledCourses:'/user/enrolledview',
+    download:'/user/downloadcertificate',
     ReviewSubmit:'/user/reviewsubmit',
     EditReviewSubmit: '/user/editreview',
     CompletedChapterView:'/user/completedChapterview',

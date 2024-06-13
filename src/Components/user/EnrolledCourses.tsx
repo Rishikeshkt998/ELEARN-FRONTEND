@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { EnrolledCoursesView } from "@/Api/user";
+import { EnrolledCoursesView, generateCertificate } from "@/Api/user";
 // import axios from "axios";
 import { useState, useEffect } from "react";
 interface prerequisite {
@@ -46,7 +46,6 @@ const EnrolledCourses = () => {
         async function fetchCourses() {
             try {
                 const response = await EnrolledCoursesView(id)
-                // axios.get(`http://localhost:5000/api/user/enrolledview/${id}`);
                 console.log(response?.data?.EnrolledCourses)
                 if (response?.data) {
                     setCourses(response.data?.EnrolledCourses);
@@ -58,7 +57,15 @@ const EnrolledCourses = () => {
         fetchCourses();
     }, [id]);
 
-   
+    const downloadCertificate = async (courseId:any) => {
+        try {
+            const certificate = await generateCertificate(courseId, id, "blob")
+            console.log("certificate", certificate);
+            
+        } catch (error) {
+            console.error("Error generating certificate:", error);
+        }
+    };
 
 
 
@@ -80,6 +87,14 @@ const EnrolledCourses = () => {
                         </div>
                         <div className="px-6 py-4 flex justify-between items-center">
                             <a href="#" className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">{course.courseId?.price}</a>
+                        </div>
+                        <div className="px-6 py-4 flex justify-end">
+                            <button
+                                onClick={() => downloadCertificate(course?.courseId?._id)}
+                                className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition duration-300 ease-in-out"
+                            >
+                                Download Certificate
+                            </button>
                         </div>
 
 

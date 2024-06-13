@@ -7,7 +7,7 @@ import io, { Socket } from 'socket.io-client';
 import ChatTutors from "@/Components/Trainer/Chat/ChatTutors";
 import MessageTutors from "@/Components/Trainer/Chat/MessageTutors";
 import ScrollbleFeed from "react-scrollable-feed";
-import { FilePost, GetMessagesForTutor, MessagePost, MessageRead, NewMessageForTutor, fetchUsersForChat } from "@/Api/trainer";
+import { FilePost, GetMessagesForTutor, MessagePost, NewMessageForTutor, fetchUsersForChat } from "@/Api/trainer";
 import { FaFile, FaImage, FaPaperclip, FaVideo } from "react-icons/fa";
 import { UploadS3Bucket } from "@/Services/S3bucket";
 import InputEmoji from "react-input-emoji";
@@ -51,6 +51,9 @@ const TutorChatPage: React.FC = () => {
     const [loading, setLoading] = useState(false)
     const [fileurl, setFileUrl] = useState("")
     const [dummyState, setDummyState] = useState(false);
+    const [unreadMessages, setUnreadMessages] = useState<{ [key: string]: number }>({});
+    const [lastClickedUser, setLastClickedUser] = useState<string | null>(null);
+
 
     const socket: MutableRefObject<Socket | undefined> = useRef();
 
@@ -81,8 +84,39 @@ const TutorChatPage: React.FC = () => {
     }, [])
     useEffect(() => {
         arrivalMessage && currentChat && currentChat[0]?.members.includes(arrivalMessage.senderId) &&
-            setMessages(prev => [...prev, arrivalMessage])
-    }, [arrivalMessage, currentChat])
+        setMessages(prev => [...prev, arrivalMessage])
+        setUnreadMessages(prev => ({
+            ...prev,
+            [arrivalMessage?.senderId as string]: (prev[arrivalMessage?.senderId as string] || 0) + 1
+        }));
+        
+        console.log("hiiii",unreadMessages)
+        
+
+        console.log("Updated unreadMessages state:", unreadMessages);
+    
+    }, [arrivalMessage])
+    
+
+    useEffect(() => {
+        console.log("Unread Messages: ", unreadMessages);
+    }, [unreadMessages]);
+    
+    
+    useEffect(() => {
+        if (currentChat) {
+            setUnreadMessages(prev => {
+                const updatedUnreadMessages = { ...prev };
+                const senderId = currentChat[0]?.members.find((member:any) => member !== userId);
+                if (senderId) {
+                    delete updatedUnreadMessages[senderId];
+                }
+
+                return updatedUnreadMessages;
+            });
+        }
+    }, [currentChat, userId]);
+    
 
     useEffect(() => {
 
@@ -98,7 +132,6 @@ const TutorChatPage: React.FC = () => {
                         console.log("id", tutorid);
                         const newConversationResponse = await NewMessageForTutor(userId, tutorid)
                         console.log("new", newConversationResponse);
-
                     }));
 
                 }
@@ -120,22 +153,11 @@ const TutorChatPage: React.FC = () => {
                 console.log("message", res?.data.data)
                 const messagesdata = res?.data.data;
                 console.log("message for sorting", messagesdata)
-                // const messagesWithStatus = messagesdata?.map((message:any) => ({
-                //     ...message 
-                // }));
-                // setMessages(messagesWithStatus);
                 const messagesWithStatus = messagesdata?.map((message: any) => {
-                    const own = message?.senderId === userId
-                    if (message?.status === 'unread' && !own) {
-                        console.log("messageid", message._id)
-                        markMessageAsRead(message._id);
-
-                    }
-
+                    
  
                     return {
                         ...message,
-                        status: message.status === 'unread' ? 'unread' : message.status
                     };
                 });
 
@@ -149,15 +171,7 @@ const TutorChatPage: React.FC = () => {
         getMessages()
        
     }, [currentChat, userId])
-    const markMessageAsRead = async (messageId: string) => {
-        try {
-            
-            const response = await MessageRead(messageId);
-            console.log("messageread", response)
-        } catch (error) {
-            console.error('Error marking message as read:', error);
-        }
-    };
+    
 
     useEffect(() => {
         if (arrivalMessage) {
@@ -305,6 +319,9 @@ const TutorChatPage: React.FC = () => {
                             currentUser={userId}
                             user={user}
                             setUser={setUser}
+                            unreadMessages={unreadMessages}
+                            lastClickedUser={lastClickedUser}
+                            setLastClickedUser={setLastClickedUser}
                         />
                     </div>
                 </div>

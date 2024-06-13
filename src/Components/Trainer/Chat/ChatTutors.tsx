@@ -4,6 +4,7 @@ import { FC, } from "react"
 import images from "../../../assets/images (1).png";
 import { GetConversations } from "@/Api/trainer";
 
+
 interface Conversation {
     _id: string;
 }
@@ -15,6 +16,9 @@ type Props = {
     setCurrentChat: (currentChat: Conversation | null) => void,
     conversations: Conversation[] | null,
     setConversations: (conversations: Conversation[] | null) => void
+    unreadMessages: { [key: string]: number };
+    lastClickedUser:any, 
+    setLastClickedUser: (lastClickedUser: any)=>void
 
 }
 interface User {
@@ -29,11 +33,12 @@ interface User {
     isBlocked?: boolean,
 
 }
-const ChatTutors: FC<Props> = ({ user, currentUser, setCurrentChat, setConversations }) => {
+const ChatTutors: FC<Props> = ({ user, currentUser, setCurrentChat, setConversations, unreadMessages,setLastClickedUser}) => {
  
 
     const handleTrainerClick = async (tutorid:any) => {
         try {
+            setLastClickedUser(tutorid);
             const response = await GetConversations(currentUser,tutorid)
             console.log("conversations", response?.data.data)
             setConversations(response?.data.data)
@@ -60,7 +65,11 @@ const ChatTutors: FC<Props> = ({ user, currentUser, setCurrentChat, setConversat
                         <div className="flex-1">
                             <h2 className="text-lg font-semibold">{users?.name}</h2>
                         </div>
+                        {unreadMessages[users.id] > 0 && (
+                            <span className="inline-block bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1">{unreadMessages[users.id]}</span>
+                        )}
                     </div>
+                    
                 ))
             }
         </>
