@@ -15,7 +15,7 @@ const userRoutes = {
     emailchange:'/user/emailchange',
     verifyEmail:'/user/verifyEmail',
     Course:'/user/course',
-    GetCourse:'/user/getcourse',
+    GetCourse:'/user/getcoursevalue',
     GetCourseAcess: '/user/courseAccess',
     GetUsers: '/user/userbyid',
     GetPayment:'/user/getpayment',

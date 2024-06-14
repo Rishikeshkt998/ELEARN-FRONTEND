@@ -27,6 +27,7 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
     const [open, setopen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const navigate=useNavigate()
+    const id=CourseDetails?._id
     const handleOrder = () => {
         setopen(true)
 
@@ -40,7 +41,7 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
         setTimeout(() => {
             setIsLoading(false);
 
-            navigate(`/coursecontentpage/${CourseDetails._id}`);
+            navigate(`/coursecontentpage/${CourseDetails?._id}`);
         }, 2000);
     };
     
@@ -101,8 +102,7 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
                             <h1 className="text-[20px] font-Poppins font-[600] text-black dark:text-white ">
                                 Course Overview
                             </h1>
-                            {/* <CourseContentList id={CourseDetails?._id} /> */}
-                            <CourseContentListforUser id={CourseDetails?._id} />
+                            <CourseContentListforUser id={id} />
                         </div>
                         <br />
                         <br />

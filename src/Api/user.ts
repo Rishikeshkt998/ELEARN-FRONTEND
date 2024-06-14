@@ -130,7 +130,6 @@ export const otpResend = async (email: string) => {
 export const userLogin = async (email: string, password: string) => {
     try {
         const res = await Api.post(userRoutes.userLogin, { email, password })
-        // localStorage.setItem("refreshToken", res?.data.Refreshtoken)
         localStorage.setItem("userToken", res?.data.token)
 
         return res

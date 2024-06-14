@@ -51,7 +51,7 @@ const CourseContentListforUser: FC<Props> = ({id}) => {
     useEffect(() => {
         const fetchChapterDetails = async () => {
             try {
-                console.log(id)
+                console.log("chaptersss",id)
                 const response = await GetChapters(id)
                 // axios.get(`http://localhost:5000/api/course/getchapters/${id}`);
                 const chapterDetails = response?.data.Response;
