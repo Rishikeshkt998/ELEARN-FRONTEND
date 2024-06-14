@@ -65,7 +65,6 @@ function EnrolledStudentsView() {
             try {
                 const response =await fetchEnrolledStudents()
                     setData(response?.data?.EnrolledStudents);
-                // await axios.get(`http://localhost:5000/api/trainer/enrolledstudents`);
                 
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -113,8 +112,9 @@ function EnrolledStudentsView() {
                             <td className="bg-gray-500 px-6 py-4">
                                 {course && course.name}
                             </td>
-                            <td className=" bg-gray-500 px-6 py-4">
-                            </td>
+                            {/* <td className=" bg-gray-500 px-6 py-4">
+                                {course && course.enrolledTime}
+                            </td> */}
                         </tr>
                     ))}
                 </tbody>

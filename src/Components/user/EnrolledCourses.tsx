@@ -2,6 +2,7 @@
 import { EnrolledCoursesView, generateCertificate } from "@/Api/user";
 // import axios from "axios";
 import { useState, useEffect } from "react";
+import { FiDownload } from 'react-icons/fi'
 interface prerequisite {
     title: string;
 
@@ -70,34 +71,61 @@ const EnrolledCourses = () => {
 
 
     return (
-        <div className="max-w-screen-xl  bg-gray-900 mx-auto  sm:p-10 ">
-            <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-10">
+        // <div className="max-w-screen-xl  bg-gray-900 mx-auto  sm:p-10 ">
+        //     <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-10">
                 
-                {courses&&courses?.map(course => (
-                    <div key={course?._id} className="rounded bg-white overflow-hidden shadow-lg">
-                        <div className="relative">
-                            <img className="w-full" src={course?.courseId?.thumbnail} alt="Course thumbnail" />
+        //         {courses&&courses?.map(course => (
+        //             <div key={course?._id} className="rounded bg-white overflow-hidden shadow-lg">
+        //                 <div className="relative">
+        //                     <img className="w-full" src={course?.courseId?.thumbnail} alt="Course thumbnail" />
 
+        //                 </div>
+
+        //                 <div className="px-6 py-4">
+
+        //                     <a href="#" className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">{course.courseId?.name}</a>
+        //                     <p className="text-gray-500 text-sm">{course?.courseId?.category}</p>
+        //                 </div>
+        //                 <div className="px-6 py-4 flex justify-between items-center">
+        //                     <a href="#" className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">{course.courseId?.price}</a>
+        //                 </div>
+        //                 <div className="px-6 py-4 flex justify-end">
+        //                     <button
+        //                         onClick={() => downloadCertificate(course?.courseId?._id)}
+        //                         className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition duration-300 ease-in-out"
+        //                     >
+        //                         Download Certificate
+        //                     </button>
+        //                 </div>
+
+
+        //             </div>
+        //         ))}
+        //     </div>
+        // </div>
+        <div className="max-w-screen-xl bg-gray-900 mx-auto sm:p-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+                {courses && courses.map(course => (
+                    <div key={course?._id} className="rounded bg-white overflow-hidden shadow-lg w-full h-96 flex flex-col">
+                        <div className="relative flex-shrink-0 h-1/2">
+                            <img className="w-full h-full object-cover" src={course?.courseId?.thumbnail} alt="Course thumbnail" />
                         </div>
-
-                        <div className="px-6 py-4">
-
+                        <div className="px-6 py-4 flex-grow">
                             <a href="#" className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">{course.courseId?.name}</a>
                             <p className="text-gray-500 text-sm">{course?.courseId?.category}</p>
                         </div>
                         <div className="px-6 py-4 flex justify-between items-center">
-                            <a href="#" className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">{course.courseId?.price}</a>
+                            <span className="font-semibold text-lg inline-block">{course.courseId?.price}</span>
+                            <div className="flex flex-col items-center">
+                                <button
+                                    onClick={() => downloadCertificate(course?.courseId?._id)}
+                                    className="bg-blue-500 text-white font-semibold p-2 rounded hover:bg-blue-700 transition duration-300 ease-in-out"
+                                >
+                                    <FiDownload className="w-5 h-5" />
+                                </button>
+                                <p className="mt-2 text-center">Download Certificate</p>
+                            </div>
                         </div>
-                        <div className="px-6 py-4 flex justify-end">
-                            <button
-                                onClick={() => downloadCertificate(course?.courseId?._id)}
-                                className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition duration-300 ease-in-out"
-                            >
-                                Download Certificate
-                            </button>
-                        </div>
-
-
                     </div>
                 ))}
             </div>

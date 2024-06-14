@@ -9,7 +9,8 @@ import { Elements } from "@stripe/react-stripe-js"
 import CheckOutForm from "./CheckOutForm";
 import StarRating from "@/Components/user/StarRating";
 
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import CourseContentListforUser from "./CourseContentListforDetails";
 
 
 
@@ -24,12 +25,24 @@ type Props = {
 
 const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,user }) => {
     const [open, setopen] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const navigate=useNavigate()
     const handleOrder = () => {
         setopen(true)
 
     }
     const discountPercentage = ((CourseDetails?.estimatedPrice - CourseDetails?.price) / CourseDetails?.estimatedPrice) * 100
     const discountPercentagePrice = discountPercentage.toFixed(0)
+
+    const handleClick = () => {
+        setIsLoading(true);
+
+        setTimeout(() => {
+            setIsLoading(false);
+
+            navigate(`/coursecontentpage/${CourseDetails._id}`);
+        }, 2000);
+    };
     
     return (
         <>
@@ -89,6 +102,7 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
                                 Course Overview
                             </h1>
                             {/* <CourseContentList id={CourseDetails?._id} /> */}
+                            <CourseContentListforUser id={CourseDetails?._id} />
                         </div>
                         <br />
                         <br />
@@ -96,7 +110,7 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
                             <h1 className="text-[20px] font-Poppins font-[600] text-black dark:text-white">
                                 Course Details
                             </h1>
-                            <p className="text-[18px] mt-[20px] whitespace-pre-line w-full overflow-hidden text-black dark:text-white">
+                            <p className="text-[16px] mt-[20px] whitespace-pre-line w-full overflow-hidden text-black dark:text-white">
                                 {CourseDetails?.description}
                             </p>
                         </div>
@@ -126,9 +140,9 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
                         <div className="flex item-center">
                             {user?.includes(CourseDetails?._id) ? (
                                 <div  className="!w-[180px] my-3 font-Poppins p-3 rounded-lg cursor-pointer !bg-[crimson]">
-                                    <Link to={`/coursecontentpage/${CourseDetails._id}`} className="text-white">
+                                    <button  className="text-white " onClick={handleClick} >
                                         Enter to course
-                                    </Link>
+                                    </button>
 
                                 </div>
 
@@ -153,6 +167,12 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
                     </div>
 
                 </div>
+                {isLoading && (
+                    <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"></div>
+
+                    </div>
+                )}
                 <>
                     {
                         open && (

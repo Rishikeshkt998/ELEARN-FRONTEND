@@ -8,6 +8,7 @@ import { ChatWithTutor, FilePostTutor, GetMessagesForUser, MessagePostUser, NewC
 import { FaFile, FaImage, FaPaperclip, FaVideo } from "react-icons/fa";
 import { UploadS3Bucket } from "@/Services/S3bucket";
 import InputEmoji from "react-input-emoji";
+import { useNavigate } from "react-router-dom";
 
 interface MessageData {
     senderId: string;
@@ -50,6 +51,8 @@ const Chatpage: React.FC = () => {
     const [loading, setLoading] = useState(false)
     const [fileurl, setFileUrl] = useState("")
     const [dummyState, setDummyState] = useState(false);
+    const [unreadMessages, setUnreadMessages] = useState<{ [key: string]: number }>({});
+    // const [lastClickedUser, setLastClickedUser] = useState<string | null>(null);
     const socket: MutableRefObject<Socket | undefined> = useRef()
     useEffect(() => {
         console.log("vite", import.meta.env.VITE_SOCKETIO_URL)
@@ -73,12 +76,44 @@ const Chatpage: React.FC = () => {
             console.log("users", users)
         })
     }, [])
-    useEffect(() => {
-        if (arrivalMessage && currentChat && currentChat[0].members.includes(arrivalMessage.senderId)) {
-            setMessages(prev => [...prev, arrivalMessage]);
+    // useEffect(() => {
+    //     if (arrivalMessage && currentChat && currentChat[0].members.includes(arrivalMessage.senderId)) {
+    //         setMessages(prev => [...prev, arrivalMessage]);
 
+    //     }
+    // }, [arrivalMessage, currentChat]);
+    useEffect(() => {
+        arrivalMessage && currentChat && currentChat[0]?.members.includes(arrivalMessage.senderId) &&
+            setMessages(prev => [...prev, arrivalMessage])
+        setUnreadMessages(prev => ({
+            ...prev,
+            [arrivalMessage?.senderId as string]: (prev[arrivalMessage?.senderId as string] || 0) + 1
+        }));
+
+        console.log("hiiii", unreadMessages)
+
+
+        console.log("Updated unreadMessages state:", unreadMessages);
+
+    }, [arrivalMessage])
+    useEffect(() => {
+        console.log("Unread Messages: ", unreadMessages);
+    }, [unreadMessages]);
+
+
+    useEffect(() => {
+        if (currentChat) {
+            setUnreadMessages(prev => {
+                const updatedUnreadMessages = { ...prev };
+                const senderId = currentChat[0]?.members.find((member: any) => member !== userId);
+                if (senderId) {
+                    delete updatedUnreadMessages[senderId];
+                }
+
+                return updatedUnreadMessages;
+            });
         }
-    }, [arrivalMessage, currentChat]);
+    }, [currentChat, userId]);
     useEffect(() => {
         const getUser = async () => {
             try {
@@ -259,6 +294,10 @@ const Chatpage: React.FC = () => {
         setAttachedFile(null);
         setFilePreview(null);
     };
+    const navigate = useNavigate(); 
+    const handleClick = () => {
+        navigate(-1);
+    };
     return (
         
         <div className="flex h-screen overflow-hidden">
@@ -266,12 +305,12 @@ const Chatpage: React.FC = () => {
                 <header className="p-4 border-b border-gray-300 flex justify-between items-center bg-indigo-600 text-white">
                     <h1 className="text-2xl font-semibold">ELEARN</h1>
                     <div className="relative">
-                        <button id="menuButton" className="focus:outline-none"></button>
+                        <button id="menuButton" className="focus:outline-none" onClick={handleClick}></button>
                     </div>
                 </header>
                 <div className="overflow-y-auto h-screen p-3 mb-9 pb-20">
                     <div>
-                        <Chatuserss conversations={conversations} setConversations={setConversations} currentChat={currentChat} setCurrentChat={setCurrentChat} currentUser={userId} user={user} setUser={setUser} />
+                        <Chatuserss conversations={conversations} setConversations={setConversations} currentChat={currentChat} setCurrentChat={setCurrentChat} currentUser={userId} user={user} setUser={setUser} unreadMessages={unreadMessages} />
                     </div>
                 </div>
             </div>

@@ -19,6 +19,7 @@ type Props = {
     setCurrentChat: (currentChat: Conversation [] | null) => void,
     conversations: Conversation[] | null,
     setConversations: (conversations: Conversation[] | null)=>void
+    unreadMessages: { [key: string]: number };
 
 }
 interface Trainer {
@@ -33,7 +34,7 @@ interface Trainer {
     isBlocked?: boolean;
 }
 
-const Chatuserss: FC<Props> = ({  user, currentUser, setCurrentChat ,setConversations}) => {
+const Chatuserss: FC<Props> = ({ user, currentUser, unreadMessages, setCurrentChat ,setConversations}) => {
    
         const handleTrainerClick =async (tutorid:string) => {
             try {
@@ -62,6 +63,9 @@ const Chatuserss: FC<Props> = ({  user, currentUser, setCurrentChat ,setConversa
                         <div className="flex-1">
                             <h2 className="text-lg font-semibold">{users?.name}</h2>
                         </div>
+                        {unreadMessages[users.id] > 0 && (
+                            <span className="inline-block bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1">{unreadMessages[users.id]}</span>
+                        )}
                     </div>
                 ))
             }

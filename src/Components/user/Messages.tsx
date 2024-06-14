@@ -4,7 +4,7 @@
 
 import { format } from 'timeago.js';
 import ReactPlayer from 'react-player';
-import { FaCheckCircle, FaCircle, FaPlayCircle } from 'react-icons/fa';
+import {  FaPlayCircle } from 'react-icons/fa';
 import { useState } from 'react';
 import FileDownload from '../Trainer/Chat/FileDownload';
 import VideoPlayer from '../Trainer/Chat/VideoPlayer';
@@ -14,7 +14,7 @@ const Messages = ({ message, own }: { message: any, own: boolean }) => {
     const messageBubbleClass = own ? "bg-indigo-500 text-white" : "bg-white text-gray-700";
     const avatarPositionClass = own ? "ml-2" : "mr-2";
     const timeClass = own ? "text-xs text-gray-500" : "text-xs text-gray-500";
-    const messagestatusClass = own ? "block" : "hidden";
+    // const messagestatusClass = own ? "block" : "hidden";
     const [showVideo, setShowVideo] = useState(false);
 
     const handleVideoClick = () => {
@@ -88,10 +88,10 @@ const Messages = ({ message, own }: { message: any, own: boolean }) => {
                 </div>
                 <span className={`flex-grow ${timeClass}`}>{format(message.creationTime)}</span>
             </div>
-            <div className={`flex justify-end ${messagestatusClass}`}>
+            {/* <div className={`flex justify-end ${messagestatusClass}`}>
                 {message?.status === 'read' ? <FaCheckCircle /> : <FaCircle />}
             </div>
-            
+             */}
             
             {own && (
                 <div className={`w-9 h-9 rounded-full flex items-center justify-center ${avatarPositionClass}`}>

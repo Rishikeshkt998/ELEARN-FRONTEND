@@ -38,7 +38,7 @@ const Sidebar: React.FC = () => {
                                         href="#"
                                         className="text-base font-normal flex items-center p-2 group"
                                     >
-                                        <Link to="/admin/courseanalytics" className="ml-3 flex-1 whitespace-nowrap">Dashboard</Link>
+                                        <Link to="/admin/dashboard" className="ml-3 flex-1 whitespace-nowrap">Dashboard</Link>
                                     </a>
                                 </li>
                                 <li className="border border-gray-300 rounded-lg transition duration-200 hover:border-transparent hover:bg-gray-700">
