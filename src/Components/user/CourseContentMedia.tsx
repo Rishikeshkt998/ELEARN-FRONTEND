@@ -365,7 +365,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                         <div className="text-center px-6 py-4">
                                             <div className="py-4">
                                                 <h3 className="text-xl font-semibold text-gray-800">Upcoming Meeting</h3>
-                                                <div key={CourseDetails._id}>
+                                                <div key={CourseDetails?._id}>
                                                     <p className="text-sm font-medium text-gray-600">Meeting Date: {CourseDetails.meeting.meetingDate}</p>
                                                     <p className="text-sm font-medium text-gray-600">Meeting Time: {CourseDetails.meeting.meetingTime}</p>
                                                     <p className="text-sm font-medium text-gray-600 hidden">Meeting Code:{CourseDetails.meeting.meetingCode} </p>
@@ -413,22 +413,22 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                             <form onSubmit={submitAnswer}>
                                                 <h1 className="text-lg font-bold mb-4">Quiz</h1>
                                                 <div className="mb-4">
-                                                    <h2 className="text-lg font-semibold mb-2">{question.question} ?</h2>
+                                                    <h2 className="text-lg font-semibold mb-2">{question?.question} ?</h2>
                                                 </div>
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                     {question.options.map((option: string, optionIndex: number) => (
                                                         <div key={optionIndex} className="bg-gray-300 flex items-center rounded-md py-2 px-2">
-                                                            {!checkCompletedWrongQuestions(question._id as string) &&!checkCompletedQuestions(question._id as string) && (
+                                                            {!checkCompletedWrongQuestions(question?._id as string) &&!checkCompletedQuestions(question?._id as string) && (
                                                                 <input
                                                                     onChange={(e) =>
                                                                         selectAnswer(
                                                                             e.target.value as string,
-                                                                            question._id as string
+                                                                            question?._id as string
                                                                         )
                                                                     }
                                                                     type="radio"
                                                                     className="mr-2"
-                                                                    name={`question${question._id}`}
+                                                                    name={`question${question?._id}`}
                                                                     value={optionIndex + 1}
                                                                 />
                                                             )}
@@ -462,9 +462,9 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                                                 Answered <FontAwesomeIcon icon={faSmile} />
                                                             </span>
                                                         ) : ( */}
-                                                        {checkCompletedQuestions(question._id as string) || checkCompletedWrongQuestions(question._id as string) ? (
-                                                            <span className={`bg-${checkCompletedQuestions(question._id as string) ? 'green' : 'red'}-100 text-${checkCompletedQuestions(question._id as string) ? 'green' : 'red'}-800 text-xs font-medium me-2 px-10 py-3 rounded dark:bg-gray-700 dark:text-${checkCompletedQuestions(question._id as string) ? 'green' : 'red'}-400 border border-${checkCompletedQuestions(question._id as string) ? 'green' : 'red'}-400`}>
-                                                                {checkCompletedQuestions(question._id as string) ? 'Correct Answer' : 'wrong Answer'} <FontAwesomeIcon icon={faSmile} />
+                                                        {checkCompletedQuestions(question?._id as string) || checkCompletedWrongQuestions(question?._id as string) ? (
+                                                            <span className={`bg-${checkCompletedQuestions(question._id as string) ? 'green' : 'red'}-100 text-${checkCompletedQuestions(question?._id as string) ? 'green' : 'red'}-800 text-xs font-medium me-2 px-10 py-3 rounded dark:bg-gray-700 dark:text-${checkCompletedQuestions(question._id as string) ? 'green' : 'red'}-400 border border-${checkCompletedQuestions(question._id as string) ? 'green' : 'red'}-400`}>
+                                                                {checkCompletedQuestions(question?._id as string) ? 'Correct Answer' : 'wrong Answer'} <FontAwesomeIcon icon={faSmile} />
                                                             </span>
                                                         ) :(
                                                             <button
