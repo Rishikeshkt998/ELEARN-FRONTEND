@@ -33,13 +33,12 @@ Api.interceptors.response.use(
             window.history.back();
             return Promise.reject(error);
 
-        // } else if (error.response && error.response.status === 404) {
-        //     window.location.href = "/error404";
-        //     return Promise.reject(error);
+        } else if (error.response && error.response.status === 404) {
+            window.location.href = "/error404";
+            return Promise.reject(error);
 
-        // } else if (error.response && error.response.status === 500) {
-        //     window.location.href = "/error500";
-        // }
+        } else if (error.response && error.response.status === 500) {
+            window.location.href = "/error500";
         }
         return Promise.reject(error);
     }
