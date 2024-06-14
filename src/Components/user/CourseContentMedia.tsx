@@ -552,11 +552,11 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                             <div className="w-full flex p-5">
 
                                                 <div>
-                                                    <img src={item.userId.profileimage} width={30} height={30} className="w-[30px] h-[30px] mt-1 rounded-full object-cover" />
+                                                    <img src={item?.userId?.profileimage} width={30} height={30} className="w-[30px] h-[30px] mt-1 rounded-full object-cover" />
                                                 </div>
                                                 <div>
                                                     <h1 className="text-[18px] ms-7">
-                                                        {item.userId.name}
+                                                        {item?.userId?.name}
                                                     </h1>
 
 
@@ -565,12 +565,12 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                                     </div>
                                                     <div className="flex">
 
-                                                        <p className="text-black ms-8 mt-2">{item.comments}</p>
+                                                        <p className="text-black ms-8 mt-2">{item?.comments}</p>
 
 
                                                     </div>
                                                     <small className="text-black ms-8">
-                                                        {format(item.createdAt)}
+                                                        {format(item?.createdAt)}
 
                                                     </small>
                                                     <div className="ms-6">
@@ -619,10 +619,10 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                                                         <div className="w-full pt-3">
                                                                             <h5 className="pl-3 text-[18px] font-[500] ">Give a Rating<span className="text-red-500">*</span></h5>
                                                                             <div className="flex w-full ml-2 pb-3">
-                                                                                <StarRatings initialValue={item.rating} editRating={editRating} setEditRating={setEditRating} />
+                                                                                <StarRatings initialValue={item?.rating} editRating={editRating} setEditRating={setEditRating} />
                                                                             </div>
                                                                         </div>
-                                                                        <TextArea initialValue={item.comments} editReviews={editReviews} setEditReviews={setEditReviews} />
+                                                                        <TextArea initialValue={item?.comments} editReviews={editReviews} setEditReviews={setEditReviews} />
                                                                     </div>
                                                                     <div className="flex justify-end pt-2">
                                                                         <button className="focus:outline-none px-4 bg-teal-500 p-3 ml-3 rounded-lg text-white hover:bg-teal-400" onClick={handleEditReviewSubmit}>Confirm</button>
