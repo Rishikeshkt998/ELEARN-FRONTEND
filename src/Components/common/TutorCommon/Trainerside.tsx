@@ -54,7 +54,7 @@ const Trainerside: React.FC = () => {
                                     
                                     className="text-base font-normal flex items-center p-2 group"
                                 >
-                                    <RxDashboard /><Link to="/tutor/trainerdashboard" className="ml-3 flex-1 whitespace-nowrap text-white">Dashboard</Link>
+                                    <RxDashboard /><Link to="/tutor/home" className="ml-3 flex-1 whitespace-nowrap text-white">Dashboard</Link>
                                 </a>
                             </li>
                             <li className=" rounded-lg transition duration-200 hover:border-transparent hover:bg-gray-300">

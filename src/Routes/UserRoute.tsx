@@ -55,7 +55,7 @@ const UserRoute = () => {
                 <Route path="home" element={<UserHome />} />
                 <Route path="course" element={<UserCoursepageContainer />} />
                 <Route path='chat' element={<Chatpage />} />
-                <Route path='videocall/:roomID' element={<VideoCallDashboard />} />
+                <Route path='videocall/:roomID' element={<PrivateRoute><VideoCallDashboard /></PrivateRoute>} />
                 <Route path='trainerregistration' element={<TrainerContainer />} />
                 <Route path='trainerotp' element={<TrainerOtpContainer />} />
                 <Route path="profleotp" element={<ProfileOtpcontainer />} />

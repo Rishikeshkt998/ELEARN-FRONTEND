@@ -54,17 +54,28 @@ interface User {
 interface EnrolledStudentsdata {
     course:Course;
     user: User;
-    enrolledTime: Date;
+    enrolledTime:string;
 }
 
 function EnrolledStudentsView() {
     const [data, setData] = useState<EnrolledStudentsdata[]>([]);
+    const [enrolled, setEnrolled] = useState<any>([]);
+    const [time, setTime] = useState("");
+
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response =await fetchEnrolledStudents()
-                    setData(response?.data?.EnrolledStudents);
+                console.log(response)
+                setData(response?.data?.EnrolledStudents.enrolledStudentsDetails);
+                setEnrolled(response?.data?.EnrolledStudents.enrolledStudents)
+                for (const valuetime of enrolled){
+                    setTime(valuetime.enrolledTime);
+
+                }
+                
+
                 
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -74,6 +85,10 @@ function EnrolledStudentsView() {
         fetchData();
     }, []);
 
+    const formatLocalTime = (timeString: string) => {
+        const date = new Date(timeString); 
+        return date.toLocaleString(); 
+    };
     return (
         <div className="relative p-20 overflow-x-auto h-screen bg-gray-900 ">
             
@@ -112,9 +127,9 @@ function EnrolledStudentsView() {
                             <td className="bg-gray-500 px-6 py-4">
                                 {course && course.name}
                             </td>
-                            {/* <td className=" bg-gray-500 px-6 py-4">
-                                {course && course.enrolledTime}
-                            </td> */}
+                            <td className="bg-gray-500 px-6 py-4">
+                                {formatLocalTime(time)}
+                            </td>
                         </tr>
                     ))}
                 </tbody>

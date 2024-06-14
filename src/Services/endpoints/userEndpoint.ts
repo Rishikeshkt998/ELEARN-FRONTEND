@@ -29,6 +29,7 @@ const userRoutes = {
     download:'/user/downloadcertificate',
     ReviewSubmit:'/user/reviewsubmit',
     EditReviewSubmit: '/user/editreview',
+    ChapterCompletedTimeUpadate: '/user/completiontime',
     CompletedChapterView:'/user/completedChapterview',
     CompletedLessonsView:'/user/completedlessonview',
     CompletedChaptersPost:'/user/completedchapter',

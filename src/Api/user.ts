@@ -41,12 +41,13 @@ Api.interceptors.response.use(
             window.history.back();
             return Promise.reject(error);
 
-        }else if (error.response && error.response.status === 404) {
-            window.location.href = "/error404";
-            return Promise.reject(error);
+        // }else if (error.response && error.response.status === 404) {
+        //     window.location.href = "/error404";
+        //     return Promise.reject(error);
             
-        } else if (error.response && error.response.status === 500) {
-            window.location.href = "/error500";
+        // } else if (error.response && error.response.status === 500) {
+        //     window.location.href = "/error500";
+        // }
         }
         return Promise.reject(error);
     }
@@ -372,6 +373,15 @@ export const EditReviewSubmit = async (reviews: any, rating: any, id: any, userI
 export const GetChapterView = async (id:string|undefined,userId:any) => {
     try {
         const res = await Api.get(`${userRoutes.CompletedChapterView}/${id}/${userId}`);
+
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const ChaptersCompletedTime = async (id: string | undefined, userId: any) => {
+    try {
+        const res = await Api.post(userRoutes.ChapterCompletedTimeUpadate,{id,userId});
 
         return res
     } catch (error) {

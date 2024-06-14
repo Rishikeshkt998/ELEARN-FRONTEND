@@ -10,7 +10,7 @@ import StarRating from "./StarRating"
 import { format } from "timeago.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSmile } from "@fortawesome/free-solid-svg-icons"
-import { EditReviewSubmit, GetChapterView, GetCourse, GetLessonsView, PostompletedChapter, PostompletedLesson, QuestionAnswer, ReviewSubmit, fetchEnrolled } from "@/Api/user"
+import { ChaptersCompletedTime, EditReviewSubmit, GetChapterView, GetCourse, GetLessonsView, PostompletedChapter, PostompletedLesson, QuestionAnswer, ReviewSubmit, fetchEnrolled } from "@/Api/user"
 import { BsPencil } from "react-icons/bs"
 import StarRatings from "./StarRatings"
 import TextArea from "./TextArea"
@@ -251,6 +251,13 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                     completedChapterIds.push(chapterId);
                                 }
                                 setChapterCompleted(completedChapterIds)
+                                const allChaptersCompleted = completedChapterIds.every((chapterId:any) => completedChapters.includes(chapterId));
+                                console.log(allChaptersCompleted)
+                                if (allChaptersCompleted) {
+                                    
+                                    const result=await ChaptersCompletedTime(id, usersId);
+                                    console.log("course status update",result)
+                                }
                             }
                         }
                     }
