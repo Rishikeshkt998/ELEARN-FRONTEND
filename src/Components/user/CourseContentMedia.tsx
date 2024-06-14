@@ -164,7 +164,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
 
     }
     if (currentChapter && currentChapter.lessons.length > 0) {
-        const lessonId = currentChapter.lessons[activeLessonIndex]._id;
+        const lessonId = currentChapter.lessons[activeLessonIndex]?._id;
         setVideoUrl(currentChapter.lessons[activeLessonIndex].url)
         setLessonId(lessonId)
     }
@@ -201,10 +201,10 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                         console.log(isLessonCompleted)
 
                     }
-                    const chapterLessonIds = chapters[activeVideo]?.lessons.map((lesson: any) => lesson._id);
+                    const chapterLessonIds = chapters[activeVideo]?.lessons.map((lesson: any) => lesson?._id);
                     const allLessonsCompleted = chapterLessonIds.every((lessonId: any) => completedLessons.includes(lessonId));
                     if (allLessonsCompleted) {
-                        const chapterId = chapters[activeVideo]._id;
+                        const chapterId = chapters[activeVideo]?._id;
                         const chapterResponse = await PostompletedChapter(chapterId, id, usersId)
                         if (chapterResponse) {
                             const completedChapterResponse = await GetChapterView(id, usersId)
@@ -238,7 +238,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                         completedLessonIds.push(lessonId);
                     }
                     setLessonCompleted(completedLessonIds);
-                    const chapterLessonIds = chapters[activeVideo]?.lessons.map((lesson: any) => lesson._id);
+                    const chapterLessonIds = chapters[activeVideo]?.lessons.map((lesson: any) => lesson?._id);
                     if (chapterLessonIds && chapterLessonIds.length > 0) {
                         const allLessonsCompleted = chapterLessonIds.every((lessonId: any) => completedLessons.includes(lessonId));
                         if (allLessonsCompleted) {
@@ -341,7 +341,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                 <h1 className="pt-2 text-[25px] font-[600]">{CourseDetails?.name}</h1>
                 <br />
                 <div className="w-full p-4 flex items-center justify-between bg-slate-500 bg-opacity-20 backdrop-blur shadow-[bg-slate-700] rounded shadow-inner">
-                    {["overview", "Classes", "Resourses", "Q&A", "Reviews"].map((text, index) => (
+                    {["overview", "Classes", "Resourses", "Quizz", "Reviews"].map((text, index) => (
                         <h5 key={index} className={`800px;text-[20px] cursor-pointer ${activeBar === index && "text-red-500"
                             }`} onClick={() => setActiveBar(index)}>
                             {text}
