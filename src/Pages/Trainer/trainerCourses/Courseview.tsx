@@ -124,20 +124,20 @@ const Courseview = () => {
         <div className="max-w-screen-xl h-full bg-gray-900 mx-auto p-5 sm:p-10 md:p-16">
             <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-10">
                 {courses.map(course => (
-                    <div key={course._id} className="rounded bg-white overflow-hidden shadow-lg flex flex-col">
+                    <div key={course?._id} className="rounded bg-white overflow-hidden shadow-lg flex flex-col">
                         <div className="relative">
-                            <img className="w-full max-w-full h-36" src={course.thumbnail} alt="Course thumbnail"  />
+                            <img className="w-full max-w-full h-36" src={course?.thumbnail} alt="Course thumbnail"  />
                             <div className="hover:bg-transparent transition duration-300 flex absolute bottom-0 right-0 left-0">
-                                <a onClick={() => handleEdit(course._id)} className="text-blue-500 mx-2 cursor-pointer ">
+                                <a onClick={() => handleEdit(course?._id)} className="text-blue-500 mx-2 cursor-pointer ">
                                     <FaEdit className="text-white mx-2 mb-2 cursor-pointer" />
                                 </a>
-                                <a onClick={() => handleDeleteChapter(course._id)} className="text-blue-500 mx-2 cursor-pointer ">
+                                <a onClick={() => handleDeleteChapter(course?._id)} className="text-blue-500 mx-2 cursor-pointer ">
                                     <FaTrash className="text-white mx-2 mb-2 cursor-pointer" />
                                 </a>
-                                <a onClick={() => handleReviews(course._id)} className="text-blue-500 mx-2 cursor-pointer ">
+                                <a onClick={() => handleReviews(course?._id)} className="text-blue-500 mx-2 cursor-pointer ">
                                     <FaMessage className="text-white mx-2 mb-2 cursor-pointer" />
                                 </a>
-                                <a onClick={() => handleQuestions(course._id)} className="text-blue-500 mx-2 cursor-pointer ">
+                                <a onClick={() => handleQuestions(course?._id)} className="text-blue-500 mx-2 cursor-pointer ">
                                     <BsFillQuestionSquareFill className="text-white mx-2 mb-2 cursor-pointer" />
                                 </a>
                             </div>

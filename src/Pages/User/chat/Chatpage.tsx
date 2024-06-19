@@ -4,7 +4,7 @@ import io, { Socket } from 'socket.io-client'
 import Chatuserss from "@/Components/user/Chatuserss";
 import Messages from "@/Components/user/Messages";
 import ScrollbleFeed from "react-scrollable-feed"
-import { ChatWithTutor, FilePostTutor, GetMessagesForUser, MessagePostUser, NewConversationWithTutor } from "@/Api/user";
+import { ChatWithTutor, FilePostTutor, GetMessagesForUser, MessagePostUser,} from "@/Api/user";
 import { FaFile, FaImage, FaPaperclip, FaVideo } from "react-icons/fa";
 import { UploadS3Bucket } from "@/Services/S3bucket";
 import InputEmoji from "react-input-emoji";
@@ -51,6 +51,7 @@ const Chatpage: React.FC = () => {
     const [loading, setLoading] = useState(false)
     const [fileurl, setFileUrl] = useState("")
     const [dummyState, setDummyState] = useState(false);
+    const [tutorInfo, settutorInfo] = useState<any>();
     const [unreadMessages, setUnreadMessages] = useState<{ [key: string]: number }>({});
     // const [lastClickedUser, setLastClickedUser] = useState<string | null>(null);
     const socket: MutableRefObject<Socket | undefined> = useRef()
@@ -84,7 +85,7 @@ const Chatpage: React.FC = () => {
     // }, [arrivalMessage, currentChat]);
     useEffect(() => {
         arrivalMessage && currentChat && currentChat[0]?.members.includes(arrivalMessage.senderId) &&
-            setMessages(prev => [...prev, arrivalMessage])
+        setMessages(prev => [...prev, arrivalMessage])
         setUnreadMessages(prev => ({
             ...prev,
             [arrivalMessage?.senderId as string]: (prev[arrivalMessage?.senderId as string] || 0) + 1
@@ -118,21 +119,22 @@ const Chatpage: React.FC = () => {
         const getUser = async () => {
             try {
 
-                const response = await ChatWithTutor()
+                const response = await ChatWithTutor(userId)
+                console.log("tutors", response?.data.findedtrainer)
 
                 if (response && response.data.findedtrainer) {
                     console.log("data", response.data.findedtrainer)
                     setUser(response.data.findedtrainer);
 
 
-                    await Promise.all(response.data.findedtrainer.map(async (trainer: any) => {
-                        const tutorid = trainer.id;
-                        console.log("id", tutorid);
-                        const newConversationResponse = await NewConversationWithTutor(userId, tutorid)
+                    // await Promise.all(response.data.findedtrainer.map(async (trainer: any) => {
+                    //     const tutorid = trainer.id;
+                    //     console.log("id", tutorid);
+                    //     const newConversationResponse = await NewConversationWithTutor(userId, tutorid)
 
-                        console.log("new", newConversationResponse);
+                    //     console.log("new", newConversationResponse);
 
-                    }));
+                    // }));
 
                 }
 
@@ -310,7 +312,7 @@ const Chatpage: React.FC = () => {
                 </header>
                 <div className="overflow-y-auto h-screen p-3 mb-9 pb-20">
                     <div>
-                        <Chatuserss conversations={conversations} setConversations={setConversations} currentChat={currentChat} setCurrentChat={setCurrentChat} currentUser={userId} user={user} setUser={setUser} unreadMessages={unreadMessages} />
+                        <Chatuserss conversations={conversations} setConversations={setConversations}  currentChat={currentChat} setCurrentChat={setCurrentChat} currentUser={userId} user={user} setUser={setUser} unreadMessages={unreadMessages} tutorInfo={tutorInfo} settutorInfo={settutorInfo}/>
                     </div>
                 </div>
             </div>
@@ -318,7 +320,7 @@ const Chatpage: React.FC = () => {
                 {currentChat ? (
                     <>
                         <header className="bg-white p-4 text-gray-700">
-                            <h1 className="text-2xl font-semibold">Alice</h1>
+                            <h1 className="text-2xl font-semibold">{tutorInfo.name}</h1>
                         </header>
                         <div className="h-full overflow-y-auto bg-gray-100 pb-36">
                             <ScrollbleFeed>
@@ -326,7 +328,7 @@ const Chatpage: React.FC = () => {
                                     <div className="text-center">Start a conversation</div>
                                 ) : (
                                     messages.map((m, index) => (
-                                        <Messages key={index} message={m} own={m.senderId === userId} />
+                                        <Messages key={index}  message={m} own={m.senderId === userId} />
                                     ))
                                 )}
                             </ScrollbleFeed>

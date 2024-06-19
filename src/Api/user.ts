@@ -8,13 +8,17 @@ import Cookies from "js-cookie";
 
 
 Api.interceptors.request.use(
-    (config:any) => {
+    (config: any) => {
         if (config && config.url && config?.url.startsWith("/user")) {
-        const userToken = localStorage.getItem("userToken")
-        if (userToken) {
-            config.headers.Authorization = `Bearer ${userToken}`;
-        }  
-       }  
+            const userToken = localStorage.getItem("userToken")
+            if (userToken) {
+                config.headers.Authorization = `Bearer ${userToken}`;
+            }
+            const courseId = localStorage.getItem("courseId");
+            if (courseId) {
+                config.headers['Course-Id'] = courseId;
+            }
+        }
         return config;
     },
     (error) => {
@@ -35,20 +39,20 @@ Api.interceptors.response.use(
         return response;
     },
     function (error) {
-        if (error.response && error.response.status === 401 && error.response?.data.message === 'User is not enrolled in this course'){
+        if (error.response && error.response.status === 401 && error.response?.data.message === 'User is not enrolled in this course') {
             // window.location.href = "/login";
             toast.error("you are not enrolled this course");
             window.history.back();
             return Promise.reject(error);
 
-        }else if (error.response && error.response.status === 404) {
+        } else if (error.response && error.response.status === 404) {
             window.location.href = "/error404";
             return Promise.reject(error);
-            
+
         } else if (error.response && error.response.status === 500) {
             window.location.href = "/error500";
         }
-        
+
         return Promise.reject(error);
     }
 );
@@ -63,11 +67,11 @@ export const signup = async (name: string, email: string, phone: string, passwor
 
         const res = await Api.post(userRoutes.userSignup, { name, email, phone, password, confirmPassword });
         return res
-        
+
     } catch (error) {
         console.error('Error in signup:', error);
 
-        
+
     }
 };
 
@@ -109,9 +113,9 @@ export const verifyOtpForgotPassword = async (otp: string, email: string) => {
         console.log(error)
     }
 }
-export const ChangedPasswordForgot = async (email:any, newpassword:any, confirmpassword:any) => {
+export const ChangedPasswordForgot = async (email: any, newpassword: any, confirmpassword: any) => {
     try {
-        const res = await Api.post(userRoutes.changedPassword, { email,newpassword,confirmpassword});
+        const res = await Api.post(userRoutes.changedPassword, { email, newpassword, confirmpassword });
         return res
     } catch (error) {
         console.log(error)
@@ -157,16 +161,16 @@ export const profile = async (userId: string) => {
         console.log(error)
     }
 }
-export const profileEdit = async (userId: string,userData:any) => {
+export const profileEdit = async (userId: string, userData: any) => {
     try {
 
-        const res = await Api.put(`${userRoutes.updateProfile}/${userId}`,userData);
+        const res = await Api.put(`${userRoutes.updateProfile}/${userId}`, userData);
         return res
     } catch (error) {
         console.log(error)
     }
 }
-export const profileImages = async (payload:any) => {
+export const profileImages = async (payload: any) => {
     try {
 
         const res = await Api.post(userRoutes.uploadProfilePic, payload);
@@ -203,7 +207,7 @@ export const Emailverification = async (otp: string, email: string) => {
         console.log(error)
     }
 }
-export const courseView=async()=>{
+export const courseView = async () => {
     try {
         const res = await Api.post(userRoutes.Course);
 
@@ -214,16 +218,18 @@ export const courseView=async()=>{
 
 }
 
-export const CourseDetailsPageGetCourse = async (id:string|undefined) => {
+export const CourseDetailsPageGetCourse = async (id: string | undefined) => {
     try {
         const res = await Api.get(`${userRoutes.GetCourse}/${id}`);
+        console.log("responsevalue", res)
+        localStorage.setItem("courseId", res.data.id);
 
         return res
     } catch (error) {
         console.log(error)
     }
 }
-export const CourseDetailsPageGetUsers = async (id: string |null) => {
+export const CourseDetailsPageGetUsers = async (id: string | null) => {
     try {
         const res = await Api.get(`${userRoutes.GetUsers}/${id}`);
 
@@ -260,7 +266,7 @@ export const Payment = async (amount: number) => {
         console.log(error)
     }
 }
-export const OrderPost = async (id:string|null, courseId:string, payment_Info:any) => {
+export const OrderPost = async (id: string | null, courseId: string, payment_Info: any) => {
     try {
         const res = await Api.post(userRoutes.OrderPost, { id, courseId, payment_Info });
 
@@ -269,7 +275,7 @@ export const OrderPost = async (id:string|null, courseId:string, payment_Info:an
         console.log(error)
     }
 }
-export const GetCourse = async (id:string|undefined) => {
+export const GetCourse = async (id: string | undefined) => {
     try {
         const res = await Api.get(`${userRoutes.GetCourseAcess}/${id}`);
 
@@ -282,7 +288,7 @@ export const GetCourses = async () => {
     try {
 
         const res = await Api.get(userRoutes.GetCourses);
-        return res 
+        return res
     } catch (error) {
         console.log(error)
     }
@@ -306,7 +312,7 @@ export const GetChapters = async (id: string | undefined) => {
     }
 }
 
-export const GetSearchCourse = async ( searchTerm?:any, category?: string, price?: number) => {
+export const GetSearchCourse = async (searchTerm?: any, category?: string, price?: number) => {
     try {
         const res = await Api.get(`${userRoutes.searchCourse}`, {
             params: {
@@ -330,18 +336,18 @@ export const EnrolledCoursesView = async (id: string | null) => {
         console.log(error)
     }
 }
-export const  generateCertificate= async (courseId: string, studentId: string|null,responseType:any) => {
+export const generateCertificate = async (courseId: string, studentId: string | null, responseType: any) => {
     try {
-        const res = await Api.get(`${userRoutes.download}/${courseId}/${studentId}`,{responseType:responseType}); 
-        
+        const res = await Api.get(`${userRoutes.download}/${courseId}/${studentId}`, { responseType: responseType });
+
         const blob = new Blob([res.data], { type: "application/pdf" });
         const url = window.URL.createObjectURL(blob);
 
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "certificate.pdf"); 
+        link.setAttribute("download", "certificate.pdf");
 
-        
+
         document.body.appendChild(link);
         link.click();
 
@@ -352,9 +358,9 @@ export const  generateCertificate= async (courseId: string, studentId: string|nu
 }
 
 
-export const ReviewSubmit = async (reviews:any, rating:any, id:any, userId: any) => {
+export const ReviewSubmit = async (reviews: any, rating: any, id: any, userId: any) => {
     try {
-        const res = await Api.post(userRoutes.ReviewSubmit, { reviews, rating, id, userId});
+        const res = await Api.post(userRoutes.ReviewSubmit, { reviews, rating, id, userId });
 
         return res
     } catch (error) {
@@ -370,7 +376,7 @@ export const EditReviewSubmit = async (reviews: any, rating: any, id: any, userI
         console.log(error)
     }
 }
-export const GetChapterView = async (id:string|undefined,userId:any) => {
+export const GetChapterView = async (id: string | undefined, userId: any) => {
     try {
         const res = await Api.get(`${userRoutes.CompletedChapterView}/${id}/${userId}`);
 
@@ -381,14 +387,14 @@ export const GetChapterView = async (id:string|undefined,userId:any) => {
 }
 export const ChaptersCompletedTime = async (id: string | undefined, userId: any) => {
     try {
-        const res = await Api.post(userRoutes.ChapterCompletedTimeUpadate,{id,userId});
+        const res = await Api.post(userRoutes.ChapterCompletedTimeUpadate, { id, userId });
 
         return res
     } catch (error) {
         console.log(error)
     }
 }
-export const GetLessonsView = async (id: string | undefined,userId:any) => {
+export const GetLessonsView = async (id: string | undefined, userId: any) => {
     try {
         const res = await Api.get(`${userRoutes.CompletedLessonsView}/${id}/${userId}`);
 
@@ -397,25 +403,25 @@ export const GetLessonsView = async (id: string | undefined,userId:any) => {
         console.log(error)
     }
 }
-export const PostompletedChapter = async (chapterId:any, id:any,userId:any) => {
+export const PostompletedChapter = async (chapterId: any, id: any, userId: any) => {
     try {
-        const res = await Api.post(userRoutes.CompletedChaptersPost, { chapterId, id,userId });
+        const res = await Api.post(userRoutes.CompletedChaptersPost, { chapterId, id, userId });
 
         return res
     } catch (error) {
         console.log(error)
     }
 }
-export const PostompletedLesson = async (lessonId: any, id: any,userId:any) => {
+export const PostompletedLesson = async (lessonId: any, id: any, userId: any) => {
     try {
-        const res = await Api.post(userRoutes.CompletedLessonPost, { lessonId, id,userId });
+        const res = await Api.post(userRoutes.CompletedLessonPost, { lessonId, id, userId });
 
         return res
     } catch (error) {
         console.log(error)
     }
 }
-export const fetchEnrolled = async (id: string|undefined, usersId:any) => {
+export const fetchEnrolled = async (id: string | undefined, usersId: any) => {
     try {
         const res = await Api.get(`${userRoutes.fetchENrolled}/${id}/${usersId}`);
 
@@ -424,7 +430,7 @@ export const fetchEnrolled = async (id: string|undefined, usersId:any) => {
         console.log(error)
     }
 }
-export const QuestionAnswer = async (questionId:any, answer:any, id:any, usersId:any) => {
+export const QuestionAnswer = async (questionId: any, answer: any, id: any, usersId: any) => {
     try {
         const res = await Api.post(userRoutes.QuestionAnswer, { questionId, answer, id, usersId });
 
@@ -445,9 +451,11 @@ export const getTutorbyId = async (userId: string | undefined) => {
 }
 
 
-export const ChatWithTutor= async () => {
+export const ChatWithTutor = async (userId: any) => {
     try {
-        const res = await Api.get(userRoutes.TutorsChat);
+        // const res = await Api.get(userRoutes.TutorsChat);
+        const res = await Api.get(`${userRoutes.TutorsChat}/${userId}`);
+
 
         return res
     } catch (error) {
@@ -463,7 +471,7 @@ export const NewConversationWithTutor = async (senderId: any, receiverId: any) =
         console.log(error)
     }
 }
-export const GetMessagesForUser= async (id: any) => {
+export const GetMessagesForUser = async (id: any) => {
     try {
 
         const res = await Api.get(`${userRoutes.GetMessagesUser}/${id}`);
@@ -511,7 +519,7 @@ export const UserLogout = async () => {
 export const GoogleAuth = async (name: any, email: any, googlePhotoUrl: any, headers: any) => {
     try {
 
-        const res = await Api.post(userRoutes.googleAuth, {name, email, googlePhotoUrl},{headers})
+        const res = await Api.post(userRoutes.googleAuth, { name, email, googlePhotoUrl }, { headers })
         return res
     } catch (error) {
         console.log(error)

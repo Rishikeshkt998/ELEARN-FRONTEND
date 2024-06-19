@@ -343,6 +343,13 @@ const UserCard = () => {
             }
         }, 500), []
     );
+    const resetFilter = () => {
+        setSelectedCategory("");
+        setPriceSort("");
+        setSearchTerm("")
+        // setSelectedCategory({ target: { value: "" } } as React.ChangeEvent<HTMLSelectElement>);
+        // setPriceSort({ target: { value: "asc" } } as React.ChangeEvent<HTMLSelectElement>);
+    };
 
     useEffect(() => {
         fetchCoursesWithDebounce(searchTerm, selectedCategory, priceSort);
@@ -414,6 +421,28 @@ const UserCard = () => {
                                 <option value="desc">High to Low</option>
                             </select>
                         </div>
+                        <div className="max-w-sm mx-auto w-44 py-5">
+                            <button
+                                onClick={resetFilter}
+                                className="inline-flex items-center px-4 py-2 bg-gray-500 text-white text-sm font-medium rounded-md"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-5 w-5 mr-2"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                                Reset
+                            </button>
+                            </div>
                     </div>
                 </div>
                 <div className="min-h-[100px] rounded-lg bg-gray-200 sm:col-span-9">
@@ -435,7 +464,7 @@ const UserCard = () => {
                                                     <p className="text-gray-500 text-sm">{course?.category}</p>
                                                 </div>
                                                 <div className="px-6 py-4 flex justify-between items-center">
-                                                    <a href="#" className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">₹{course?.estimatedPrice}Rs</a>
+                                                    <a href="#" className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">₹{course?.price}Rs</a>
                                                 </div>
                                                 </Link>
                                             </div>

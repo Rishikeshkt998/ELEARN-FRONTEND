@@ -75,14 +75,13 @@ const CourseCard: FC<Props> = ({ searchTerm }) => {
                                 <p className="text-gray-500 text-sm">{course.category}</p>
                             </div>
                             <div className="px-6 py-4 flex justify-between items-center">
-                                <span className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">{course.estimatedPrice}</span>
+                                <span className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">{course.price}</span>
                             </div>
                         </div>
                     </Link>
                 ))}
             </div>
             <div className="mt-16">
-                {/* Pagination */}
                 <nav className="flex justify-center">
                     <ul className="flex space-x-4">
                         {[...Array(Math.ceil(courses.length / coursesPerPage)).keys()].map(number => (

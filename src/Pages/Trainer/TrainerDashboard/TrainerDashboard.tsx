@@ -9,6 +9,7 @@ interface TotalCountResponse {
     totalUsers: number;
     totalTutors: number;
     totalSales: number;
+    totalAmount:number;
 }
 
 const TrainerDashboard = () => {
@@ -71,8 +72,8 @@ const TrainerDashboard = () => {
                         </svg>
                     </div>
                     <div className="p-4 text-right">
-                        <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Tutors</p>
-                        <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">{totalValue?.totalTutors}</h4>
+                        <p className="block antialiased font-sans text-sm leading-normal font-normal text-blue-gray-600">Total Sales</p>
+                        <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-blue-gray-900">{totalValue?.totalAmount}</h4>
                     </div>
                     <div className="border-t border-blue-gray-50 p-4">
                         <p className="block antialiased font-sans text-base leading-relaxed font-normal text-blue-gray-600">

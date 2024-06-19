@@ -48,31 +48,7 @@ const Messages = ({ message, own }: { message: any, own: boolean }) => {
             return <p>{message?.message}</p>;
         }
     };
-    // const markMessageAsRead = async (messageId: string) => {
-    //     try {
-    //         const response = await MessageRead(messageId);
-    //        console.log("messageread",response)
-    //     } catch (error) {
-    //         console.error('Error marking message as read:', error);
-    //     }
-    // };
-    // console.log(message)
-    // useEffect(() => {
-        
-    //     // message?.map((messages:any) => {
-    //     //     if (messages?.status === 'unread' && !own) {
-    //     //         markMessageAsRead(message?._id);
-    //     //     }
-    //     // });
-    //     if (Array.isArray(message)) {
-    //         message.forEach((msg: any) => {
-    //             if (msg?.status === 'unread' && !own) {
-    //                 console.log(msg)
-    //                 markMessageAsRead(msg?._id);
-    //             }
-    //         });
-    //     }
-    // }, [message,own]);
+    
     return (
         <div className={`flex ${messageContainerClass} mb-4 cursor-pointer`}>
             {!own && (

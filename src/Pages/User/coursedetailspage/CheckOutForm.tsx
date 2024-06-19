@@ -13,7 +13,7 @@ type Props = {
     setopen: any,
     CourseDetails: any
 }
-const CheckOutForm: FC<Props> = ({  CourseDetails }) => {
+const CheckOutForm: FC<Props> = ({  CourseDetails ,setopen}) => {
     const dispatch=useDispatch()
     const navigate=useNavigate()
     const [message, setaMessage] = useState<any>("")
@@ -67,6 +67,10 @@ const CheckOutForm: FC<Props> = ({  CourseDetails }) => {
 
     const stripe = useStripe()
     const elements = useElements()
+
+    const handleCancel = () => {
+        setopen(false);
+    };
     // useEffect(()=>{
 
     // })
@@ -84,7 +88,20 @@ const CheckOutForm: FC<Props> = ({  CourseDetails }) => {
                     {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
                 </span>
             </button>
-            {/* Show any error or success messages */}
+            <button
+                type="button"
+                onClick={handleCancel}
+                style={{
+                    backgroundColor: '#dc3545',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '10px 20px',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                }}
+            >
+                Cancel
+            </button>
             {message && <div id="payment-message" style={{ marginTop: '20px', marginBottom: "20px", color: message.includes('error') ? 'red' : 'green' }}>{message}</div>}
             {isLoading && (
                 <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">

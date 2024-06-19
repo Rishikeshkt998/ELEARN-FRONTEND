@@ -10,7 +10,7 @@ import StarRating from "./StarRating"
 import { format } from "timeago.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSmile } from "@fortawesome/free-solid-svg-icons"
-import {  EditReviewSubmit, GetChapterView, GetCourse, GetLessonsView, PostompletedChapter, PostompletedLesson, QuestionAnswer, ReviewSubmit, fetchEnrolled } from "@/Api/user"
+import {  ChaptersCompletedTime, EditReviewSubmit, GetChapterView, GetCourse, GetLessonsView, PostompletedChapter, PostompletedLesson, QuestionAnswer, ReviewSubmit, fetchEnrolled } from "@/Api/user"
 import { BsPencil } from "react-icons/bs"
 import StarRatings from "./StarRatings"
 import TextArea from "./TextArea"
@@ -251,13 +251,13 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                     completedChapterIds.push(chapterId);
                                 }
                                 setChapterCompleted(completedChapterIds)
-                                // const allChaptersCompleted = completedChapterIds.every((chapterId:any) => completedChapters.includes(chapterId));
-                                // console.log(allChaptersCompleted)
-                                // if (allChaptersCompleted) {
+                                const allChaptersCompleted = completedChapterIds.every((chapterId:any) => completedChapters.includes(chapterId));
+                                console.log(allChaptersCompleted)
+                                if (allChaptersCompleted) {
                                     
-                                //     const result=await ChaptersCompletedTime(id, usersId);
-                                //     console.log("course status update",result)
-                                // }
+                                    const result=await ChaptersCompletedTime(id, usersId);
+                                    console.log("course status update",result)
+                                }
                             }
                         }
                     }
@@ -269,7 +269,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
 
         handleCheckEnded();
 
-    }, [lessonId, activeVideo, id, chapters, setLessonCompleted, setChapterCompleted, lessonCompleted, ChapterCompleted]);
+    }, [lessonId, activeVideo, id, chapters, setLessonCompleted, setChapterCompleted, lessonCompleted, ChapterCompleted,usersId]);
 
     const initiateVideoCall = (meetingcode: string) => {
 
@@ -312,6 +312,23 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
     };
 
     const isReviewExists = CourseDetails?.reviews.find((item: any) => item.userId?._id === usersId)
+    const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
+
+    useEffect(() => {
+        const shuffleArray = (array: Question[]) => {
+            return array
+                .map((value) => ({ value, sort: Math.random() }))
+                .sort((a, b) => a.sort - b.sort)
+                .map(({ value }) => value);
+        };
+        // const shuffled = questions.map(question => ({
+        //     ...question,
+        //     options: shuffleArray(question.options)
+        // }));
+     
+
+        setShuffledQuestions(shuffleArray(questions));
+    }, [questions]);
 
     return (
         <>
@@ -408,7 +425,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                     />
                                 )}
                                 <div className="swiper-wrapper">
-                                    {questions.map((question: Question, index: number) => (
+                                    {shuffledQuestions.map((question: Question, index: number) => (
                                         <div key={index} className={`shadow-md px-4 md:px-10 py-5 ${index === currentSlide ? '' : 'hidden'}`}>
                                             <form onSubmit={submitAnswer}>
                                                 <h1 className="text-lg font-bold mb-4">Quiz</h1>

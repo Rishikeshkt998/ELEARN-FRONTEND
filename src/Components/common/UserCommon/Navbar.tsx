@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 
-import React from 'react';
+import React, { useState } from 'react';
 import { initFlowbite } from 'flowbite'
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../../store/slice/authSlice';
 import { toast } from 'react-toastify';
 import { resetUser } from '@/store/slice/valueSlice';
-import { UserLogout } from '@/Api/user';
+import { UserLogout, profile } from '@/Api/user';
 interface RootState {
   auth: {
     userInfo: string;
@@ -22,6 +23,29 @@ const NavBar: React.FC = () => {
     useEffect(() => {
       initFlowbite()
     }, [])
+  const [userDetails, setUserDetails] = useState<any>(null);
+  const userId = localStorage.getItem('userId');
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        console.log(userId)
+        if (userId !== null) {
+          const response = await profile(userId)
+          console.log(response?.data.profile)
+          setUserDetails(response?.data.profile);
+
+        }
+
+
+
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
   const handleLogout = async () => {
     try {
       
@@ -30,6 +54,8 @@ const NavBar: React.FC = () => {
       dispatch(logout())
       dispatch(resetUser())
       localStorage.removeItem("userToken");
+      localStorage.removeItem("courseId");
+      localStorage.removeItem("userId");
       toast.success('Logged out successfully..')
       navigate('/login');
     } catch (error) {
@@ -50,12 +76,12 @@ const NavBar: React.FC = () => {
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           <button type="button" className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
             <span className="sr-only">Open user menu</span>
-            <img className="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo" />
+            <img className="w-8 h-8 rounded-full" src={userDetails?.profileimage} alt="user photo" />
           </button>
           <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
             <div className="px-4 py-3">
-              <span className="block text-sm text-gray-900 dark:text-white">Rishikesh kt</span>
-              <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">rishikt8465@gmail.com</span>
+              <span className="block text-sm text-gray-900 dark:text-white">{userDetails?.name}</span>
+              <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">{userDetails?.email}</span>
             </div>
             <ul className="py-2" aria-labelledby="user-menu-button">
               <li>

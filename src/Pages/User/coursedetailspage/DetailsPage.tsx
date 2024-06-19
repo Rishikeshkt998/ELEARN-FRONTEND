@@ -4,7 +4,7 @@ import CourseDetailsPage from "./CourseDetailsPage"
 
 const DetailsPage = () => {
 const { id } = useParams();
-console.log(id)
+console.log("ids",id)
   return (
     <div>
         <CourseDetailsPage id={id}/>

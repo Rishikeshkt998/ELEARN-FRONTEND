@@ -1,8 +1,9 @@
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { getCategory } from "@/Api/trainer";
 import { UploadS3Bucket } from "@/Services/S3bucket";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import * as Yup from 'yup'
 
@@ -15,8 +16,14 @@ type Props = {
     setLoading: (loading: boolean) => void
  
 }
+interface Category {
+    id: number;
+    name?: string;
+    description?: string;
+}
 
 const EditCourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setActive ,setLoading }) => {
+    const [categories, setCategories] = useState<Category[]>([]);
     const [dragging, setDragging] = useState(false)
     const [errors, setErrors] = useState<any>({});
     const validationSchema = Yup.object({
@@ -87,6 +94,18 @@ const EditCourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, s
             reader.readAsDataURL(file)
         }
     }
+    const fetchCourses = async () => {
+        try {
+            const response = await getCategory();
+            console.log(response?.data)
+            setCategories(response?.data);
+        } catch (error) {
+            console.error('Error fetching courses:', error);
+        }
+    };
+    useEffect(() => {
+        fetchCourses();
+    }, []);
     const handleDemoUrlChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -226,7 +245,7 @@ const EditCourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, s
                         {errors.level && <span className="error text-red-500">{errors.level}</span>}
 
                     </div>
-                    <div className="w-[50%]">
+                    {/* <div className="w-[50%]">
                         <label htmlFor="estimatedPrice" className="block">
                             category
                         </label>
@@ -242,6 +261,27 @@ const EditCourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, s
                         />
                         {errors.category && <span className="error text-red-500">{errors.category}</span>}
 
+                    </div> */}
+                    <div className="w-[50%]">
+                        <label htmlFor="category" className="block">
+                            Category
+                        </label>
+                        <select
+                            id="category"
+                            name="category"
+                            value={courseInfo?.category}
+                            onChange={(e) => setCourseInfo({ ...courseInfo, category: e.target.value })}
+                            className="bg-gray-800 text-white border border-gray-600 w-full focus:outline-none focus:ring focus:border-blue-300"
+                        >
+
+                            <option value="" disabled>Select category</option>
+                            {categories.map(category => (
+                                <option key={category.id} value={category.name}>{category.name}</option>
+                            ))}
+
+
+                        </select>
+                        {errors.category && <span className="error text-red-500">{errors.category}</span>}
                     </div>
 
 

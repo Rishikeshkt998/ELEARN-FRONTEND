@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 
-import { FC,  useState } from "react";
+import { FC,  useEffect,  useState } from "react";
 import { IoCheckmarkDoneOutline, IoCloseOutline } from "react-icons/io5"
 import ReactPlayer from "react-player"
 import { Elements } from "@stripe/react-stripe-js"
@@ -26,8 +26,14 @@ type Props = {
 const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,user }) => {
     const [open, setopen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [review,setReviews]=useState<any[]>([])
     const navigate=useNavigate()
     const id=CourseDetails?._id
+    useEffect(() => {
+        if (CourseDetails?.reviews) {
+            setReviews(CourseDetails.reviews);
+        }
+    }, [CourseDetails]);
     const handleOrder = () => {
         setopen(true)
 
@@ -44,6 +50,17 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
             navigate(`/coursecontentpage/${CourseDetails?._id}`);
         }, 2000);
     };
+    const calculateAvg = (arr: any[]): number => {
+        if (!Array.isArray(arr) || arr.length === 0) {
+            return 0;
+        }
+        const total = arr.reduce((total: number, item: any) => total + item.rating, 0);
+        const avg = total / arr.length;
+        console.log("average",avg)
+        return avg;
+    };
+    const avgRating = calculateAvg(review);
+    const numberOfReviews = review.length;
     
     return (
         <>
@@ -59,10 +76,10 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
                         </h1>
                         <div className="flex items-center justify-between pt-3">
                             <div className="flex items-center">
-                                <StarRating rating={4} />
-                                <h5 className="text-black dark:text-white "> reviews</h5>
+                                <StarRating rating={avgRating} />
+                                <h5 className="text-black dark:text-white "> {avgRating.toFixed()} ({numberOfReviews} reviews)</h5>
                             </div>
-                            <h5 className="text-black dark:text-white">5 students</h5>
+                            <h5 className="text-black dark:text-white">{numberOfReviews} students</h5>
                         </div>
                         <br />
                         <h5 className="text-[20px] font-poppins font-[600] text-black dark:text-white">

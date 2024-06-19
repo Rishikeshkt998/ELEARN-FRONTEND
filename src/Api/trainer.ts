@@ -299,10 +299,11 @@ export const fetchEnrolledStudents = async () => {
 
 
 
-export const fetchUsersForChat = async () => {
+export const fetchUsersForChat = async (userId:any) => {
     try {
 
-        const res = await Api.get(trainerRoutes.TrainerChat);
+        // const res = await Api.get(trainerRoutes.TrainerChat);
+        const res = await Api.get(`${trainerRoutes.TrainerChat}/${userId}`);
         return res
     } catch (error) {
         console.log(error)

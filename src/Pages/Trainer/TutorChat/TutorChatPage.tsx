@@ -7,7 +7,7 @@ import io, { Socket } from 'socket.io-client';
 import ChatTutors from "@/Components/Trainer/Chat/ChatTutors";
 import MessageTutors from "@/Components/Trainer/Chat/MessageTutors";
 import ScrollbleFeed from "react-scrollable-feed";
-import { FilePost, GetMessagesForTutor, MessagePost, NewMessageForTutor, fetchUsersForChat } from "@/Api/trainer";
+import { FilePost, GetMessagesForTutor, MessagePost, fetchUsersForChat } from "@/Api/trainer";
 import { FaFile, FaImage, FaPaperclip, FaVideo } from "react-icons/fa";
 import { UploadS3Bucket } from "@/Services/S3bucket";
 import InputEmoji from "react-input-emoji";
@@ -54,6 +54,7 @@ const TutorChatPage: React.FC = () => {
     const [dummyState, setDummyState] = useState(false);
     const [unreadMessages, setUnreadMessages] = useState<{ [key: string]: number }>({});
     const [lastClickedUser, setLastClickedUser] = useState<string | null>(null);
+    const [userInfo, setuserInfo] = useState<any>();
 
 
     const socket: MutableRefObject<Socket | undefined> = useRef();
@@ -124,16 +125,16 @@ const TutorChatPage: React.FC = () => {
         const getUser = async () => {
             try {
 
-                const response = await fetchUsersForChat()
+                const response = await fetchUsersForChat(userId)
                 if (response && response.data.findeduser) {
                     console.log("data", response.data.findeduser)
                     setUser(response.data.findeduser);
-                    await Promise.all(response.data.findeduser.map(async (trainer: any) => {
-                        const tutorid = trainer.id;
-                        console.log("id", tutorid);
-                        const newConversationResponse = await NewMessageForTutor(userId, tutorid)
-                        console.log("new", newConversationResponse);
-                    }));
+                    // await Promise.all(response.data.findeduser.map(async (trainer: any) => {
+                    //     const tutorid = trainer.id;
+                    //     console.log("id", tutorid);
+                    //     const newConversationResponse = await NewMessageForTutor(userId, tutorid)
+                    //     console.log("new", newConversationResponse);
+                    // }));
 
                 }
 
@@ -313,8 +314,8 @@ const TutorChatPage: React.FC = () => {
                     {/* <div className="relative">
                         <button id="menuButton" className="focus:outline-none"></button>
                     </div> */}
-                    <div className="relative">
-                        <button id="menuButton" className="focus:outline-none" onClick={handleClick}></button>
+                    <div className="relative bg-white text-black">
+                        <button id="menuButton" className="focus:outline-none bg-white" onClick={handleClick}></button>
                     </div>
                 </header>
                 <div className="overflow-y-auto h-screen p-3 mb-9 pb-20">
@@ -330,6 +331,8 @@ const TutorChatPage: React.FC = () => {
                             unreadMessages={unreadMessages}
                             lastClickedUser={lastClickedUser}
                             setLastClickedUser={setLastClickedUser}
+                            userInfo={userInfo}
+                            setuserInfo={setuserInfo}
                         />
                     </div>
                 </div>
@@ -338,7 +341,7 @@ const TutorChatPage: React.FC = () => {
                 {currentChat ? (
                     <>
                         <header className="bg-white p-4 text-gray-700">
-                            <h1 className="text-2xl font-semibold">Alice</h1>
+                            <h1 className="text-2xl font-semibold">{userInfo?.name}</h1>
                         </header>
                         <div className="h-full overflow-y-auto bg-gray-100 pb-36">
                             <ScrollbleFeed>
