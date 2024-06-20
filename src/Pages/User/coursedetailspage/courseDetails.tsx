@@ -27,6 +27,7 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
     const [open, setopen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [review,setReviews]=useState<any[]>([])
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate=useNavigate()
     const id=CourseDetails?._id
     useEffect(() => {
@@ -61,6 +62,17 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
     };
     const avgRating = calculateAvg(review);
     const numberOfReviews = review.length;
+    const formatPrice = (price: number) => {
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            maximumFractionDigits: 2,
+        }).format(price);
+    };
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        navigate(`/coursecontentpage/${CourseDetails?._id}`);
+    };
     
     return (
         <>
@@ -144,10 +156,10 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
                         </div>
                         <div className="flex item-center">
                             <h1 className="pt-5 text-[28px] text-black">
-                                {CourseDetails?.price === 0 ? "Free" : CourseDetails?.price + "$"}
+                                {CourseDetails?.price=== 0 ? "Free" : formatPrice(CourseDetails?.price)}
                             </h1 >
                             <h5 className="pt-3 text-[20px] mt-2 line-through opacity-80 text-black">
-                                {CourseDetails?.estimatedPrice}$
+                                {formatPrice(CourseDetails?.estimatedPrice)}
                             </h5>
                             <h4 className="pt-5 text-[22px]  text-black">
                                 {discountPercentagePrice}%off
@@ -164,8 +176,8 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
                                 </div>
 
                             ) : (
-                                <div onClick={handleOrder} className="!w-[180px] my-3 font-Poppins text-[20px] rounded-lg p-3  cursor-pointer !bg-[crimson]">
-                                    Buy now   {CourseDetails?.price}$
+                                <div onClick={handleOrder} className="!w-[180px] my-3 font-Poppins text-[16px] rounded-lg p-3  cursor-pointer !bg-[crimson]">
+                                    Buy now  {formatPrice(CourseDetails?.price)}
                                 </div>
 
                             )}
@@ -202,7 +214,7 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
                                         {
                                             stripePromise && clientSecret && (
                                                 <Elements stripe={stripePromise} options={{ clientSecret }}>
-                                                    <CheckOutForm setopen={setopen} CourseDetails={CourseDetails} />
+                                                    <CheckOutForm setopen={setopen} CourseDetails={CourseDetails} isModelOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
                                                 </Elements>
                                             )
                                         }
@@ -215,6 +227,66 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
 
                         )
                     }
+                    {/* {
+                        isModalOpen && (
+                            <div className="fixed inset-0 flex items-center p-32 justify-center z-50">
+                                <div className="fixed inset-0 bg-black opacity-50"></div>
+                                <div className="bg-white p-5 rounded shadow-lg z-10">
+                                    <div className="flex flex-col items-center">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-16 w-16 text-green-500"
+                                            viewBox="0 0 20 20"
+                                            fill="currentColor"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 10-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                clipRule="evenodd"
+                                            />
+                                        </svg>
+                                        <h2 className="text-2xl font-bold mb-4">Payment Successful!</h2>
+                                        <p className="text-gray-700 mb-4">Thank you for your purchase.</p>
+                                        <button
+                                            onClick={handleCloseModal}
+                                            className="bg-blue-500 text-white px-4 py-2 rounded"
+                                        >
+                                            Continue
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    } */}
+                    {isModalOpen && (
+                        <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+                            <div className="fixed inset-0 bg-black opacity-50"></div>
+                            <div className="bg-white p-10 rounded shadow-lg z-10 max-w-3xl mx-auto">
+                                <div className="flex flex-col items-center">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-20 w-20 text-green-500"
+                                        viewBox="0 0 20 20"
+                                        fill="currentColor"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-10.293a1 1 0 00-1.414-1.414L9 9.586 7.707 8.293a1 1 0 10-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clipRule="evenodd"
+                                        />
+                                    </svg>
+                                    <h2 className="text-3xl font-bold mb-4">Payment Successful!</h2>
+                                    <p className="text-gray-700 mb-4">Thank you for your purchase.</p>
+                                    <button
+                                        onClick={handleCloseModal}
+                                        className="bg-blue-500 text-white px-6 py-3 rounded text-xl"
+                                    >
+                                        Continue
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </>
             </div>
 

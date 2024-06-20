@@ -293,6 +293,24 @@ export const GetCourses = async () => {
         console.log(error)
     }
 }
+export const AddToWhishlist = async (courseId:any,userId:any) => {
+    try {
+
+        const res = await Api.post(userRoutes.addTofavourite, {courseId,userId});
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const getWhishlist = async (userId: any) => {
+    try {
+
+        const res = await Api.get(`${userRoutes.fetchFavourites}?userId=${userId}`);
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
 export const GetCategory = async () => {
     try {
         const res = await Api.get(userRoutes.GetCategory);
@@ -520,6 +538,17 @@ export const GoogleAuth = async (name: any, email: any, googlePhotoUrl: any, hea
     try {
 
         const res = await Api.post(userRoutes.googleAuth, { name, email, googlePhotoUrl }, { headers })
+        return res
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+export const fetchEnrolledStudentsForPurchase= async (userId:any) => {
+    try {
+
+        const res = await Api.get(`${userRoutes.EnrolledHistory}/${userId}`);
         return res
     } catch (error) {
         console.log(error)

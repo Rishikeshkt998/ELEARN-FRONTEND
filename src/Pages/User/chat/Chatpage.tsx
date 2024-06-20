@@ -18,6 +18,7 @@ interface MessageData {
     status: 'read' | 'unread';
 }
 interface Trainer {
+    instructorDetails: any;
     image: any;
     id: string;
     name: string;
@@ -145,7 +146,7 @@ const Chatpage: React.FC = () => {
             }
         }
         getUser()
-    }, [userId])
+    }, [userId,user])
 
 
     console.log("currentchat", currentChat)
@@ -172,9 +173,9 @@ const Chatpage: React.FC = () => {
     }, [currentChat])
     useEffect(() => {
         if (arrivalMessage) {
-            const updatedUsers = user?.filter(u => u.id !== arrivalMessage.senderId) ?? [];
+            const updatedUsers = user?.filter(u => u.instructorDetails._id !== arrivalMessage.senderId) ?? [];
             console.log("updated uservalues", updatedUsers);
-            const involvedUser = user?.find(u => u.id === arrivalMessage.senderId);
+            const involvedUser = user?.find(u => u.instructorDetails._id === arrivalMessage.senderId);
             console.log("involved user values", involvedUser);
 
             if (involvedUser) {
@@ -187,6 +188,9 @@ const Chatpage: React.FC = () => {
     console.log(dummyState)
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+        if (!newMessage.trim()) {
+            return; 
+        }
         const message = {
             senderId: userId,
             message: newMessage,
@@ -209,9 +213,9 @@ const Chatpage: React.FC = () => {
             setNewMessage("");
 
             if (res && res.data && recieverId) {
-                const updatedUsers = user?.filter(u => u.id !== recieverId) ?? [];
+                const updatedUsers = user?.filter(u => u.instructorDetails._id !== recieverId) ?? [];
                 console.log("updated user", updatedUsers);
-                const involvedUser = user?.find(u => u.id === recieverId);
+                const involvedUser = user?.find(u => u.instructorDetails._id === recieverId);
                 console.log("involved user", involvedUser);
 
                 if (involvedUser) {
@@ -275,8 +279,8 @@ const Chatpage: React.FC = () => {
             setMessages([...messages, res?.data?.data]);
             setNewMessage('');
             if (res && res.data && recieverId) {
-                const updatedUsers = user?.filter((u) => u.id !== recieverId) ?? [];
-                const involvedUser = user?.find((u) => u.id === recieverId);
+                const updatedUsers = user?.filter((u) => u.instructorDetails._id !== recieverId) ?? [];
+                const involvedUser = user?.find((u) => u.instructorDetails._id === recieverId);
                 if (involvedUser) {
                     setUser([involvedUser, ...updatedUsers]);
                 }
@@ -306,8 +310,10 @@ const Chatpage: React.FC = () => {
             <div className="w-1/4 bg-white border-r hidden md:block border-gray-300">
                 <header className="p-4 border-b border-gray-300 flex justify-between items-center bg-indigo-600 text-white">
                     <h1 className="text-2xl font-semibold">ELEARN</h1>
-                    <div className="relative">
-                        <button id="menuButton" className="focus:outline-none" onClick={handleClick}></button>
+                    <div className="relative bg-blue-600 text-black">
+                        <button id="menuButton" className="focus:outline-none bg-gray-800 hover:bg-red-600 text-white py-2 px-4 rounded-lg" onClick={handleClick}>
+                            back
+                        </button>
                     </div>
                 </header>
                 <div className="overflow-y-auto h-screen p-3 mb-9 pb-20">

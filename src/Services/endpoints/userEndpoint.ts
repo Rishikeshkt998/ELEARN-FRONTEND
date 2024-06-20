@@ -45,7 +45,10 @@ const userRoutes = {
     getConversationTutor:'/user/getConversation',
     userLogout:'/user/logout',
     googleAuth:'/user/google',
-    searchCourse:'/user/search'
+    searchCourse:'/user/search',
+    EnrolledHistory:'/user/enrolledforpurchase',
+    addTofavourite:'/user/addtofavourite',
+    fetchFavourites:'/user/getfavourites'
 
     
 

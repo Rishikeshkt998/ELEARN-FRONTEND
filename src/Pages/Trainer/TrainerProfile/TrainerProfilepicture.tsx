@@ -229,14 +229,14 @@ const TrainerProfilePicture: React.FC = () => {
     return (
         <>
         <TrainerProfilenavbar/>
-        <div className="mx-auto w-full h-screen pt-8 max-w-[550px]">
+        <div className="mx-auto w-full h-screen  pt-8 ps-14 max-w-[550px]">
             <div className="flex ps-4 space-x-6">
 
                 <label className="block">
                     <div className="shrink-0">
                         <img
                             id="preview_img"
-                            className="h-96 w-96 object-cover rounded-full"
+                            className="h-96 w-96  object-cover rounded-full"
                             src={trainerDetails?. image}
                             alt="Current profile photo"
                         />
@@ -249,7 +249,7 @@ const TrainerProfilePicture: React.FC = () => {
                     />
                 </label>
             </div>
-            <div className="bg-gray-900 text-center pt-11 ">
+            <div className="bg-gray-900 ps-32 pt-11 ">
                 <button
                     onClick={handleUpload}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

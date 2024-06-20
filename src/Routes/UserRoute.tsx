@@ -32,6 +32,8 @@ import UserLanding from "@/Components/common/UserCommon/UserLanding"
 import Error404 from "@/Components/common/ErrorPage/Error404"
 import Error500 from "@/Components/common/ErrorPage/Error500"
 import PrivateRoute from "@/Middlewares/PrivateRoute"
+import PurchaseHistoryContainer from "@/Pages/User/PurchaseHistoryContainer/PurchaseHistoryContainer"
+import Whishlistcontainer from "@/Pages/User/whishlist/WhishlistContainer"
 
 
 const UserRoute = () => {
@@ -62,6 +64,8 @@ const UserRoute = () => {
                 <Route path="coursedetails/:id" element={<DetailsPage />} />
                 <Route path="coursecontentpage/:id" element={<PrivateRoute><CourseAccessContainer /></PrivateRoute>} />
                 <Route path="paymentsucess" element={<PaymentSuccessPage />} />
+                <Route path="purchasehistory" element={<PurchaseHistoryContainer />} />
+                <Route path="whishlist" element={<Whishlistcontainer/>} />
                 <Route path="profile" element={<Profilecontainer />}>
                     <Route path="" element={<Profilepage />} />
                     <Route path='profileedit' element={<ProfileEditpage />} />

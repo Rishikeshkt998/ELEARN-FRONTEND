@@ -1,8 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useEffect } from 'react';
-// import { blockUser, getUsers, userUnblock } from '../../Api/admin';
-// import Swal from 'sweetalert2';
-// import axios from 'axios';
 import Swal from 'sweetalert2';
 import { CourseShow, unverifyCourse, verifyCourse } from '@/Api/admin';
 interface prerequisite {
@@ -127,59 +126,7 @@ const CourseView = () => {
     };
 
     return (
-    //     <div className="relative p-11 overflow-x-auto bg-white">
-    //         <table className="w-full text-sm text-left rtl-text-right text-gray-700 dark-text-gray-400">
-    //             <thead className="text-xs text-gray-500 uppercase bg-gray-800 dark-bg-gray-700 dark-text-gray-400">
-    //                 <tr>
-    //                     <th scope="col" className="px-6 py-3">
-    //                         Name
-    //                     </th>
-    //                     <th scope="col" className="px-6 py-3">
-    //                         Category
-    //                     </th>
-    //                     <th scope="col" className="px-6 py-3">
-    //                         Price
-    //                     </th>
-    //                     <th scope="col" className="px-6 py-3">
-    //                         Description
-    //                     </th>
-    //                     <th scope="col" className="px-6 py-3">
-    //                         Actions
-    //                     </th>
-    //                 </tr>
-    //             </thead>
-    //             <tbody>
-    //                 {data && data.map((course) => (
-    //                     <tr key={course?._id} className="bg-gray-100 border-b dark-bg-gray-800 dark-border-gray-700">
-    //                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark-text-white">
-    //                             {course.name}
-    //                         </td>
-    //                         <td className="px-6 py-4">
-    //                             {course.category}
-    //                         </td>
-    //                         <td className="px-6 py-4">
-    //                             {course.price}
-    //                         </td>
-    //                         <td className="px-6 py-4">
-    //                             {course.description}
-                              
-    //                         </td>
-    //                         <td className="px-6 py-4">
-    //                             {course?.adminVerified ? (
-    //                                 <button onClick={() => handleUnverify(course?._id)} className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">unverify</button>
 
-    //                             ) : (
-    //                                 <button onClick={() => handleVerify(course?._id)} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">verify</button>
-
-    //                             )}
-    //                         </td>
-    //                     </tr>
-    //                 ))}
-    //             </tbody>
-    //         </table>
-    //     </div>
-
-    // );
         <div className="relative p-11 overflow-x-auto bg-white">
             <table className="w-full text-sm text-left rtl-text-right text-gray-700 dark:text-gray-400 table-fixed">
                 <thead className="text-xs text-gray-500 uppercase bg-gray-800 dark:bg-gray-700 dark:text-gray-400">
@@ -232,3 +179,4 @@ const CourseView = () => {
 }
 
 export default CourseView;
+

@@ -2,7 +2,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { getCategory } from "@/Api/trainer";
 import { UploadS3Bucket } from "@/Services/S3bucket";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect,  useState } from "react";
+import { toast } from "react-toastify";
 import * as Yup from 'yup'
 
 type Props = {
@@ -35,17 +36,21 @@ const Courseinformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setAc
         tags: Yup.string().required("Tags is required"),
         category: Yup.string().required("category is required"),
         level: Yup.string().required("Course level is required").typeError("Level must be a number"),
-        thumbnail: Yup.mixed().required("Thumbnail is required"),
-        demoUrl: Yup.mixed().required("Demo Url is required"),
+        thumbnail: Yup.string().required("Thumbnail is required"),
+        demoUrl: Yup.string()
+            .required("Demo URL is required")
+            .url("Demo URL must be a valid URL")
     });
+    
    
-    const handleSubmit =async (e: any) => {
+    
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         try {
             await validationSchema.validate(courseInfo, { abortEarly: false });
             setActive(active + 1);
         } catch (error: any) {
-           
+
             const newError: { [key: string]: string } = {};
 
             error.inner.forEach((err: any) => {
@@ -53,8 +58,7 @@ const Courseinformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setAc
             });
             setErrors(newError);
         }
-        
-    }
+    };
        
     useEffect(() => {
         fetchCourses();
@@ -72,6 +76,11 @@ const Courseinformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setAc
     const handleFileChange = (e: any) => {
         const file = e.target.files?.[0]
         if (file) {
+            if (!file.type.startsWith('image/')) {
+                toast("Thumbnail must be an image file");
+                e.target.value = ""; 
+                return;
+            }
             const reader = new FileReader()
             reader.onload = () => {
                 if (reader.readyState === 2) {
@@ -82,6 +91,25 @@ const Courseinformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setAc
         }
 
     }
+    // const handleFileChange = (e: any) => {
+    //     const file = e.target.files?.[0];
+    //     if (file) {
+    //         if (!file.type.startsWith('image/')) {
+    //             toast("Thumbnail must be an image file");
+    //             e.target.value = ""; 
+    //             return;
+    //         }
+    //         const reader = new FileReader();
+
+    //         reader.onload = () => {
+    //             if (reader.readyState === 2) {
+    //                 setImage(reader.result as string);
+    //             }
+    //         };
+    //         reader.readAsDataURL(file);
+    //         setCourseInfo({ ...courseInfo, thumbnail: reader.result });
+    //     }
+    // };
     const handleDragOver = (e: any) => {
         e.preventDefault()
         setDragging(true)
@@ -95,6 +123,11 @@ const Courseinformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setAc
         setDragging(false)
         const file = e.dataTransfer.files?.[0]
         if (file) {
+            if (!file.type.startsWith('image/')) {
+                toast("Thumbnail must be an image file");
+                e.target.value = ""; 
+                return;
+            }
             const reader = new FileReader()
             reader.onload = () => {
                 setCourseInfo({ ...courseInfo, thumbnail: reader.result })
@@ -104,9 +137,17 @@ const Courseinformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setAc
     }
     const handleDemoUrlChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
+        
         if (file) {
+           
             try {
-                setLoading(true); 
+                if (!file.type.startsWith('video/')) {
+                    toast("Demo URL must be a video file");
+                    e.target.value = ""; 
+                    return;
+                }
+                
+                setLoading(true);
                 const url = await UploadS3Bucket(file); 
                 console.log("url",url.url)
                 setCourseInfo({ ...courseInfo, demoUrl:url.url }); 
@@ -117,6 +158,7 @@ const Courseinformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setAc
             }
         }
     };
+    
     return (
         <div className="w-[80%] m-auto mt-24">
             <form onSubmit={handleSubmit} className="text-white">
@@ -203,7 +245,6 @@ const Courseinformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setAc
                         type="file"
                         id="demoUrl"
                         name="demoUrl"
-                        required
                         onChange={handleDemoUrlChange}
                         // onChange={(e) => setCourseInfo({ ...courseInfo, demoUrl: e.target.files?.[0]})}
                         className="bg-gray-800 text-white border border-gray-600  px-3 py-2 mt-1 w-full focus:outline-none focus:ring focus:border-blue-300"
@@ -257,10 +298,11 @@ const Courseinformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setAc
                 <div className="w-full">
                     <input
                         type="file"
-                        id="file"
+                        name="thumbnail"
                         accept="image/*"
-                        className="hidden"
-                        required
+                        id="file"
+                        placeholder="Course title..."
+                        className=" hidden"
                         onChange={handleFileChange}
                     />
                     {errors.thumbnail && (
@@ -274,7 +316,7 @@ const Courseinformation: FC<Props> = ({ courseInfo, setCourseInfo, active, setAc
                         onDragLeave={handleDragLeave}
                         onDrop={handleDrop}
                     >
-                        {courseInfo.thumbnail ? (
+                        {courseInfo.thumbnail ?  (
                             <img src={courseInfo.thumbnail} alt="" className="max-h-full w-full object-cover" />
                         ) : (
                             <span className="text-white">

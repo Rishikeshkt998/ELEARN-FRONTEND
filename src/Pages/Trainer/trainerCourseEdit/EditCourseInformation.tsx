@@ -5,6 +5,7 @@ import { getCategory } from "@/Api/trainer";
 import { UploadS3Bucket } from "@/Services/S3bucket";
 import { FC, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
+import { toast } from "react-toastify";
 import * as Yup from 'yup'
 
 type Props = {
@@ -63,6 +64,11 @@ const EditCourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, s
     const handleFileChange = (e: any) => {
         const file = e.target.files?.[0]
         if (file) {
+            if (!file.type.startsWith('image/')) {
+                toast("Thumbnail must be an image file");
+                e.target.value = "";
+                return;
+            }
             const reader = new FileReader()
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             reader.onload = () => {
@@ -87,6 +93,11 @@ const EditCourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, s
         setDragging(false)
         const file = e.dataTransfer.files?.[0]
         if (file) {
+            if (!file.type.startsWith('image/')) {
+                toast("Thumbnail must be an image file");
+                e.target.value = "";
+                return;
+            }
             const reader = new FileReader()
             reader.onload = () => {
                 setCourseInfo({ ...courseInfo, thumbnail: reader.result })
@@ -110,6 +121,11 @@ const EditCourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, s
         const file = e.target.files?.[0];
         if (file) {
             try {
+                if (!file.type.startsWith('video/')) {
+                    toast("Demo URL must be a video file");
+                    e.target.value = "";
+                    return;
+                }
                 setLoading(true);
                 const url = await UploadS3Bucket(file);
                 console.log(url)
@@ -132,7 +148,6 @@ const EditCourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, s
                         type="text"
                         id="name"
                         name="name"
-                        required
                         value={courseInfo.name}
                         onChange={(e) => setCourseInfo({ ...courseInfo, name: e.target.value })}
                         placeholder="mernstack lms platform"
@@ -156,7 +171,6 @@ const EditCourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, s
                             type="text"
                             id="price"
                             name="price"
-                            required
                             value={courseInfo.price}
                             onChange={(e) => setCourseInfo({ ...courseInfo, price: e.target.value })}
                             placeholder="29"
@@ -173,7 +187,6 @@ const EditCourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, s
                             type="text"
                             id="estimatedPrice"
                             name="estimatedPrice"
-                            required
                             value={courseInfo.estimatedPrice}
                             onChange={(e) => setCourseInfo({ ...courseInfo, estimatedPrice: e.target.value })}
                             placeholder="79"
@@ -193,7 +206,6 @@ const EditCourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, s
                         type="text"
                         id="tags"
                         name="tags"
-                        required
                         value={courseInfo.tags}
                         onChange={(e) => setCourseInfo({ ...courseInfo, tags: e.target.value })}
                         placeholder="Mern,Tailwind Css,Lms"
@@ -234,9 +246,7 @@ const EditCourseInformation: FC<Props> = ({ courseInfo, setCourseInfo, active, s
                         <input
                             type="text"
                             id="level"
-                            name="level"
-                            required
-                            
+                            name="level"                          
                             value={courseInfo.level}
                             onChange={(e) => setCourseInfo({ ...courseInfo, level: e.target.value })}
                             placeholder="29"

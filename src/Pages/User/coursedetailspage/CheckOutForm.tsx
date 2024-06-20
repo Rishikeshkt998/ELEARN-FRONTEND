@@ -4,7 +4,7 @@
 import { FC, useState } from "react"
 import { LinkAuthenticationElement, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
-import { useNavigate } from "react-router-dom"
+// import { useNavigate } from "react-router-dom"
 import { OrderPost } from "@/Api/user"
 import { useDispatch } from "react-redux"
 import { SaveUser, saveCourse } from "@/store/slice/valueSlice"
@@ -12,29 +12,31 @@ import { SaveUser, saveCourse } from "@/store/slice/valueSlice"
 type Props = {
     setopen: any,
     CourseDetails: any
+    isModelOpen:any
+    setIsModalOpen:(isModelOpen: any)=>void
 }
-const CheckOutForm: FC<Props> = ({  CourseDetails ,setopen}) => {
+const CheckOutForm: FC<Props> = ({  CourseDetails ,setopen,setIsModalOpen}) => {
     const dispatch=useDispatch()
-    const navigate=useNavigate()
+    // const navigate=useNavigate()
     const [message, setaMessage] = useState<any>("")
     const [isLoading, setIsLoading] = useState(false)
+
     const handleSubmit = async (e: any) => {
         e.preventDefault()
         if (!stripe || !elements) {
             return
         }
-        setIsLoading(true)
         const { error, paymentIntent } = await stripe.confirmPayment({
             elements,
             redirect: "if_required"
         })
+        // setIsLoading(true)
 
         if (error) {
             setaMessage(error.message);
-            // setIsLoading(false)
             
         } else if (paymentIntent && paymentIntent.status === "succeeded") {
-            // setIsLoading(true)
+            setIsLoading(true)
             const createOrder = async () => {
                 try {
                     const id = localStorage.getItem('userId')
@@ -45,7 +47,13 @@ const CheckOutForm: FC<Props> = ({  CourseDetails ,setopen}) => {
                     console.log("order response",response)
                     if (response?.data.orderPost.success) {
                         dispatch(SaveUser(response?.data.orderPost.updateUser))
-                        navigate(`/coursecontentpage/${CourseDetails?._id}`)
+                        // navigate(`/coursecontentpage/${CourseDetails?._id}`)
+                        // navigate(`/paymentsucess`)
+                        setopen(false)
+                        setIsLoading(false);
+                        setIsModalOpen(true);
+
+                        
                         
 
                     } else {
@@ -74,8 +82,9 @@ const CheckOutForm: FC<Props> = ({  CourseDetails ,setopen}) => {
     // useEffect(()=>{
 
     // })
+    
     return (
-
+        <div>
         <form id="payment-form" onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: '0 auto' }}>
             <div style={{ marginBottom: '20px' }}>
                 <LinkAuthenticationElement id="link-authentication-element" />
@@ -89,6 +98,7 @@ const CheckOutForm: FC<Props> = ({  CourseDetails ,setopen}) => {
                 </span>
             </button>
             <button
+                className="ms-3"
                 type="button"
                 onClick={handleCancel}
                 style={{
@@ -109,8 +119,12 @@ const CheckOutForm: FC<Props> = ({  CourseDetails ,setopen}) => {
 
                 </div>
             )}
+            
         </form>
+        
+        </div>
     )
+
 }
 
 export default CheckOutForm

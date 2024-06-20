@@ -105,7 +105,8 @@ const TrainerProfileedit = () => {
     return (
         <>
             <TrainerProfilenavbar />
-            <div className="w-full bg-gray-900 ms-28 h-screen md:w-9/12 mx-2 ">
+            {/* <div className="w-full bg-gray-900 md:ms-28 h-screen md:w-9/12 mx-2 md:mx-auto"> */}
+            <div className="mx-auto w-full h-screen  max-w-[550px]">
                 <div className="flex items-center justify-center p-12">
                     <div className="mx-auto w-full max-w-[550px]">
                         <form onSubmit={handleSubmit}>

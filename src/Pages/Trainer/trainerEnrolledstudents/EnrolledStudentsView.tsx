@@ -70,6 +70,7 @@ function EnrolledStudentsView() {
                 console.log(response)
                 setData(response?.data?.EnrolledStudents.enrolledStudentsDetails);
                 setEnrolled(response?.data?.EnrolledStudents.enrolledStudents)
+                console.log(enrolled)
                 for (const valuetime of enrolled){
                     setTime(valuetime.enrolledTime);
 
@@ -83,7 +84,7 @@ function EnrolledStudentsView() {
         };
 
         fetchData();
-    }, []);
+    }, [enrolled,time]);
 
     const formatLocalTime = (timeString: string) => {
         const date = new Date(timeString); 

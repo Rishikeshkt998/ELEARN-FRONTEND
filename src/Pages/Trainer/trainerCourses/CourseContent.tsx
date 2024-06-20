@@ -34,10 +34,6 @@ const CourseContent: React.FC<Props> = ({
     const [error, setError] = useState("");
     
 
-    // const handleSubmit = (e: any) => {
-    //     e.preventDefault();
-    // };
-
     const handleCollapseToggle = (index: number) => {
         const updatedCollapsed = [...isCollapsed];
         updatedCollapsed[index] = !updatedCollapsed[index];
@@ -275,11 +271,16 @@ const CourseContent: React.FC<Props> = ({
                                                
                                                 <input
                                                     type="file"
-                                                    accept="video/*"
+                                                    // accept="video/*"
                                                     className="border border-gray-400 rounded-md bg-transparent p-2"
                                                     onChange={(e) => {
                                                         const file = e.target.files?.[0];
                                                         if (file) {
+                                                            if (!file.type.startsWith("video/")) {
+                                                                toast.error("Please select a video file");
+                                                                e.target.value = "";
+                                                                return;
+                                                            }
                                                             const updatedData = [...courseContentData];
                                                             updatedData[index].lessons[lessonIndex].url = file;
                                                             setCourseContentData(updatedData);

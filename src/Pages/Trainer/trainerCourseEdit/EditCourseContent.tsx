@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import React, { useState } from "react";
 import { AiOutlineDelete, AiOutlinePlusCircle } from "react-icons/ai";
 import { BsLink45Deg, BsPencil } from "react-icons/bs";
@@ -134,6 +133,10 @@ const EditCourseContent: React.FC<Props> = ({
     };
     const handleChangeFile = async (file: File, index: number, lessonIndex: number) => {
         try {
+            if (!file.type.startsWith("video/")) {
+                toast.error("Please select a video file");
+                return;
+            }
 
             const uploadedUrl = await UploadS3Bucket(file);
             const updatedData = [...courseContentData];
@@ -310,7 +313,7 @@ const EditCourseContent: React.FC<Props> = ({
                                             className="flex items-center text-[18px] dark:text-white text-gray-400 cursor-pointer"
                                             onClick={() => handleAddlink(index)}
                                         >
-                                            <BsLink45Deg className="mr-2 text-gray-400" /> Add Link
+                                            <BsLink45Deg className="mr-2 text-gray-400" /> Add Lesson
                                         </p>
                                     </div>
                                 </>
@@ -322,7 +325,7 @@ const EditCourseContent: React.FC<Props> = ({
                                         className="flex items-center text-[18px] dark:text-white text-gray-400 cursor-pointer"
                                         onClick={() => newContentHandler(item)}
                                     >
-                                        <AiOutlinePlusCircle className="mr-2 text-gray-400" /> Add New Content
+                                        <AiOutlinePlusCircle className="mr-2 text-gray-400" /> Add Chapter
                                     </p>
                                 </div>
                             )}

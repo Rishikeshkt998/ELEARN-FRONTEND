@@ -4,7 +4,8 @@
 import { FC} from "react"
 import images from "../../assets/images (1).png";
 import { getConversationtrainer } from "@/Api/user";
-import moment from "moment";
+// import moment from "moment";
+import { format } from 'timeago.js';
 
 
 interface Conversation {
@@ -50,11 +51,39 @@ const Chatuserss: FC<Props> = ({ user, currentUser,unreadMessages,  setCurrentCh
                 console.log(error)
             }
         }
-    function dateFormate(date: Date) {
-        const dateFomatted = moment(date).startOf("minute").fromNow();
+    // function dateFormate(date: Date) {
+    //     const dateFomatted = moment(date).startOf("minute").fromNow();
 
-        return dateFomatted;
-    }
+    //     return dateFomatted;
+    // }
+    const getFileTypeFromUrl = (url: any) => {
+        const extension = url.split('.').pop().toLowerCase();
+
+        const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+        const videoExtensions = ['mp4', 'mkv', 'mov', 'avi', 'wmv', 'flv'];
+        const fileExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'];
+
+        if (imageExtensions.includes(extension)) return 'image';
+        if (videoExtensions.includes(extension)) return 'video';
+        if (fileExtensions.includes(extension)) return 'file';
+
+        return 'text';
+    };
+
+    // Function to render message preview
+    const renderMessagePreview = (message: any) => {
+        if (!message) return '';
+
+        const type = getFileTypeFromUrl(message);
+
+        // Return appropriate text based on the type
+        if (type === 'image') return 'Image';
+        if (type === 'video') return 'Video';
+        if (type === 'file') return 'File';
+        // Handle text messages or default case
+        return message.length > 5 ? `${message.substring(0, 6)}...` : message;
+    };
+
     return (
 
         <>
@@ -73,10 +102,16 @@ const Chatuserss: FC<Props> = ({ user, currentUser,unreadMessages,  setCurrentCh
                         </div>
                         <div className="flex-1">
                             <h2 className="text-lg font-semibold">{users?.instructorDetails?.name}</h2>
+                            <span className=" hidden md:inline-flex items-center gap-x-1.5 py-1.5 rounded-lg text-xs font-medium  text-black dark:bg-blue-800/30 dark:text-blue-500">
+                                {/* {users?.latestMessage?.length > 5
+                                    ? `${users?.latestMessage?.substring(0, 6)}...`
+                                    : users.latestMessage} */}
+                                {renderMessagePreview(users?.latestMessage)}
+                            </span>
                         </div>
                         
                         <p className="font-Poppins text-xs">
-                            {dateFormate(users?.updationTime)}
+                            {format(users?.updatedAt)}
                         </p>
                         
                     </div>

@@ -347,8 +347,6 @@ const UserCard = () => {
         setSelectedCategory("");
         setPriceSort("");
         setSearchTerm("")
-        // setSelectedCategory({ target: { value: "" } } as React.ChangeEvent<HTMLSelectElement>);
-        // setPriceSort({ target: { value: "asc" } } as React.ChangeEvent<HTMLSelectElement>);
     };
 
     useEffect(() => {
@@ -372,6 +370,13 @@ const UserCard = () => {
     const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse);
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+    const formatPrice = (price: number) => {
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            maximumFractionDigits: 2,
+        }).format(price);
+    };
 
     return (
         <>
@@ -400,7 +405,7 @@ const UserCard = () => {
                             <select
                                 value={selectedCategory}
                                 onChange={handleCategoryTermChange}
-                                className="w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                className="bg-white border border-gray-700 text-black  sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full pl-5 p-1.5"
                             >
                                 <option value="">Select a category</option>
                                 {categories.map((category, index) => (
@@ -414,17 +419,17 @@ const UserCard = () => {
                                 id="price-sort"
                                 value={priceSort}
                                 onChange={handlePriceSortChange}
-                                className="w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                className="bg-white border border-gray-700 text-black mb-3 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full pl-5 p-1.5"
                             >
                                 <option value="">Price</option>
                                 <option value="asc">Low to High</option>
                                 <option value="desc">High to Low</option>
                             </select>
                         </div>
-                        <div className="max-w-sm mx-auto w-44 py-5">
+                        <div className="relative lg:w-64">
                             <button
                                 onClick={resetFilter}
-                                className="inline-flex items-center px-4 py-2 bg-gray-500 text-white text-sm font-medium rounded-md"
+                                className="inline-flex items-center px-4 py-2 bg-gray-500 text-white text-sm font-medium rounded-md w-full pl-5 "
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -464,7 +469,7 @@ const UserCard = () => {
                                                     <p className="text-gray-500 text-sm">{course?.category}</p>
                                                 </div>
                                                 <div className="px-6 py-4 flex justify-between items-center">
-                                                    <a href="#" className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">₹{course?.price}Rs</a>
+                                                        <a href="#" className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">{formatPrice(course?.price)}</a>
                                                 </div>
                                                 </Link>
                                             </div>

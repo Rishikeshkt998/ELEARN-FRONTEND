@@ -79,7 +79,7 @@ const CommentReplies: FC<Props> = ({ id }) => {
 
 
 
-      <div className="bg-gray-950 p-5 flex justify-center items-center min-h-screen ">
+      <div className="bg-gray-950  flex justify-center items-center h-screen ">
         <div className="md:w-3/5 w-full flex flex-col gap-2 p-5 bg-gray-800 text-white">
           <h1 className="text-lg">Reviews</h1>
           <div className="flex flex-col gap-3 ">

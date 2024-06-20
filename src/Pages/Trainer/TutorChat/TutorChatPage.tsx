@@ -21,6 +21,7 @@ interface MessageData {
     status: 'read' | 'unread';
 }
 interface User {
+    userDetails: any;
     id?: string;
     name: string;
     email: string;
@@ -129,14 +130,8 @@ const TutorChatPage: React.FC = () => {
                 if (response && response.data.findeduser) {
                     console.log("data", response.data.findeduser)
                     setUser(response.data.findeduser);
-                    // await Promise.all(response.data.findeduser.map(async (trainer: any) => {
-                    //     const tutorid = trainer.id;
-                    //     console.log("id", tutorid);
-                    //     const newConversationResponse = await NewMessageForTutor(userId, tutorid)
-                    //     console.log("new", newConversationResponse);
-                    // }));
-
                 }
+                
 
 
 
@@ -145,7 +140,8 @@ const TutorChatPage: React.FC = () => {
             }
         }
         getUser()
-    }, [userId])
+
+    }, [userId,user])
 
     console.log("currentchat", currentChat)
     useEffect(() => {
@@ -177,9 +173,9 @@ const TutorChatPage: React.FC = () => {
 
     useEffect(() => {
         if (arrivalMessage) {
-            const updatedUsers = user?.filter(u => u.id !== arrivalMessage.senderId) ?? [];
+            const updatedUsers = user?.filter(u => u.userDetails._id !== arrivalMessage.senderId) ?? [];
             console.log("updated uservalues", updatedUsers);
-            const involvedUser = user?.find(u => u.id === arrivalMessage.senderId);
+            const involvedUser = user?.find(u => u.userDetails._id === arrivalMessage.senderId);
             console.log("involved user values", involvedUser);
 
             if (involvedUser) {
@@ -192,6 +188,9 @@ const TutorChatPage: React.FC = () => {
     console.log(dummyState)
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+        if (!newMessage.trim()) {
+            return;
+        }
         const message = {
             senderId: userId,
             message: newMessage,
@@ -213,9 +212,9 @@ const TutorChatPage: React.FC = () => {
             setMessages([...messages, res?.data?.data])
             setNewMessage("");
             if (res && res.data && recieverId) {
-                const updatedUsers = user?.filter(u => u.id !== recieverId) ?? [];
+                const updatedUsers = user?.filter(u => u.userDetails._id !== recieverId) ?? [];
                 console.log("updated user", updatedUsers);
-                const involvedUser = user?.find(u => u.id === recieverId);
+                const involvedUser = user?.find(u => u.userDetails._id === recieverId);
                 console.log("involved user", involvedUser);
 
                 if (involvedUser) {
@@ -280,8 +279,8 @@ const TutorChatPage: React.FC = () => {
             setMessages([...messages, res?.data?.data]);
             setNewMessage('');
             if (res && res.data && recieverId) {
-                const updatedUsers = user?.filter((u) => u.id !== recieverId) ?? [];
-                const involvedUser = user?.find((u) => u.id === recieverId);
+                const updatedUsers = user?.filter((u) => u.userDetails._id !== recieverId) ?? [];
+                const involvedUser = user?.find((u) => u.userDetails._id === recieverId);
                 if (involvedUser) {
                     setUser([involvedUser, ...updatedUsers]);
                 }
@@ -314,8 +313,10 @@ const TutorChatPage: React.FC = () => {
                     {/* <div className="relative">
                         <button id="menuButton" className="focus:outline-none"></button>
                     </div> */}
-                    <div className="relative bg-white text-black">
-                        <button id="menuButton" className="focus:outline-none bg-white" onClick={handleClick}></button>
+                    <div className="relative bg-blue-600 text-black">
+                        <button id="menuButton" className="focus:outline-none bg-gray-800 hover:bg-red-600 text-white py-2 px-4 rounded-lg" onClick={handleClick}>
+                            back
+                        </button>
                     </div>
                 </header>
                 <div className="overflow-y-auto h-screen p-3 mb-9 pb-20">
@@ -340,7 +341,7 @@ const TutorChatPage: React.FC = () => {
             <div className="flex-1">
                 {currentChat ? (
                     <>
-                        <header className="bg-white p-4 text-gray-700">
+                        <header className="bg-white p-5 text-gray-700">
                             <h1 className="text-2xl font-semibold">{userInfo?.name}</h1>
                         </header>
                         <div className="h-full overflow-y-auto bg-gray-100 pb-36">
