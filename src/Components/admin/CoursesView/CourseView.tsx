@@ -4,13 +4,12 @@
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { CourseShow, unverifyCourse, verifyCourse } from '@/Api/admin';
+
 interface prerequisite {
     title: string;
-
 }
 interface benefits {
     title: string;
-
 }
 interface Course {
     _id?: string;
@@ -26,28 +25,28 @@ interface Course {
     tags?: string;
     prerequisite: prerequisite[];
     benefits: benefits[]
-    demoUrl?: string,
+    demoUrl?: string;
     thumbnail?: string;
-    chapters?: string[],
-    approved?: boolean,
-    listed?: boolean,
-    image?: string
-    adminVerified?: boolean,
-    publish?: boolean
+    chapters?: string[];
+    approved?: boolean;
+    listed?: boolean;
+    image?: string;
+    adminVerified?: boolean;
+    publish?: boolean;
     rating?: number;
-    noOfPurchase?: number
-
+    noOfPurchase?: number;
 }
 
 const CourseView = () => {
     const [data, setData] = useState<Course[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [coursesPerPage] = useState(5); // Adjust the number of courses per page here
 
     useEffect(() => {
         async function fetchCourses() {
             try {
-                const response = await CourseShow()
-                
-                console.log(response?.data)
+                const response = await CourseShow();
+                console.log(response?.data);
                 if (response?.data) {
                     setData(response?.data);
                 }
@@ -56,7 +55,7 @@ const CourseView = () => {
             }
         }
         fetchCourses();
-    }, [data]);
+    }, []);
 
     const handleUnverify = async (id: string | undefined) => {
         try {
@@ -70,7 +69,7 @@ const CourseView = () => {
                 confirmButtonText: "Yes!"
             }).then(async (result) => {
                 if (result.isConfirmed) {
-                    const response = await unverifyCourse(id)
+                    const response = await unverifyCourse(id);
                     if (response?.data.success) {
                         setData(prevData =>
                             prevData.map(item =>
@@ -85,7 +84,6 @@ const CourseView = () => {
                     }
                 }
             });
-           
         } catch (error) {
             console.error('Error blocking user:', error);
         }
@@ -103,8 +101,8 @@ const CourseView = () => {
                 confirmButtonText: "Yes!"
             }).then(async (result) => {
                 if (result.isConfirmed) {
-                    const response = await verifyCourse(id)
-                    console.log(response)
+                    const response = await verifyCourse(id);
+                    console.log(response);
                     if (response?.data.success) {
                         setData(prevData =>
                             prevData.map(item =>
@@ -119,17 +117,23 @@ const CourseView = () => {
                     }
                 }
             });
-           
         } catch (error) {
             console.error('Error unblocking user:', error);
         }
     };
 
-    return (
+    // Get current courses
+    const indexOfLastCourse = currentPage * coursesPerPage;
+    const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
+    const currentCourses = data.slice(indexOfFirstCourse, indexOfLastCourse);
 
+    // Change page
+    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+    return (
         <div className="relative p-11 overflow-x-auto bg-white">
-            <table className="w-full text-sm text-left rtl-text-right text-gray-700 dark:text-gray-400 table-fixed">
-                <thead className="text-xs text-gray-500 uppercase bg-gray-800 dark:bg-gray-700 dark:text-gray-400">
+            <table className="w-full text-sm text-left text-gray-700 table-fixed">
+                <thead className="text-xs text-gray-500 uppercase bg-gray-800">
                     <tr>
                         <th scope="col" className="px-6 py-3 w-1/5">
                             Name
@@ -149,9 +153,9 @@ const CourseView = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data && data.map((course) => (
-                        <tr key={course?._id} className="bg-gray-100 border-b dark:bg-gray-800 dark:border-gray-700">
-                            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white truncate">
+                    {currentCourses.map((course) => (
+                        <tr key={course?._id} className="bg-gray-100 border-b">
+                            <td className="px-6 py-4 font-medium text-gray-900 truncate">
                                 {course.name}
                             </td>
                             <td className="px-6 py-4 truncate">
@@ -160,7 +164,7 @@ const CourseView = () => {
                             <td className="px-6 py-4 truncate">
                                 {course.price}
                             </td>
-                            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white truncate">
+                            <td className="px-6 py-4 font-medium text-gray-900 truncate">
                                 {course.description}
                             </td>
                             <td className="px-6 py-4">
@@ -174,8 +178,19 @@ const CourseView = () => {
                     ))}
                 </tbody>
             </table>
+            <div className="flex justify-center mt-4">
+                {Array.from({ length: Math.ceil(data.length / coursesPerPage) }, (_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => paginate(index + 1)}
+                        className={`mx-1 px-3 py-1 rounded-md ${currentPage === index + 1 ? 'bg-indigo-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-gray-700'}`}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+            </div>
         </div>
-    )
+    );
 }
 
 export default CourseView;

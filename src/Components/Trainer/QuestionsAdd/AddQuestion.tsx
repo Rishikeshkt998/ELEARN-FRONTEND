@@ -1,38 +1,41 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+
+import * as Yup from 'yup'
 import React, { useEffect, useRef } from "react";
 import { useFormik } from "formik";
-import { initFlowbite } from "flowbite";
-import * as Yup from 'yup'
-import { AddQuestions } from "@/Api/trainer";
+import { initFlowbite } from 'flowbite';
+import { AddQuestions } from '@/Api/trainer';
+
 
 interface Props {
     courseId: string;
-    setQuestion: (value: any) => void
-
+    setQuestion: (value: any) => void;
 }
 interface Question {
-        _id?: string;
-        question: string;
-        options: string[];
-        correctOption: number;
-        courseId: string;
-    }
+            _id?: string;
+            question: string;
+            options: string[];
+            correctOption: number;
+            courseId: string;
+        }
 
 const AddQuestion: React.FC<Props> = ({ courseId, setQuestion }) => {
     const validationSchema = Yup.object({
-            question: Yup.string().required('Question is required'),
-            options: Yup.array()
-                .of(Yup.string().required('Option is required'))
-                .min(4, 'At least 4 options are required')
-                .max(4, 'Only 4 options are allowed'),
-            correctOption: Yup.number().required('Correct option is required'),
-        });
+        question: Yup.string().required('Question is required'),
+        options: Yup.array()
+            .of(Yup.string().required('Option is required'))
+            .min(4, 'At least 4 options are required')
+            .max(4, 'Only 4 options are allowed'),
+        correctOption: Yup.number().required('Correct option is required'),
+    });
     const closeRef = useRef<HTMLButtonElement>(null);
+
     useEffect(() => {
         initFlowbite();
     }, []);
+
     const formik = useFormik({
         initialValues: {
             question: "",
@@ -41,7 +44,7 @@ const AddQuestion: React.FC<Props> = ({ courseId, setQuestion }) => {
             courseId: courseId,
         },
         validationSchema: validationSchema,
-        onSubmit: async (values: Question) => {
+        onSubmit: async(values: Question) => {
             try {
                 const res = await AddQuestions(values)
                 console.log(res?.data.questions);
@@ -55,8 +58,14 @@ const AddQuestion: React.FC<Props> = ({ courseId, setQuestion }) => {
         },
     });
 
-    const { errors, values, handleChange, handleSubmit,handleBlur,  touched } =
+    const { errors, values, handleChange, handleSubmit, handleBlur, touched, setFieldValue } =
         formik;
+
+    const handleOptionChange = (index: number, value: string) => {
+        const newOptions = [...values.options];
+        newOptions[index] = value;
+        setFieldValue("options", newOptions);
+    };
 
     return (
         <div
@@ -121,9 +130,9 @@ const AddQuestion: React.FC<Props> = ({ courseId, setQuestion }) => {
 
                         <div className="grid gap-4 mb-4 grid-cols-2">
                             {values.options.map((opt: string, index: number) => (
-                                <div key={index + opt} className="col-span-2 sm:col-span-1">
+                                <div key={index} className={`col-span-2 sm:col-span-1  ${opt}`}>
                                     <label
-                                        htmlFor={`options[${index}]`}
+                                        htmlFor={`options-${index}`}
                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                     >
                                         Option-{index + 1}
@@ -131,11 +140,11 @@ const AddQuestion: React.FC<Props> = ({ courseId, setQuestion }) => {
                                     <input
                                         type="text"
                                         name={`options[${index}]`}
-                                        id={`option${index + 1}`}
+                                        id={`options-${index}`}
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         placeholder=""
                                         value={values.options[index]}
-                                        onChange={handleChange}
+                                        onChange={(e) => handleOptionChange(index, e.target.value)}
                                         onBlur={handleBlur}
                                     />
                                     {errors.options && errors.options[index] && (
@@ -172,7 +181,7 @@ const AddQuestion: React.FC<Props> = ({ courseId, setQuestion }) => {
 
                         <button
                             type="submit"
-                            className=" mt-3 text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            className="mt-3 text-black bg-red-500 inline-flex items-center bg-base-100 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
                             <svg
                                 className="me-1 -ms-1 w-5 h-5"

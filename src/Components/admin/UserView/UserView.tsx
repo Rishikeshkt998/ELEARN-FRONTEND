@@ -1,4 +1,6 @@
 
+
+
 import { useState, useEffect } from 'react';
 import { blockUser, getUsers, userUnblock } from '../../../Api/admin';
 import Swal from 'sweetalert2';
@@ -17,6 +19,8 @@ interface User {
 
 const UserView = () => {
     const [data, setData] = useState<User[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [usersPerPage] = useState(5); // Adjust the number of users per page here
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,9 +36,7 @@ const UserView = () => {
 
         fetchData();
 
-        return () => {
-            
-        };
+        return () => { };
     }, []);
 
     const handleBlock = async (id: string) => {
@@ -103,10 +105,18 @@ const UserView = () => {
         }
     };
 
+    // Get current users
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const currentUsers = data.slice(indexOfFirstUser, indexOfLastUser);
+
+    // Change page
+    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
     return (
         <div className="relative p-11 overflow-x-auto bg-white">
-            <table className="w-full text-sm text-left rtl-text-right text-gray-700 dark-text-gray-400">
-                <thead className="text-xs text-gray-500 uppercase bg-gray-800 dark-bg-gray-700 dark-text-gray-400">
+            <table className="w-full text-sm text-left text-gray-700 table-fixed">
+                <thead className="text-xs text-gray-500 uppercase bg-gray-800">
                     <tr>
                         <th scope="col" className="px-6 py-3">
                             Name
@@ -123,15 +133,15 @@ const UserView = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data && data.map((user) => (
-                        <tr key={user.id} className="bg-gray-100 border-b dark-bg-gray-800 dark-border-gray-700">
-                            <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark-text-white">
+                    {currentUsers.map((user) => (
+                        <tr key={user.id} className="bg-gray-100 border-b">
+                            <td className="px-6 py-4 font-medium text-gray-900 truncate">
                                 {user.name}
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="px-6 py-4 truncate">
                                 {user.email}
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="px-6 py-4 truncate">
                                 {user.phone}
                             </td>
                             <td className="px-6 py-4">
@@ -145,6 +155,17 @@ const UserView = () => {
                     ))}
                 </tbody>
             </table>
+            <div className="flex justify-center mt-4">
+                {Array.from({ length: Math.ceil(data.length / usersPerPage) }, (_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => paginate(index + 1)}
+                        className={`mx-1 px-3 py-1 rounded-md ${currentPage === index + 1 ? 'bg-indigo-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-gray-700'}`}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+            </div>
         </div>
     );
 }

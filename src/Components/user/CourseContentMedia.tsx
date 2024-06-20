@@ -10,7 +10,7 @@ import StarRating from "./StarRating"
 import { format } from "timeago.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSmile } from "@fortawesome/free-solid-svg-icons"
-import {  ChaptersCompletedTime, EditReviewSubmit, GetChapterView, GetCourse, GetLessonsView, PostompletedChapter, PostompletedLesson, QuestionAnswer, ReviewSubmit, fetchEnrolled } from "@/Api/user"
+import {  ChaptersCompletedTime, EditReviewSubmit, GetChapterView, GetChapters, GetCourse, GetLessonsView, PostompletedChapter, PostompletedLesson, QuestionAnswer, ReviewSubmit, fetchEnrolled } from "@/Api/user"
 import { BsPencil } from "react-icons/bs"
 import StarRatings from "./StarRatings"
 import TextArea from "./TextArea"
@@ -133,7 +133,6 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
             setCompletedQuestion(flattenedAttendedQuestions);
             const wrongQuestions = enrolledCourses.map((course: any) => course.attendedWrongQuestions);
             const flattenedAttendedwrongQuestions = wrongQuestions.flat();
-            console.log("wrong answr",wrongQuestions)
             setwrongCompletedQuestion(flattenedAttendedwrongQuestions);
 
         } catch (error) {
@@ -211,9 +210,16 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                             console.log(completedChapterResponse)
                             if (completedChapterResponse) {
                                 const completedChapters = completedChapterResponse.data.chaptercompletionView;
-                                const isChapterCompleted = completedChapters.includes(chapterId);
+                                console.log("completed chapters", completedChapters)
+                                
+
+                                const isChapterCompleted = completedChapters.every(chapterId);
+                                // const isChapterCompleted = completedChapters.every((chapter: any) => chapter === chapterId);
+                                console.log("chapter completed",isChapterCompleted)
                                 if (isChapterCompleted) {
                                     console.log(isChapterCompleted)
+                                    // const result = await ChaptersCompletedTime(id, usersId);
+                                    // console.log("course status update",result)
 
                                 }
                             }
@@ -227,6 +233,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
             console.error("Error recording completion:", error);
         }
     };
+
     useEffect(() => {
         const handleCheckEnded = async () => {
             try {
@@ -251,12 +258,19 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                     completedChapterIds.push(chapterId);
                                 }
                                 setChapterCompleted(completedChapterIds)
-                                const allChaptersCompleted = completedChapterIds.every((chapterId:any) => completedChapters.includes(chapterId));
-                                console.log(allChaptersCompleted)
-                                if (allChaptersCompleted) {
-                                    
-                                    const result=await ChaptersCompletedTime(id, usersId);
-                                    console.log("course status update",result)
+                                RefetchCourseDetails();
+                               
+                                const chaptersResponse = await GetChapters(CourseDetails._id);
+                                console.log("chapter response", chaptersResponse)
+                                const chapters = chaptersResponse?.data.Response.flatMap((item: any) => item.chapters);
+                                const completedChaptersfortime = chapters.every((chapter: any) => ChapterCompleted.includes(chapter._id));
+                                console.log("chapter completed", completedChaptersfortime)
+                                console.log("chapter completedvalue", chapters.length === ChapterCompleted.length)
+                                if (completedChaptersfortime && chapters.length === ChapterCompleted.length) {
+                                    console.log(completedChaptersfortime)
+                                    const result = await ChaptersCompletedTime(id, usersId);
+                                    console.log("course status update", result)
+
                                 }
                             }
                         }
@@ -269,7 +283,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
 
         handleCheckEnded();
 
-    }, [lessonId, activeVideo, id, chapters, setLessonCompleted, setChapterCompleted, lessonCompleted, ChapterCompleted,usersId]);
+    }, [lessonId, activeVideo, id, chapters, setLessonCompleted, setChapterCompleted, lessonCompleted, ChapterCompleted, usersId]);
 
     const initiateVideoCall = (meetingcode: string) => {
 
