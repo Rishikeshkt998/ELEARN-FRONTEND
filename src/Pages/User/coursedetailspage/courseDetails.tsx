@@ -28,6 +28,8 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
     const [isLoading, setIsLoading] = useState(false)
     const [review,setReviews]=useState<any[]>([])
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isPaymentFailedModal, setIsPaymentFailedModal] = useState(false);
+    
     const navigate=useNavigate()
     const id=CourseDetails?._id
     useEffect(() => {
@@ -73,6 +75,9 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
         setIsModalOpen(false);
         navigate(`/coursecontentpage/${CourseDetails?._id}`);
     };
+    const handleCloseErrorModal = () => {
+        setIsPaymentFailedModal(false);
+    };
     
     return (
         <>
@@ -89,7 +94,7 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
                         <div className="flex items-center justify-between pt-3">
                             <div className="flex items-center">
                                 <StarRating rating={avgRating} />
-                                <h5 className="text-black dark:text-white "> {avgRating.toFixed()} ({numberOfReviews} reviews)</h5>
+                                <h5 className="text-black dark:text-white "> {avgRating.toFixed(1)} ({numberOfReviews} reviews)</h5>
                             </div>
                             <h5 className="text-black dark:text-white">{numberOfReviews} students</h5>
                         </div>
@@ -214,7 +219,7 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
                                         {
                                             stripePromise && clientSecret && (
                                                 <Elements stripe={stripePromise} options={{ clientSecret }}>
-                                                    <CheckOutForm setopen={setopen} CourseDetails={CourseDetails} isModelOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+                                                    <CheckOutForm setopen={setopen} CourseDetails={CourseDetails} isModelOpen={isModalOpen} setIsModalOpen={setIsModalOpen} isPaymentFailedModal={isPaymentFailedModal} setIsPaymentFailedModal={setIsPaymentFailedModal} />
                                                 </Elements>
                                             )
                                         }
@@ -284,6 +289,25 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
                                         Continue
                                     </button>
                                 </div>
+                            </div>
+                        </div>
+                    )}
+                    {isPaymentFailedModal && (
+                        <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+                            <div className="bg-white p-8 rounded-lg shadow-lg max-w-md">
+                                <div className="flex items-center justify-center rounded-full bg-red-500 text-white text-4xl h-24 w-24 mb-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </div>
+                                <h2 className="text-xl font-semibold text-red-600 mb-4">Payment Failed</h2>
+                                <p className="text-gray-700">Unfortunately, your payment could not be processed at this time. Please try again later.</p>
+                                <button
+                                    className="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+                                    onClick={handleCloseErrorModal}
+                                >
+                                    Close
+                                </button>
                             </div>
                         </div>
                     )}

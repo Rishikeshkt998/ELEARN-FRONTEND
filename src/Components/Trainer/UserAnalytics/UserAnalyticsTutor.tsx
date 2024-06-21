@@ -50,7 +50,7 @@ const UserAnalyticsTutor: React.FC<Props> = ({ isDashboard }) => {
                         Students Analytics
                     </h1>
                     <p className="font-bold text-[1rem] text-gray-500 px-5 mb-8">
-                        Last 12 months analytics data
+                        Last 12 months analytics data of Total students enrolled the course
                     </p>
                 </div>
                 <div

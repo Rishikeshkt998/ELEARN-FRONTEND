@@ -14,8 +14,10 @@ type Props = {
     CourseDetails: any
     isModelOpen:any
     setIsModalOpen:(isModelOpen: any)=>void
+    isPaymentFailedModal:any 
+    setIsPaymentFailedModal: (isPaymentFailedModal: any)=>void
 }
-const CheckOutForm: FC<Props> = ({  CourseDetails ,setopen,setIsModalOpen}) => {
+const CheckOutForm: FC<Props> = ({  CourseDetails ,setopen,setIsModalOpen,setIsPaymentFailedModal}) => {
     const dispatch=useDispatch()
     // const navigate=useNavigate()
     const [message, setaMessage] = useState<any>("")
@@ -69,6 +71,10 @@ const CheckOutForm: FC<Props> = ({  CourseDetails ,setopen,setIsModalOpen}) => {
             };
 
             createOrder();
+        }else{
+            setopen(false)
+            setIsLoading(false);
+            setIsPaymentFailedModal(true)
         }
 
     }

@@ -53,7 +53,7 @@ const OrderAnalyticsTutor: React.FC<Props> = ({ isDashboard }) => {
                         Orders Analytics
                     </h1>
                     <p className="font-bold text-[1rem] text-gray-500 px-5 mb-8">
-                        Last 12 months analytics data
+                        Last 12 months analytics data of total orders by the enrolled students
                     </p>
                 </div>
                 <div className="w-full h-[90%] flex items-center justify-center bg-gray-900">

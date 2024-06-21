@@ -56,6 +56,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
     const [editReviews, setEditReviews] = useState("")
     const [rating, setRating] = useState(1)
     const [editRating, setEditRating] = useState(1)
+    const [editingReviewId, setEditingReviewId] = useState(null);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [answer, setAnswer] = useState<string>();
     const [questionId, setQuestionId] = useState<string>();
@@ -63,6 +64,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
     const [completedQuestion, setCompletedQuestion] = useState<string[]>();
     const [wrongcompletedQuestion, setwrongCompletedQuestion] = useState<string[]>();
     const [expandedReviewIndex, setExpandedReviewIndex] = useState<number | null>(null);
+    const [isLoading, setIsLoading] = useState(false)
     const handleOpenModal = () => {
         setIsModalOpen(true);
     };
@@ -312,12 +314,14 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
 
 
     const handleReviewSubmit = async () => {
+        setIsLoading(true)
         if (reviews.length === 0) {
             toast.error("Review cant be empty")
         } else {
 
             const reviewResponse = await ReviewSubmit(reviews, rating, id, usersId)
             console.log(reviewResponse)
+            setIsLoading(false)
             toast.success("review added successfully")
             RefetchCourseDetails();
             setReviews("")
@@ -473,11 +477,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                                             <p>{option}</p>
                                                         </div>
                                                     ))}
-                                                    {/* {feedback && (
-                                                        <div className={`mt-4 text-lg ${correct ? 'text-green-600' : 'text-red-600'}`}>
-                                                            {feedback}
-                                                        </div>
-                                                    )} */}
+                                                   
                                                 </div>
                                                 <div className="mt-8 flex justify-between">
                                                     {index > 0 && (
@@ -490,16 +490,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                                         </button>
                                                     )}
                                                     <div>
-                                                        {/* {checkCompletedWrongQuestions(question._id as string) && (
-                                                            <span className="bg-green-100 text-red-800 text-xs font-medium me-2 px-10 py-3 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
-                                                                Not Answered <FontAwesomeIcon icon={faSmile} />
-                                                            </span>
-                                                        ) }                     
-                                                      {checkCompletedQuestions(question._id as string) ? (
-                                                            <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-10 py-3 rounded dark:bg-gray-700 dark:text-green-400 border border-green-400">
-                                                                Answered <FontAwesomeIcon icon={faSmile} />
-                                                            </span>
-                                                        ) : ( */}
+                                                       
                                                         {checkCompletedQuestions(question?._id as string) || checkCompletedWrongQuestions(question?._id as string) ? (
                                                             <span className={`bg-${checkCompletedQuestions(question._id as string) ? 'green' : 'red'}-100 text-${checkCompletedQuestions(question?._id as string) ? 'green' : 'red'}-800 text-xs font-medium me-2 px-10 py-3 rounded dark:bg-gray-700 dark:text-${checkCompletedQuestions(question._id as string) ? 'green' : 'red'}-400 border border-${checkCompletedQuestions(question._id as string) ? 'green' : 'red'}-400`}>
                                                                 {checkCompletedQuestions(question?._id as string) ? 'Correct Answer' : 'wrong Answer'} <FontAwesomeIcon icon={faSmile} />
@@ -631,11 +622,20 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
 
 
                                                 </div>
-                                                <BsPencil
-                                                    className="cursor-pointer ms-12 mt-2 text-sm dark:text-white text-gray-700" onClick={handleOpenModal}
-                                                />
+                                                {item?.userId?._id === usersId && (
+                                                    <BsPencil
+                                                        className="cursor-pointer ms-12 mt-2 text-sm dark:text-white text-gray-700"
+                                                        onClick={() => {
+                                                            handleOpenModal();  
+                                                            setEditRating(item?.rating);
+                                                            setEditReviews(item?.comments);
+                                                            setEditingReviewId(item?._id);  
+                                                        }}
+                                                    />
+                                                )}
+                                                
                                             </div>
-                                            {isModalOpen && (
+                                            {isModalOpen && editingReviewId === item?._id &&(
                                                 <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
                                                     <div className="bg-white p-8">
 
@@ -699,6 +699,12 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
 
 
             </div>
+            {isLoading && (
+                <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"></div>
+
+                </div>
+            )}
 
         </>
     )
