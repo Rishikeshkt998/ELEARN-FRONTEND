@@ -515,6 +515,7 @@ const UserCard = () => {
                                                     <a href="#" className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out overflow-hidden whitespace-nowrap overflow-ellipsis" style={{ maxWidth: '100%' }}>{course?.name}</a>
                                                     <p className="text-gray-500 text-sm">{course?.category}</p>
                                                 </div>
+                                                </Link>
                                                 <div className="px-6 py-4 flex justify-between items-center">
                                                         <a href="#" className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">{formatPrice(course?.price)}</a>
                                                         {enrolledCourses.includes(course._id) ? (
@@ -531,7 +532,7 @@ const UserCard = () => {
                                                             </button>
                                                         )}
                                                 </div>
-                                                </Link>
+                                                
                                             </div>
                                             
                                         ))}
