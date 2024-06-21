@@ -2,12 +2,15 @@
 
 import  { FC, useState } from 'react';
 import { updateProfilePassword } from '../../../Api/user';
+import { useNavigate } from 'react-router-dom';
 
 
 const Changepassword:FC = () => {
     const [oldpassword, setoldpassword] = useState('')
     const [newpassword, setnewpassword] = useState('')
     const [confirmpassword, setconfirmpassword] = useState('')
+    const [loading, setLoading] = useState<boolean>(false);
+    const navigate=useNavigate()
 
     const handleoldpassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         setoldpassword(e.target.value);
@@ -21,22 +24,30 @@ const Changepassword:FC = () => {
   
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const userId = localStorage.getItem('userId');
             console.log(userId)
             if(userId!==null){
                 const response = await updateProfilePassword(userId, oldpassword, newpassword, confirmpassword)
+                if (response) {
+                    setLoading(false);
+                    navigate('/profile');
+                }
+
                 console.log('Password changed successfully:', response?.data);
 
             }
             
            
         } catch (error) {
+            setLoading(false);
             console.error('Error changing password:', error);
         }
     };
 
     return (
+        <>
         
                             <div className="mx-auto w-full max-w-[550px]">
                                 <form onSubmit={handleSubmit} method="POST">
@@ -89,6 +100,14 @@ const Changepassword:FC = () => {
                                     </div>
                                 </form>
                             </div>
+            {
+                loading && (
+                    <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"></div>
+                    </div>
+                )
+            }
+        </>
                       
     );
 }

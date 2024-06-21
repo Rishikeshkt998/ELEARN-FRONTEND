@@ -121,6 +121,7 @@ const ProfileEditpage = () => {
     const user = useSelector((state:any) => state.value.userData);
     const userId=user?._id
     console.log("values", userId)
+    const [loading, setLoading] = useState<boolean>(false);
     const [userData, setUserData] = useState({
         name: '',
         email: '',
@@ -163,6 +164,7 @@ const ProfileEditpage = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         let formIsValid = true;
 
         // Name validation
@@ -197,15 +199,18 @@ const ProfileEditpage = () => {
                 // axios.put(`http://localhost:5000/api/user/updateprofile/${userId}`, userData);
                 console.log('User data updated:', response?.data);
                 if (response) {
+                    setLoading(false);
                     navigate('/profile');
                 }
             } catch (error) {
+                setLoading(false);
                 console.error('Error updating user data:', error);
             }
         }
     };
 
     return (
+        <>
         <div className="mx-auto w-full max-w-[550px]">
             <form onSubmit={handleSubmit}>
                 <div className="mb-5">
@@ -245,6 +250,14 @@ const ProfileEditpage = () => {
                 </div>
             </form>
         </div>
+        {
+        loading && (
+            <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"></div>
+            </div>
+        )
+    }
+    </>
     );
 }
 

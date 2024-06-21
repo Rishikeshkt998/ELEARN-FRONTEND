@@ -19,11 +19,11 @@ const ProfileSidebars = () => {
                   Upload profile pic
               </Link>
           </li>
-          <li className="hover:bg-gray-700 transform transition duration-300 hover:scale-105">
+          {/* <li className="hover:bg-gray-700 transform transition duration-300 hover:scale-105">
               <Link to="/profile/profileemail" className="block py-3 px-4">
                   Change Email
               </Link>
-          </li>
+          </li> */}
           <li className="hover:bg-gray-700 transform transition duration-300 hover:scale-105">
               <Link to="/profile/changepassword" className="block py-3 px-4">
                   Change password

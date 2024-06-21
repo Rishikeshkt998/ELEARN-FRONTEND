@@ -26,6 +26,7 @@ const Profilepage = () => {
   // const userId = user?._id
   const [userDetails, setUserDetails] = useState<User | null>(null);
   const userId = localStorage.getItem('userId');
+  
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -93,6 +94,7 @@ const Profilepage = () => {
           )}
         </div>
       </div>
+      
 
 
     </>
