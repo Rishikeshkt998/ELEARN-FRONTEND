@@ -259,7 +259,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                 }
                                 setChapterCompleted(completedChapterIds)
                                 RefetchCourseDetails();
-                               
+                                
                                 const chaptersResponse = await GetChapters(CourseDetails._id);
                                 console.log("chapter response", chaptersResponse)
                                 const chapters = chaptersResponse?.data.Response.flatMap((item: any) => item.chapters);
@@ -283,7 +283,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
 
         handleCheckEnded();
 
-    }, [lessonId, activeVideo, id, chapters, setLessonCompleted, setChapterCompleted, lessonCompleted, ChapterCompleted, usersId]);
+    }, [lessonId, activeVideo, id, chapters, setLessonCompleted, setChapterCompleted, lessonCompleted, ChapterCompleted, usersId, CourseDetails?._id]);
 
     const initiateVideoCall = (meetingcode: string) => {
 
@@ -335,10 +335,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                 .sort((a, b) => a.sort - b.sort)
                 .map(({ value }) => value);
         };
-        // const shuffled = questions.map(question => ({
-        //     ...question,
-        //     options: shuffleArray(question.options)
-        // }));
+
      
 
         setShuffledQuestions(shuffleArray(questions));

@@ -61,7 +61,7 @@ const VideoCallashboard: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col justify-center items-center text-center mt-8 mb-8">
+        <div className="">
             {!isInitialized && (
                 <button
                     onClick={handleStartCall}

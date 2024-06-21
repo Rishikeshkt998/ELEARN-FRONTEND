@@ -8,7 +8,13 @@ const PurchaseHistory: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5; 
     const userId = localStorage.getItem('userId') as string | null;
-
+    const formatPrice = (price: number) => {
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            maximumFractionDigits: 2,
+        }).format(price);
+    };
     useEffect(() => {
         const getEnrollments = async () => {
             try {
@@ -52,7 +58,7 @@ const PurchaseHistory: React.FC = () => {
                                     <div className="px-6 py-4">
                                         <div className="flex items-center justify-between mb-2">
                                             <h2 className="text-xl font-bold text-gray-800">{purchase?.courseId?.name}</h2>
-                                            <span className="text-lg font-semibold text-green-600">${purchase?.courseId?.price}</span>
+                                            <span className="text-lg font-semibold text-green-600">{formatPrice(purchase?.courseId?.price)}</span>
                                         </div>
                                         <p className="text-sm text-gray-600 mb-4">{formatDate(purchase?.enrolledTime)}</p>
                                     </div>
