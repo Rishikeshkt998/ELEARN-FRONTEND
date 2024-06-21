@@ -229,6 +229,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                     }
                 }
             }
+            
         } catch (error) {
             console.error("Error recording completion:", error);
         }
@@ -245,6 +246,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                         completedLessonIds.push(lessonId);
                     }
                     setLessonCompleted(completedLessonIds);
+                    RefetchCourseDetails()                  
                     const chapterLessonIds = chapters[activeVideo]?.lessons.map((lesson: any) => lesson?._id);
                     if (chapterLessonIds && chapterLessonIds.length > 0) {
                         const allLessonsCompleted = chapterLessonIds.every((lessonId: any) => completedLessons.includes(lessonId));
@@ -258,8 +260,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                     completedChapterIds.push(chapterId);
                                 }
                                 setChapterCompleted(completedChapterIds)
-                                RefetchCourseDetails();
-                                
+                                RefetchCourseDetails()
                                 const chaptersResponse = await GetChapters(CourseDetails._id);
                                 console.log("chapter response", chaptersResponse)
                                 const chapters = chaptersResponse?.data.Response.flatMap((item: any) => item.chapters);
@@ -283,7 +284,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
 
         handleCheckEnded();
 
-    }, [id, activeVideo, chapters, setLessonCompleted, setChapterCompleted, ChapterCompleted, usersId, CourseDetails]);
+    }, [id, activeVideo, chapters, setLessonCompleted, setChapterCompleted,  ChapterCompleted, usersId, CourseDetails]);
     //  [lessonId, activeVideo, id, chapters, setLessonCompleted, setChapterCompleted, lessonCompleted, ChapterCompleted, usersId]);
 
     const initiateVideoCall = (meetingcode: string) => {
