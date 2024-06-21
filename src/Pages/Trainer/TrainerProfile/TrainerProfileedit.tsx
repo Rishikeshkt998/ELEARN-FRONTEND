@@ -17,6 +17,7 @@ const TrainerProfileedit = () => {
     });
     const navigate = useNavigate();
     const trainerId = localStorage.getItem('trainerId');
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -52,6 +53,7 @@ const TrainerProfileedit = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
 
         // Validation
         let formIsValid = true;
@@ -88,9 +90,11 @@ const TrainerProfileedit = () => {
             const response = await TrainerProfileEdit(trainerId,trainerData)
             // axios.put(`http://localhost:5000/api/trainer/trainerupdateprofile/${trainerId}`, trainerData);
             if (response?.data.success) {
+                setLoading(false);
                 navigate('/tutor/tutorprofile');
             }
         } catch (error) {
+            setLoading(false);
             console.error('Error updating user data:', error);
         }
     };
@@ -132,6 +136,11 @@ const TrainerProfileedit = () => {
                     </div>
                 </div>
             </div>
+            {loading && (
+                <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"></div>
+                </div>
+            )}
         </>
     );
 };

@@ -65,6 +65,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
     const [wrongcompletedQuestion, setwrongCompletedQuestion] = useState<string[]>();
     const [expandedReviewIndex, setExpandedReviewIndex] = useState<number | null>(null);
     const [isLoading, setIsLoading] = useState(false)
+    // const [isRefetched, setIsRefetched] = useState(false);
     const handleOpenModal = () => {
         setIsModalOpen(true);
     };
@@ -98,6 +99,10 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
     };
     const submitAnswer = async (e: React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!answer) {
+            toast.error("Please select an option before submitting");
+            return;
+        }
         const response = await QuestionAnswer(questionId, answer, id, usersId)
         console.log("questionanswer", response)
         if (response?.data.status === true) {
@@ -200,6 +205,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                     const isLessonCompleted = completedLessons.includes(lessonId);
                     if (isLessonCompleted) {
                         console.log(isLessonCompleted)
+                        RefetchCourseDetails()
 
                     }
                     const chapterLessonIds = chapters[activeVideo]?.lessons.map((lesson: any) => lesson?._id);
@@ -219,9 +225,8 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                 // const isChapterCompleted = completedChapters.every((chapter: any) => chapter === chapterId);
                                 console.log("chapter completed",isChapterCompleted)
                                 if (isChapterCompleted) {
+                                    RefetchCourseDetails()
                                     console.log(isChapterCompleted)
-                                    // const result = await ChaptersCompletedTime(id, usersId);
-                                    // console.log("course status update",result)
 
                                 }
                             }
@@ -237,6 +242,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
         }
     };
 
+
     useEffect(() => {
         const handleCheckEnded = async () => {
             try {
@@ -247,8 +253,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                     for (const lessonId of completedLessons) {
                         completedLessonIds.push(lessonId);
                     }
-                    setLessonCompleted(completedLessonIds);
-                    RefetchCourseDetails()                  
+                    setLessonCompleted(completedLessonIds);        
                     const chapterLessonIds = chapters[activeVideo]?.lessons.map((lesson: any) => lesson?._id);
                     if (chapterLessonIds && chapterLessonIds.length > 0) {
                         const allLessonsCompleted = chapterLessonIds.every((lessonId: any) => completedLessons.includes(lessonId));
@@ -262,7 +267,6 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                     completedChapterIds.push(chapterId);
                                 }
                                 setChapterCompleted(completedChapterIds)
-                                RefetchCourseDetails()
                                 const chaptersResponse = await GetChapters(CourseDetails._id);
                                 console.log("chapter response", chaptersResponse)
                                 const chapters = chaptersResponse?.data.Response.flatMap((item: any) => item.chapters);
@@ -286,8 +290,9 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
 
         handleCheckEnded();
 
-    }, [id, activeVideo, chapters, setLessonCompleted, setChapterCompleted,  ChapterCompleted, usersId, CourseDetails]);
-    //  [lessonId, activeVideo, id, chapters, setLessonCompleted, setChapterCompleted, lessonCompleted, ChapterCompleted, usersId]);
+    }, [id, activeVideo, chapters, setLessonCompleted, setChapterCompleted, ChapterCompleted, usersId, CourseDetails]);
+
+   
 
     const initiateVideoCall = (meetingcode: string) => {
 
@@ -335,18 +340,25 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
     const isReviewExists = CourseDetails?.reviews.find((item: any) => item.userId?._id === usersId)
     const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
 
+    
     useEffect(() => {
         const shuffleArray = (array: Question[]) => {
-            return array
-                .map((value) => ({ value, sort: Math.random() }))
-                .sort((a, b) => a.sort - b.sort)
-                .map(({ value }) => value);
+            const shuffledArray = [...array]; 
+            for (let i = shuffledArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1)); 
+                [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+            }
+
+            return shuffledArray;
         };
 
-     
-
-        setShuffledQuestions(shuffleArray(questions));
+        if (questions.length > 0) {
+            const shuffledQuestions = shuffleArray(questions);
+            setShuffledQuestions(shuffledQuestions);
+        }
     }, [questions]);
+    
+    
 
     return (
         <>

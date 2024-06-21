@@ -9,6 +9,7 @@ const TrainerProfilechangepassword: FC = () => {
     const [newpassword, setNewPassword] = useState('');
     const [confirmpassword, setConfirmPassword] = useState('');
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const [loading, setLoading] = useState<boolean>(false);
     const navigate=useNavigate()
 
     const handleOldPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,6 +29,7 @@ const TrainerProfilechangepassword: FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setLoading(true);
 
         // Password validation
         const errors: { [key: string]: string } = {};
@@ -62,11 +64,13 @@ const TrainerProfilechangepassword: FC = () => {
             if (trainerId) {
                 const response = await updateTrainerProfilePassword(trainerId, oldpassword, newpassword, confirmpassword);
                 console.log('Password changed successfully:', response?.data);
-                if (response?.data.success) {
+                if (response) {
+                    setLoading(false);
                     navigate('/tutor/tutorprofile')
                 }
             }
         } catch (error) {
+            setLoading(false);
             console.error('Error changing password:', error);
         }
     };
@@ -133,6 +137,11 @@ const TrainerProfilechangepassword: FC = () => {
                     </div>
                 </div>
             </div>
+            {loading && (
+                <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-700"></div>
+                </div>
+            )}
         </>
     );
 }
