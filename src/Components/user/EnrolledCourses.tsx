@@ -144,7 +144,7 @@
 
 import  { useState, useEffect } from 'react';
 import { FiDownload } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { EnrolledCoursesView, GetChapters, generateCertificate } from "@/Api/user";
 
 interface Course {
@@ -184,7 +184,8 @@ const EnrolledCourses = () => {
     const id = localStorage.getItem('userId') as string | null;
     const [courses, setCourses] = useState<Course[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [coursesPerPage] = useState(3); // Adjust the number of courses per page here
+    const [coursesPerPage] = useState(3)
+    const navigate=useNavigate()
 
     useEffect(() => {
         async function fetchCourses() {
@@ -244,6 +245,8 @@ const EnrolledCourses = () => {
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
     const handleCourseClick = (courseId: string) => {
         localStorage.setItem('courseId', courseId);
+        navigate(`/coursecontentpage/${courseId}`)
+        
     };
 
     return (
@@ -251,7 +254,7 @@ const EnrolledCourses = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-10">
                 {currentCourses.map(course => (
                     <div key={course._id} className="rounded bg-white overflow-hidden shadow-lg w-64">
-                        <Link to={`/coursecontentpage/${course?.courseId?._id}`} onClick={() => handleCourseClick(course?.courseId?._id)}>
+                        <a onClick={() => handleCourseClick(course?.courseId?._id)}>
                             <div className="relative">
                                 <img className="w-full h-36" src={course?.courseId?.thumbnail} alt="Course thumbnail" />
                                 <div className="hover:bg-transparent transition duration-300 flex absolute bottom-0 right-0 left-0"></div>
@@ -260,7 +263,7 @@ const EnrolledCourses = () => {
                                 <a href="#" className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out overflow-hidden whitespace-nowrap overflow-ellipsis" style={{ maxWidth: '100%' }}>{course?.courseId?.name}</a>
                                 <p className="text-gray-500 text-sm">{course?.courseId?.category}</p>
                             </div>
-                        </Link>
+                        </a>
                         <div className="px-6 py-2">
                             <div className="flex justify-between items-center mb-2">
                                 <span className="text-xs font-semibold inline-block text-indigo-600">{course.progress}% Completed</span>
