@@ -94,7 +94,7 @@ const CourseDetails: FC<Props> = ({ CourseDetails, clientSecret, stripePromise,u
                         <div className="flex items-center justify-between pt-3">
                             <div className="flex items-center">
                                 <StarRating rating={avgRating} />
-                                <h5 className="text-black dark:text-white "> {avgRating.toFixed(1)} ({numberOfReviews} reviews)</h5>
+                                <h5 className="text-black dark:text-white "> ({numberOfReviews} reviews)</h5>
                             </div>
                             <h5 className="text-black dark:text-white">{numberOfReviews} students</h5>
                         </div>
