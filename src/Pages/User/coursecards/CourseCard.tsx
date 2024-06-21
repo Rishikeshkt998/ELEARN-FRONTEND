@@ -130,17 +130,18 @@ const CourseCard: FC<Props> = ({ searchTerm }) => {
                             <span className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">{formatPrice(course.price)}</span>
                             
                             {enrolledCourses.includes(course._id) ? (
-                                // <span className="text-green-500 font-bold">Enrolled</span>
+                                
                                 <span className="text-green-700 bg-green-100 border border-green-500 font-bold rounded px-3 py-1">Enrolled</span>
                             ) : (
-                                <button
-                                    onClick={() => handleAddToWishlist(course._id)}
-                                    className={`transition duration-500 ease-in-out ${(whishlist.includes(course._id)) ? 'text-red-500' : 'text-black'} p-2`}
-                                >
-                                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M6 2C5.44772 2 5 2.44772 5 3V21C5 21.7015 5.74743 22.1465 6.36498 21.8413L12 19.118L17.635 21.8413C18.2526 22.1465 19 21.7015 19 21V3C19 2.44772 18.5523 2 18 2H6Z" />
-                                    </svg>
-                                </button>
+                                
+                                    <button
+                                        onClick={() => handleAddToWishlist(course._id)}
+                                        className={`transition duration-500 ease-in-out ${(whishlist.includes(course._id)) ? 'text-red-500' : 'text-black'} p-2`}
+                                    >
+                                        <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M6 2C5.44772 2 5 2.44772 5 3V21C5 21.7015 5.74743 22.1465 6.36498 21.8413L12 19.118L17.635 21.8413C18.2526 22.1465 19 21.7015 19 21V3C19 2.44772 18.5523 2 18 2H6Z" />
+                                        </svg>
+                                    </button>
                             )}
                         </div>
                         </div>

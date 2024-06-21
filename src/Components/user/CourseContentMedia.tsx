@@ -47,7 +47,7 @@ interface Question {
 
 }
 
-const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questions, setQuestions, id, chapters, activeVideo, setActiveVideo, setVideoUrl, videoUrl, setLessonId, lessonId, setLessonCompleted, setChapterCompleted, lessonCompleted, ChapterCompleted }) => {
+const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questions, setQuestions, id, chapters, activeVideo, setActiveVideo, setVideoUrl, videoUrl, setLessonId, lessonId, setLessonCompleted, setChapterCompleted,  ChapterCompleted }) => {
     const [activeBar, setActiveBar] = useState(0)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const usersId = localStorage.getItem('userId');
@@ -283,7 +283,8 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
 
         handleCheckEnded();
 
-    }, [lessonId, activeVideo, id, chapters, setLessonCompleted, setChapterCompleted, lessonCompleted, ChapterCompleted, usersId, CourseDetails?._id]);
+    }, [id, activeVideo, chapters, setLessonCompleted, setChapterCompleted, ChapterCompleted, usersId, CourseDetails]);
+    //  [lessonId, activeVideo, id, chapters, setLessonCompleted, setChapterCompleted, lessonCompleted, ChapterCompleted, usersId]);
 
     const initiateVideoCall = (meetingcode: string) => {
 
@@ -293,6 +294,20 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
 
 
     }
+    const RefetchCourseDetails = async () => {
+        try {
+            const response = await GetCourse(id)
+            console.log("course", response?.data.Response)
+            if (response) {
+                setCourseDetails(response.data.Response);
+                setQuestions(response.data.Response.questions)
+            } else {
+                console.error('Failed to fetch course details');
+            }
+        } catch (error) {
+            console.error('Error fetching course details:', error);
+        }
+    };
 
 
     const handleReviewSubmit = async () => {
@@ -310,20 +325,7 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
 
         }
     }
-    const RefetchCourseDetails = async () => {
-        try {
-            const response = await GetCourse(id)
-            console.log("course", response?.data.Response)
-            if (response) {
-                setCourseDetails(response.data.Response);
-                setQuestions(response.data.Response.questions)
-            } else {
-                console.error('Failed to fetch course details');
-            }
-        } catch (error) {
-            console.error('Error fetching course details:', error);
-        }
-    };
+    
 
     const isReviewExists = CourseDetails?.reviews.find((item: any) => item.userId?._id === usersId)
     const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
