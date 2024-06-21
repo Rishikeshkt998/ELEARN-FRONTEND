@@ -242,13 +242,16 @@ const EnrolledCourses = () => {
     const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse);
 
     const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+    const handleCourseClick = (courseId: string) => {
+        localStorage.setItem('courseId', courseId);
+    };
 
     return (
         <div className="max-w-screen-xl h-full m-3 mx-auto p-5 sm:p-10 md:p-16">
             <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-10">
                 {currentCourses.map(course => (
                     <div key={course._id} className="rounded bg-white overflow-hidden shadow-lg w-64">
-                        <Link to={`/coursecontentpage/${course?.courseId?._id}`}>
+                        <Link to={`/coursecontentpage/${course?.courseId?._id}`} onClick={() => handleCourseClick(course?.courseId?._id)}>
                             <div className="relative">
                                 <img className="w-full h-36" src={course?.courseId?.thumbnail} alt="Course thumbnail" />
                                 <div className="hover:bg-transparent transition duration-300 flex absolute bottom-0 right-0 left-0"></div>

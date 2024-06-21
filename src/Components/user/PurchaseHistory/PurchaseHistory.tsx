@@ -1,15 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { fetchEnrolledStudentsForPurchase } from '@/Api/user';
 import React, { useEffect, useState } from 'react';
 
-// interface StudentType {
-//     student: {
-//         student: Student;
-//     };
-// }
-
 const PurchaseHistory: React.FC = () => {
     const [history, setHistory] = useState<any>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5; 
     const userId = localStorage.getItem('userId') as string | null;
 
     useEffect(() => {
@@ -19,26 +16,25 @@ const PurchaseHistory: React.FC = () => {
                 console.log(response?.data)
                 if (response !== null) {
                     setHistory(response?.data?.EnrolledCourses)
-
                 }
-
-
-
-
-
             } catch (err) {
                 console.log(err)
             }
         }
         getEnrollments()
-        
-        
-    }, []);
+    }, [userId]);
 
     const formatDate = (date: Date) => {
         const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(date).toLocaleDateString(undefined, options);
     };
+
+    // Pagination logic
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = history.slice(indexOfFirstItem, indexOfLastItem);
+
+    const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -49,21 +45,33 @@ const PurchaseHistory: React.FC = () => {
                         No purchases found.
                     </div>
                 ) : (
-                    <div className="grid gap-6">
-                        {history.map((purchase: any) => (
-                            <div  className="bg-white shadow-lg rounded-lg overflow-hidden">
-                                <div className="px-6 py-4">
-                                    <div className="flex items-center justify-between mb-2">
-                                        <h2 className="text-xl font-bold text-gray-800">{purchase?.courseId?.name}</h2>
-                                        <span className="text-lg font-semibold text-green-600">${purchase?.courseId?.price}</span>
+                    <>
+                        <div className="grid gap-6">
+                            {currentItems.map((purchase: any, index: number) => (
+                                <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
+                                    <div className="px-6 py-4">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <h2 className="text-xl font-bold text-gray-800">{purchase?.courseId?.name}</h2>
+                                            <span className="text-lg font-semibold text-green-600">${purchase?.courseId?.price}</span>
+                                        </div>
+                                        <p className="text-sm text-gray-600 mb-4">{formatDate(purchase?.enrolledTime)}</p>
                                     </div>
-                                    <p className="text-sm text-gray-600 mb-4">{formatDate(purchase?.enrolledTime)}</p>
-                                    
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                  )}
+                            ))}
+                        </div>
+                        <div className="flex justify-center mt-4">
+                            {Array.from({ length: Math.ceil(history.length / itemsPerPage) }, (_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => paginate(index + 1)}
+                                    className={`mx-1 px-3 py-1 rounded-md ${currentPage === index + 1 ? 'bg-indigo-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-gray-700'}`}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     );

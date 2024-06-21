@@ -408,7 +408,9 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                     </div>
                                 </div>
                             ) : (
-                                <span>No meeting details available</span>
+                                    <div className="flex items-center justify-center p-16">
+                                        <span className="text-center">No meetings available</span>
+                                    </div>
                             )}
 
                         </div>
@@ -417,9 +419,9 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                 }
                 {
                     activeBar === 2 && (
-                        <p className="text-[18px] whitespace-pre-line mb-3">
-                            videolinks
-                        </p>
+                        <div className="flex items-center justify-center p-20">
+                            <span className="text-center">VideoLinks</span>
+                        </div>
                     )
 
                 }
@@ -438,6 +440,11 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                         onComplete={() => setCorrect(false)}
                                     />
                                 )}
+                                {shuffledQuestions.length === 0 ? (
+                                    <div className="flex items-center justify-center p-16">
+                                        <span className="text-center">No questions available</span>
+                                    </div>
+                                ) : (
                                 <div className="swiper-wrapper">
                                     {shuffledQuestions.map((question: Question, index: number) => (
                                         <div key={index} className={`shadow-md px-4 md:px-10 py-5 ${index === currentSlide ? '' : 'hidden'}`}>
@@ -524,7 +531,9 @@ const CourseContentMedia: FC<Props> = ({ CourseDetails, setCourseDetails, questi
                                             </form>
                                         </div>
                                     ))}
+                                    
                                 </div>
+                                )}
                             </div>
                         </>
                     )
