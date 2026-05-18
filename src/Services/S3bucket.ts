@@ -16,7 +16,7 @@ export const UploadS3Bucket = async (file:any) => {
         });
 
         const region = "us-east-1";
-        const bucketName = "elearn-s3-bucket";
+        const bucketName = import.meta.env.VITE_S3BUCKET_NAME || "elearn-s3-bucket";
         const key = `${uuidv4()}_${file.name}`; // Generating a unique key using UUID
 
         const command = new PutObjectCommand({
