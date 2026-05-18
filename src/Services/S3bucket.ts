@@ -8,14 +8,14 @@ export const UploadS3Bucket = async (file:any) => {
         console.log(file)
         // Create an S3 client
         const s3Client = new S3Client({
-            region: "us-east-1",
+            region: import.meta.env.VITE_S3BUCKET_REGION || "us-east-1",
             credentials: {
                 accessKeyId:import.meta.env.VITE_S3BUCKET_ACCESS_KEY,             
                 secretAccessKey:import.meta.env.VITE_S3BUCKET_SECRET_ACCESS
             },
         });
 
-        const region = "us-east-1";
+        const region = import.meta.env.VITE_S3BUCKET_REGION || "us-east-1";
         const bucketName = import.meta.env.VITE_S3BUCKET_NAME || "elearn-s3-bucket";
         const key = `${uuidv4()}_${file.name}`; // Generating a unique key using UUID
 
